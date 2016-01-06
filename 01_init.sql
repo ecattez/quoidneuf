@@ -40,16 +40,16 @@ CREATE TABLE subscriber(
   last_name VARCHAR(64),
   birthday DATE,
   CONSTRAINT pk_subscriber PRIMARY KEY (subscriber_id),
-  CONSTRAINT fk_credential FOREIGN KEY (login) REFERENCES credential (login),
-  CONSTRAINT fk_subscriber_meta FOREIGN KEY (subscriber_meta_id) REFERENCES subscriber_meta (subscriber_meta_id)
+  CONSTRAINT fk_credential FOREIGN KEY (login) REFERENCES credential (login) ON UPDATE cascade,
+  CONSTRAINT fk_subscriber_meta FOREIGN KEY (subscriber_meta_id) REFERENCES subscriber_meta (subscriber_meta_id) ON UPDATE cascade
 );
 
 CREATE TABLE friend_with(
   friend_1 INTEGER,
   friend_2 INTEGER,
   CONSTRAINT pk_friend_with PRIMARY KEY (friend_1, friend_2),
-  CONSTRAINT fk_subscriber_1 FOREIGN KEY (friend_1) REFERENCES subscriber (subscriber_id),
-  CONSTRAINT fk_subscriber_2 FOREIGN KEY (friend_2) REFERENCES subscriber (subscriber_id)
+  CONSTRAINT fk_subscriber_1 FOREIGN KEY (friend_1) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
+  CONSTRAINT fk_subscriber_2 FOREIGN KEY (friend_2) REFERENCES subscriber (subscriber_id) ON UPDATE cascade
 );
 
 CREATE TABLE discussion(
@@ -58,20 +58,24 @@ CREATE TABLE discussion(
   discussion_name VARCHAR(64),
   enabled BOOLEAN,
   CONSTRAINT pk_discussion PRIMARY KEY (discussion_id),
-  CONSTRAINT fk_discussion_meta FOREIGN KEY (discussion_meta_id) REFERENCES discussion_meta (discussion_meta_id)
+  CONSTRAINT fk_discussion_meta FOREIGN KEY (discussion_meta_id) REFERENCES discussion_meta (discussion_meta_id) ON UPDATE cascade
 );
 
 CREATE TABLE belong_to(
   subscriber_id INTEGER,
   discussion_id INTEGER,
   CONSTRAINT pk_belong_to PRIMARY KEY (subscriber_id, discussion_id),
-  CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id),
-  CONSTRAINT fk_discussion FOREIGN KEY (discussion_id) REFERENCES discussion (discussion_id)
+  CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
+  CONSTRAINT fk_discussion FOREIGN KEY (discussion_id) REFERENCES discussion (discussion_id) ON UPDATE cascade
 );
 
 CREATE TABLE message(
   message_id SERIAL,
+  subscriber_id INTEGER,
+  discussion_id INTEGER,
   content VARCHAR(512),
   written_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT pk_message PRIMARY KEY (message_id)
+  CONSTRAINT pk_message PRIMARY KEY (message_id),
+  CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
+  CONSTRAINT fk_discussion FOREIGN KEY (discussion_id) REFERENCES discussion (discussion_id) ON UPDATE cascade
 );
