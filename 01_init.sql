@@ -11,9 +11,9 @@ DROP TABLE IF EXISTS subscriber_meta;
 DROP TABLE IF EXISTS discussion_meta;
 
 CREATE TABLE credential(
-  login VARCHAR(16),
-  password_salt TEXT,
-  password_hash TEXT,
+  login VARCHAR(16) NOT NULL,
+  password_salt TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
   CONSTRAINT pk_credential PRIMARY KEY (login)
 );
 
@@ -35,18 +35,19 @@ CREATE TABLE discussion_meta(
 CREATE TABLE subscriber(
   subscriber_id SERIAL,
   subscriber_meta_id INTEGER,
-  login VARCHAR(16),
-  first_name VARCHAR(64),
-  last_name VARCHAR(64),
-  birthday DATE,
+  login VARCHAR(16) NOT NULL,
+  first_name VARCHAR(64) NOT NULL,
+  last_name VARCHAR(64) NOT NULL,
+  birthdate DATE NOT NULL,
   CONSTRAINT pk_subscriber PRIMARY KEY (subscriber_id),
   CONSTRAINT fk_credential FOREIGN KEY (login) REFERENCES credential (login) ON UPDATE cascade,
   CONSTRAINT fk_subscriber_meta FOREIGN KEY (subscriber_meta_id) REFERENCES subscriber_meta (subscriber_meta_id) ON UPDATE cascade
 );
 
 CREATE TABLE friend_with(
-  friend_1 INTEGER,
-  friend_2 INTEGER,
+  friend_1 INTEGER NOT NULL,
+  friend_2 INTEGER NOT NULL,
+  status BOOLEAN DEFAULT false,
   CONSTRAINT pk_friend_with PRIMARY KEY (friend_1, friend_2),
   CONSTRAINT fk_subscriber_1 FOREIGN KEY (friend_1) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
   CONSTRAINT fk_subscriber_2 FOREIGN KEY (friend_2) REFERENCES subscriber (subscriber_id) ON UPDATE cascade
@@ -55,15 +56,15 @@ CREATE TABLE friend_with(
 CREATE TABLE discussion(
   discussion_id SERIAL,
   discussion_meta_id INTEGER,
-  discussion_name VARCHAR(64),
-  enabled BOOLEAN,
+  discussion_name VARCHAR(64) NOT NULL,
+  enabled BOOLEAN DEFAULT false,
   CONSTRAINT pk_discussion PRIMARY KEY (discussion_id),
   CONSTRAINT fk_discussion_meta FOREIGN KEY (discussion_meta_id) REFERENCES discussion_meta (discussion_meta_id) ON UPDATE cascade
 );
 
 CREATE TABLE belong_to(
-  subscriber_id INTEGER,
-  discussion_id INTEGER,
+  subscriber_id INTEGER NOT NULL,
+  discussion_id INTEGER NOT NULL,
   CONSTRAINT pk_belong_to PRIMARY KEY (subscriber_id, discussion_id),
   CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
   CONSTRAINT fk_discussion FOREIGN KEY (discussion_id) REFERENCES discussion (discussion_id) ON UPDATE cascade
@@ -71,9 +72,9 @@ CREATE TABLE belong_to(
 
 CREATE TABLE message(
   message_id SERIAL,
-  subscriber_id INTEGER,
-  discussion_id INTEGER,
-  content VARCHAR(512),
+  subscriber_id INTEGER NOT NULL,
+  discussion_id INTEGER NOT NULL,
+  content VARCHAR(512) NOT NULL,
   written_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT pk_message PRIMARY KEY (message_id),
   CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
