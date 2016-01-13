@@ -1,17 +1,22 @@
 -- CATTEZ Edouard - FERRO Thomas
 -- Insert into tables
 
+-- Role :
+INSERT INTO role VALUES ('user');
+INSERT INTO role VALUES ('super-user');
+INSERT INTO role VALUES ('admin');
+
 -- Credential :
-INSERT INTO credential VALUES ('ferrot', 'passsaltferrot', 'passhashferrot');
-INSERT INTO credential VALUES ('catteze', 'passsaltcatteze', 'passhashcatteze');
-INSERT INTO credential VALUES ('leleuj', 'passsaltleleuj', 'passhashleleuj');
-INSERT INTO credential VALUES ('fevrer', 'passsaltfevrer', 'passhashfevrer');
-INSERT INTO credential VALUES ('katerinep', 'passsaltketerinep', 'passhashketrinep');
-INSERT INTO credential VALUES ('vincentf', 'passsaltvincenf', 'passhashvincenf');
-INSERT INTO credential VALUES ('vincentl', 'passsaltvincentl', 'passhashvincentl');
-INSERT INTO credential VALUES ('renk', 'passsaltrenk', 'passhashrenk');
-INSERT INTO credential VALUES ('jacksonsl', 'passsaltjacksonsl', 'passhashjacksonsl');
-INSERT INTO credential VALUES ('scorsesem', 'passsaltscorsesem', 'passhashscorsesem');
+INSERT INTO credential VALUES ('ferrot', 'passhashferrot', 'admin');
+INSERT INTO credential VALUES ('catteze', 'passhashcatteze', 'admin');
+INSERT INTO credential VALUES ('leleuj', 'passhashleleuj', 'super-user');
+INSERT INTO credential VALUES ('fevrer', 'passhashfevrer', 'super-user');
+INSERT INTO credential VALUES ('katerinep', 'passhashketrinep', 'user');
+INSERT INTO credential VALUES ('vincentf', 'passhashvincenf', 'user');
+INSERT INTO credential VALUES ('vincentl', 'passhashvincentl', 'user');
+INSERT INTO credential VALUES ('renk', 'passhashrenk', 'user');
+INSERT INTO credential VALUES ('jacksonsl', 'passhashjacksonsl', 'user');
+INSERT INTO credential VALUES ('scorsesem', 'passhashscorsesem', 'user');
 
 -- Subscriber_meta :
 INSERT INTO subscriber_meta (picture, description, email, phone) VALUES ('picturepath', 'Description test', '1@mail.com', '1111111111');

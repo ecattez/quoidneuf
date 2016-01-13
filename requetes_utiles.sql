@@ -53,6 +53,9 @@ SELECT content, written_date FROM message m INNER JOIN subscriber s ON (s.subscr
 SELECT 1 FROM  belong_to b INNER JOIN subscriber s ON (s.subscriber_id = b.subscriber_id) INNER JOIN discussion d ON (d.discussion_id = b.discussion_id)
   WHERE login= 'ferrot' AND discussion_name = 'Nom de la discussion 1';
 
+## Récupérer rôle :
+SELECT login, role FROM credential WHERE login = 'ferrot';
+
 
 # Groupe :
 

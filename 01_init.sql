@@ -7,14 +7,21 @@ DROP TABLE IF EXISTS belong_to;
 DROP TABLE IF EXISTS subscriber;
 DROP TABLE IF EXISTS discussion;
 DROP TABLE IF EXISTS credential;
+DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS subscriber_meta;
 DROP TABLE IF EXISTS discussion_meta;
 
+CREATE TABLE role(
+  role TEXT NOT NULL,
+  CONSTRAINT pk_role PRIMARY KEY (role)
+);
+
 CREATE TABLE credential(
   login VARCHAR(16) NOT NULL,
-  password_salt TEXT NOT NULL,
   password_hash TEXT NOT NULL,
-  CONSTRAINT pk_credential PRIMARY KEY (login)
+  role TEXT NOT NULL,
+  CONSTRAINT pk_credential PRIMARY KEY (login),
+  CONSTRAINT fk_role FOREIGN KEY (role) REFERENCES role (role) ON UPDATE cascade
 );
 
 CREATE TABLE subscriber_meta(
