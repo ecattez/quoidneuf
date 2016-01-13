@@ -27,10 +27,7 @@ public class DiscussionService extends JsonServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String idDiscussion = req.getParameter("id");
 		if (Matcher.isDigits(idDiscussion)) {
-			Connection con = null;
-			try {
-				con = Pool.getConnection();
-				
+			try (Connection con = Pool.getConnection()) {				
 				int id = Integer.parseInt(idDiscussion);
 				// On récupère tous les messages (avec l'utilisateur qui l'a écrit)
 				Discussion d = buildFromResultSet(con, id);
@@ -47,12 +44,6 @@ public class DiscussionService extends JsonServlet {
 				}
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		else {
@@ -67,9 +58,7 @@ public class DiscussionService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		else {
-			Connection con = null;
-			try {
-				con = Pool.getConnection();
+			try (Connection con = Pool.getConnection()) {
 				// Création de la discussion
 				String query = "INSERT INTO discussion (discussion_name, enabled) VALUES (?, true)";
 				PreparedStatement st = con.prepareStatement(query);
@@ -89,12 +78,6 @@ public class DiscussionService extends JsonServlet {
 				}
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -105,9 +88,7 @@ public class DiscussionService extends JsonServlet {
 		String[] idUsers = req.getParameterValues("user");
 
 		if (Matcher.isDigits(idDiscussion) && idUsers != null) {
-			Connection con = null;
-			try {
-				con = Pool.getConnection();
+			try (Connection con = Pool.getConnection()) {
 				// Création de la discussion
 				String query = "INSERT INTO belong_to VALUES (?,?)";
 				PreparedStatement st;
@@ -127,12 +108,6 @@ public class DiscussionService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_CREATED);
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		else {
@@ -146,9 +121,7 @@ public class DiscussionService extends JsonServlet {
 		String idUser = req.getParameter("user");
 		
 		if (Matcher.isDigits(idDiscussion) && Matcher.isDigits(idUser)) {
-			Connection con = null;
-			try {
-				con = Pool.getConnection();
+			try (Connection con = Pool.getConnection()) {
 				// Création de la discussion
 				String query = "DELETE FROM belong_to WHERE subscriber_id = ? AND discussion_id = ?";
 				PreparedStatement st = con.prepareStatement(query);
@@ -163,12 +136,6 @@ public class DiscussionService extends JsonServlet {
 				}
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		else {
