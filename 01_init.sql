@@ -80,7 +80,13 @@ CREATE TABLE message(
 );
 
 CREATE VIEW discussion_trie AS
-  SELECT discussion_id, discussion_name, written_date as date_last_message
+  SELECT discussion_id AS _to, discussion_name AS _name, written_date AS _date_last_message
   FROM discussion AS d INNER JOIN message AS m USING(discussion_id)
   GROUP BY d.discussion_id, m.message_id HAVING written_date >= ALL (SELECT written_date FROM message WHERE discussion_id = d.discussion_id)
   ORDER BY written_date DESC;
+  
+CREATE VIEW subscriber_message_discussion AS
+  SELECT s.subscriber_id as _from, s.first_name as _first_name, s.last_name as _last_name, d.discussion_id as _to, d.discussion_name as _name, content as _content, written_date as _date
+	FROM discussion d LEFT JOIN message m ON (d.discussion_id = m.discussion_id)
+	LEFT JOIN subscriber s ON (m.subscriber_id = s.subscriber_id)
+	ORDER BY written_date DESC;
