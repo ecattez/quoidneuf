@@ -78,3 +78,9 @@ CREATE TABLE message(
   CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
   CONSTRAINT fk_discussion FOREIGN KEY (discussion_id) REFERENCES discussion (discussion_id) ON UPDATE cascade
 );
+
+CREATE VIEW discussion_trie AS
+  SELECT discussion_id, discussion_name, written_date as date_last_message
+  FROM discussion AS d INNER JOIN message AS m USING(discussion_id)
+  GROUP BY d.discussion_id, m.message_id HAVING written_date >= ALL (SELECT written_date FROM message WHERE discussion_id = d.discussion_id)
+  ORDER BY written_date DESC;
