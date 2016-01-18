@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -25,22 +27,40 @@ public class DiscussionService extends JsonServlet {
 
 	/** Récupérer une discussion */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String idDiscussion = req.getParameter("id");
-		if (Matcher.isDigits(idDiscussion)) {
+		String strDiscussionId = req.getParameter("id");
+		String strUserId = req.getParameter("user");
+		if (Matcher.isDigits(strDiscussionId) && Matcher.isDigits(strUserId)) {
 			try (Connection con = Pool.getConnection()) {				
-				int id = Integer.parseInt(idDiscussion);
-				// On récupère tous les messages (avec l'utilisateur qui l'a écrit)
-				Discussion d = buildFromResultSet(con, id);
-				
-				// On récupère tous les utilisateurs présents dans la discussion
-				// Ils peuvent ne pas avoir (encore) écrit de messages
-				loadSubscribersInto(con, d);
-				
-				if (d == null) {
+				int id = Integer.parseInt(strDiscussionId);
+				int userId = Integer.parseInt(strUserId);
+				if (userExist(con, id, userId)) {
+					// On récupère tous les messages (avec l'utilisateur qui l'a écrit)
+					Discussion d = loadFromId(con, id);
+					if (d == null) {
+						res.sendError(HttpServletResponse.SC_NOT_FOUND);
+					}
+					else {
+						// On récupère tous les utilisateurs présents dans la discussion
+						// Ils peuvent ne pas avoir (encore) écrit de messages
+						loadSubscribersInto(con, d);
+						sendJson(res, d);
+					}
+				}
+				else {
+					res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				}
+			} catch (NamingException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (Matcher.isDigits(strUserId)) {
+			try (Connection con = Pool.getConnection()) {				
+				List<Discussion> discussions = loadFromSubscriber(con, Integer.parseInt(strUserId));
+				if (discussions.size() == 0) {
 					res.sendError(HttpServletResponse.SC_NOT_FOUND);
 				}
 				else {
-					sendJson(res, d);
+					sendJson(res, discussions);
 				}
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
@@ -53,8 +73,8 @@ public class DiscussionService extends JsonServlet {
 	
 	/** Créer une discussion */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String name = req.getParameter("name");
-		if (name == null || name.length() == 0) {
+		String discussionName = req.getParameter("name");
+		if (discussionName == null || discussionName.length() == 0) {
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		else {
@@ -62,16 +82,15 @@ public class DiscussionService extends JsonServlet {
 				// Création de la discussion
 				String query = "INSERT INTO discussion (discussion_name, enabled) VALUES (?, true)";
 				PreparedStatement st = con.prepareStatement(query);
-				st.setString(1, name);
+				st.setString(1, discussionName);
 				st.executeUpdate();
 				
 				// On récupère l'id de la discussion insérée
-				query = "SELECT MAX(discussion_id) as id FROM discussion";
+				query = "SELECT MAX(discussion_id) AS _to FROM discussion";
 				st = con.prepareStatement(query);
-				
 				ResultSet rs = st.executeQuery();
 				if (rs.next()) {
-					sendJson(res, new Discussion(rs.getInt("id"), name));
+					sendJson(res, new Discussion(rs.getInt("_to"), discussionName));
 				}
 				else {
 					res.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -84,20 +103,21 @@ public class DiscussionService extends JsonServlet {
 	
 	/** Ajouter un ou plusieurs contacts à une discussion */
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String idDiscussion = req.getParameter("id");
-		String[] idUsers = req.getParameterValues("user");
+		String strDiscussionId = req.getParameter("id");
+		String strUserId = req.getParameter("user");
+		String[] strUserIds = req.getParameterValues("users");
 
-		if (Matcher.isDigits(idDiscussion) && idUsers != null) {
+		if (Matcher.isDigits(strDiscussionId) && strUserIds != null) {
 			try (Connection con = Pool.getConnection()) {
 				// Création de la discussion
 				String query = "INSERT INTO belong_to VALUES (?,?)";
 				PreparedStatement st;
 				
-				for (String idUser : idUsers) {
-					if (Matcher.isDigits(idUser)) {
+				for (String user : strUserIds) {
+					if (Matcher.isDigits(strUserId)) {
 						st = con.prepareStatement(query);
-						st.setInt(1, Integer.parseInt(idUser));
-						st.setInt(2, Integer.parseInt(idDiscussion));
+						st.setInt(1, Integer.parseInt(user));
+						st.setInt(2, Integer.parseInt(strDiscussionId));
 						try {
 							st.executeUpdate();
 						} catch (SQLException e) {
@@ -117,22 +137,28 @@ public class DiscussionService extends JsonServlet {
 	
 	/** Quitter une discussion */
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String idDiscussion = req.getParameter("id");
-		String idUser = req.getParameter("user");
+		String strDiscussionId = req.getParameter("id");
+		String strUserId = req.getParameter("user");
 		
-		if (Matcher.isDigits(idDiscussion) && Matcher.isDigits(idUser)) {
+		if (Matcher.isDigits(strDiscussionId) && Matcher.isDigits(strUserId)) {
 			try (Connection con = Pool.getConnection()) {
-				// Création de la discussion
-				String query = "DELETE FROM belong_to WHERE subscriber_id = ? AND discussion_id = ?";
-				PreparedStatement st = con.prepareStatement(query);
-				st.setInt(1, Integer.parseInt(idUser));
-				st.setInt(2, Integer.parseInt(idDiscussion));
-				
-				if (st.executeUpdate() == 1) {
-					res.sendError(HttpServletResponse.SC_NO_CONTENT);					
+				int id = Integer.parseInt(strDiscussionId);
+				int userId = Integer.parseInt(strUserId);
+				if (userExist(con, id, userId)) {
+					String query = "DELETE FROM belong_to WHERE subscriber_id = ? AND discussion_id = ?";
+					PreparedStatement st = con.prepareStatement(query);
+					st.setInt(1, Integer.parseInt(strUserId));
+					st.setInt(2, Integer.parseInt(strDiscussionId));
+					
+					if (st.executeUpdate() == 1) {
+						res.sendError(HttpServletResponse.SC_NO_CONTENT);					
+					}
+					else {
+						res.sendError(HttpServletResponse.SC_NOT_FOUND);
+					}
 				}
 				else {
-					res.sendError(HttpServletResponse.SC_NOT_FOUND);
+					res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 				}
 			} catch (NamingException | SQLException e) {
 				e.printStackTrace();
@@ -143,12 +169,32 @@ public class DiscussionService extends JsonServlet {
 		}
 	}
 	
-	private Discussion buildFromResultSet(Connection con, int id) throws SQLException {
-		String query =
-				"SELECT s.subscriber_id as _from, s.first_name as _first_name, s.last_name as _last_name, d.discussion_id as _to, d.discussion_name as _name, content as _content, written_date as _date"
-				+ " FROM discussion d LEFT JOIN message m ON (d.discussion_id = m.discussion_id)"
-				+ " LEFT JOIN subscriber s ON (m.subscriber_id = s.subscriber_id)"
-				+ " WHERE d.discussion_id = ? ORDER BY written_date DESC LIMIT 100";
+	/**
+	 * 
+	 * @param con
+	 * @param id
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	private boolean userExist(Connection con, int id, int userId) throws SQLException {
+		String query = "SELECT 1 FROM belong_to WHERE discussion_id = ? AND subscriber_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		st.setInt(1, id);
+		st.setInt(2, userId);
+		ResultSet rs = st.executeQuery();
+		return rs.next();
+	}
+	
+	/**
+	 * 
+	 * @param con
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	private Discussion loadFromId(Connection con, int id) throws SQLException {
+		String query = "SELECT * FROM subscriber_message_discussion WHERE _to = ? LIMIT 100";
 		PreparedStatement st = con.prepareStatement(query);
 		st.setInt(1, id);
 		ResultSet rs = st.executeQuery();
@@ -171,16 +217,43 @@ public class DiscussionService extends JsonServlet {
 		return d;
 	}
 	
+	/**
+	 * 
+	 * @param con
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	private List<Discussion> loadFromSubscriber(Connection con, int userId) throws SQLException {
+		String query = "SELECT _to, _name FROM discussion_trie WHERE _to IN (SELECT discussion_id FROM belong_to WHERE subscriber_id = ?)";
+		PreparedStatement st = con.prepareStatement(query);
+		st.setInt(1, userId);
+		ResultSet rs = st.executeQuery();
+		List<Discussion> discussions = new ArrayList<>();
+		while (rs.next()) {
+			discussions.add(new Discussion(rs.getInt("_to"), rs.getString("_name")));
+		}
+		return discussions;
+	}
+	
+	/**
+	 * 
+	 * @param con
+	 * @param d
+	 * @return
+	 * @throws SQLException
+	 */
 	private Discussion loadSubscribersInto(Connection con, Discussion d) throws SQLException {
-		String query = "SELECT * FROM subscriber WHERE subscriber_id IN (SELECT subscriber_id FROM belong_to WHERE discussion_id = ?)";
+		String query = "SELECT subscriber_id AS _from, first_name AS _first_name, last_name AS _last_name"
+				+ " FROM subscriber WHERE subscriber_id IN (SELECT subscriber_id FROM belong_to WHERE discussion_id = ?)";
 		PreparedStatement st = con.prepareStatement(query);
 		st.setInt(1, d.getId());
 		ResultSet rs = st.executeQuery();
 		while (rs.next()) {
 			Subscriber s = new Subscriber();
-			s.setId(rs.getInt("subscriber_id"));
-			s.setFirstName(rs.getString("first_name"));
-			s.setLastName(rs.getString("last_name"));
+			s.setId(rs.getInt("_from"));
+			s.setFirstName(rs.getString("_first_name"));
+			s.setLastName(rs.getString("_last_name"));
 			d.push(s);
 		}
 		return d;
