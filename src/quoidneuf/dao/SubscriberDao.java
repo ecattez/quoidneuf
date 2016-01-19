@@ -39,12 +39,12 @@ public class SubscriberDao extends Dao<Integer> {
 	 */
 	public int getIdByLogin(String login) {
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id FROM subscriber login = ?";
+			String query = "SELECT subscriber_id FROM subscriber WHERE login = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, login);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return rs.getInt(0);
+				return rs.getInt(1);
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -69,7 +69,7 @@ public class SubscriberDao extends Dao<Integer> {
 			st.setArray(1, array);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
-				ids.add(rs.getInt(0));
+				ids.add(rs.getInt(1));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
