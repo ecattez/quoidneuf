@@ -19,7 +19,7 @@
 	
 	<!-- Definition du Realm via le pool -->
 	<Realm className="org.apache.catalina.realm.DataSourceRealm" debug="99"
-		digest="md5"
+		
 		dataSourceName="qdnPool" localDataSource="true"
 		userTable="credential" userNameCol="login" userCredCol="password_hash"
 		userRoleTable="credential" roleNameCol="role" />

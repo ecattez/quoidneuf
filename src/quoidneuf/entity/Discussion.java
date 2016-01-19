@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Représentation d'une discussion entre plusieurs utilisateurs.
+ */
 public class Discussion extends Jsonable {
 
 	private int id;

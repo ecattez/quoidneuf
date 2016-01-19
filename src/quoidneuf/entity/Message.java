@@ -2,7 +2,9 @@ package quoidneuf.entity;
 
 import java.sql.Timestamp;
 
-
+/**
+ * Représentation d'un message écrit par un utilisateur.
+ */
 public class Message extends Jsonable {
 	
 	private Subscriber subscriber;

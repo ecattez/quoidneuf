@@ -1,5 +1,8 @@
 package quoidneuf.entity;
 
+/**
+ * Représentation d'un utilisateur de l'application
+ */
 public class Subscriber extends Jsonable {
 	
 	private int id;
