@@ -1,6 +1,6 @@
 body {
   padding-top: 10px;
-  background-color: #a3e2e0 !important;
+  background-color: #4cc5c9 !important;
 }
 
 #corps {
@@ -8,7 +8,7 @@ body {
 }
 
 .contents {
-  background-color: #ccf0f0 !important;
+  background-color: white !important;
 }
 
 .row {
@@ -24,9 +24,10 @@ footer {
   margin-right: -0.5% !important;
 }
 
-div {
-  /*background-color: lightgrey !important;*/
+#credits {
+  white-space: pre-wrap;
 }
+
 /*
 [class*="col-"], footer {
   background-color: lightblue;
@@ -35,8 +36,8 @@ div {
   line-height: 40px;
   text-align: center;
   font-size: 12px;
-}
-
+}*/
+/*
 .credits {
   display: inline-block;
   vertical-align: middle;
@@ -45,4 +46,16 @@ div {
 
 h2 {
   text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.center_div {
+  text-align: center;
+}
+
+.form-connection {
+  text-align: left;
 }
