@@ -44,6 +44,7 @@
               <li><a href="profile.jsp">Profil</a></li>
               <li><a href="#">Amis</a></li>
               <li><a href="#">Discussions</a></li>
+              <li><a class="" href="#" type="button" data-toggle="collapse" data-target="#membres">Membres</a></li>
             </ul>
           </div>
         </div>
@@ -53,34 +54,8 @@
 
     <!-- Contenu -->
     <div class="row">
-      <!-- Membres -->
-      <div class="col-lg-2 col-md-2 contents img-rounded" id="membres">
-        <h2>Membres</h2>
-        <!-- Pour chaque utilisateur : -->
-        <div class="row">
-          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Nom ami1</div>
-          <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
-        </div>
-        <!-- Fin pour chaque utilisateur -->
-        <div class="row">
-          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Nom ami2</div>
-          <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
-        </div>
-
-        <!-- Barre de recherche pour ajout à la discussion : -->
-        <div class="row">
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-            </span>
-            <input type="text" class="form-control" placeholder="Ajouter utilisateur...">
-          </div><!-- /input-group -->
-        </div>
-      </div>
-      <!-- Fin Membres -->
-
       <!-- Discussion -->
-      <div class="col-lg-9 col-lg-offset-1 col-md-9 col-md-offset-1 contents img-rounded">
+      <div class="col-lg-9 col-md-9 contents img-rounded">
         <h2>Discussion</h2>
 
         <!-- Liste des messages -->
@@ -99,6 +74,37 @@
         <!-- Fin message à envoyer -->
       </div>
       <!-- Fin Discussion -->
+
+      <!-- Membres -->
+      <div class="col-lg-2 col-md-2 contents img-rounded collapse col-md-offset-1 col-lg-offset-1" id="membres">
+        <h2>Membres</h2>
+        <ul>
+        <!-- Pour chaque utilisateur : -->
+          <li>
+            <div class="row">
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres">Nom ami1</div>
+              <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
+            </div>
+          </li>
+          <!-- Fin pour chaque utilisateur -->
+          <li>
+            <div class="row">
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres">Nom ami2</div>
+              <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
+            </div>
+          </li>
+        </ul>
+        <!-- Barre de recherche pour ajout à la discussion : -->
+        <div class="row">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+            <input type="text" class="form-control" placeholder="Ajouter utilisateur...">
+          </div><!-- /input-group -->
+        </div>
+      </div>
+      <!-- Fin Membres -->
     </div>
     <!-- Fin contenu -->
 
