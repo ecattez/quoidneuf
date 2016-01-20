@@ -1,6 +1,8 @@
 -- CATTEZ Edouard - FERRO Thomas
 -- Create table
 
+DROP VIEW IF EXISTS discussion_trie;
+DROP VIEW IF EXISTS subscriber_message_discussion;
 DROP TABLE IF EXISTS friend_with;
 DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS belong_to;
@@ -25,12 +27,12 @@ CREATE TABLE credential(
 
 CREATE TABLE subscriber(
   subscriber_id SERIAL,
-  login VARCHAR(16) NOT NULL,
+  login VARCHAR(16),
   first_name VARCHAR(64) NOT NULL,
   last_name VARCHAR(64) NOT NULL,
   birthdate DATE NOT NULL,
   CONSTRAINT pk_subscriber PRIMARY KEY (subscriber_id),
-  CONSTRAINT fk_credential FOREIGN KEY (login) REFERENCES credential (login) ON UPDATE cascade
+  CONSTRAINT fk_credential FOREIGN KEY (login) REFERENCES credential (login) ON UPDATE cascade ON DELETE SET NULL
 );
 
 CREATE TABLE subscriber_meta(
@@ -56,7 +58,6 @@ CREATE TABLE friend_with(
 CREATE TABLE discussion(
   discussion_id SERIAL,
   discussion_name VARCHAR(64) NOT NULL,
-  enabled BOOLEAN DEFAULT false,
   CONSTRAINT pk_discussion PRIMARY KEY (discussion_id)
 );
 
@@ -84,7 +85,7 @@ CREATE VIEW discussion_trie AS
   FROM discussion AS d INNER JOIN message AS m USING(discussion_id)
   GROUP BY d.discussion_id, m.message_id HAVING written_date >= ALL (SELECT written_date FROM message WHERE discussion_id = d.discussion_id)
   ORDER BY written_date DESC;
-  
+
 CREATE VIEW subscriber_message_discussion AS
   SELECT s.subscriber_id as _from, s.first_name as _first_name, s.last_name as _last_name, d.discussion_id as _to, d.discussion_name as _name, content as _content, written_date as _date
 	FROM discussion d LEFT JOIN message m ON (d.discussion_id = m.discussion_id)

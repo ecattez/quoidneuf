@@ -43,16 +43,16 @@ INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) 
 INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (10,'picturepath', 'Description test', '10@mail.com', '1010101010');
 
 -- Discussion :
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 1', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 2', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 3', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 4', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 5', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 6', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 7', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 8', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 9', true);
-INSERT INTO discussion (discussion_name, enabled) VALUES ('Nom de la discussion 10', true);
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 1');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 2');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 3');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 4');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 5');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 6');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 7');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 8');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 9');
+INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 10');
 
 -- Friend_with :
 INSERT INTO friend_with VALUES (1, 2);
