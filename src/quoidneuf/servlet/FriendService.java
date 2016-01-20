@@ -11,28 +11,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/api/profils")
+@WebServlet("/api/friends")
 @ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL, rolesAllowed = {"user", "super-user", "admin"}))
-public class ProfilService extends HttpServlet {
+public class FriendService extends HttpServlet {
 	
 	private static final long serialVersionUID = -7109249752388549689L;
-
-	/** Récupérer un profil */
+	
+	/** Récupérer un ou plusieurs amis */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 	}
 	
-	/** Créer un profil */
+	/** Faire une demande d'ami */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 	}
 	
-	/** Modifier le profil */
+	/** Confirmer une demande d'ami */
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 	}
 	
-	/** Supprimer le profil (suppression logique) */
+	/** Supprimer d'un lien d'amitié (confirmé ou non) */
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 	}

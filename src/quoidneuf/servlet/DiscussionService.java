@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,7 +20,7 @@ import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/discussions")
-@ServletSecurity(@HttpConstraint(rolesAllowed = {"user", "super-user", "admin"}))
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.NONE, rolesAllowed = {"user", "super-user", "admin"}))
 public class DiscussionService extends JsonServlet {
 	
 	private static final long serialVersionUID = 5334642516196786048L;

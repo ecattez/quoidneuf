@@ -22,6 +22,9 @@ public class Authentication extends HttpServlet {
 		subscriberDao = new SubscriberDao();
 	}
 
+	/**
+	 * Permet à un client de se connecter avec un login et un password
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (req.getUserPrincipal() == null) {
 			HttpSession session = req.getSession();
@@ -36,13 +39,22 @@ public class Authentication extends HttpServlet {
 				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 		}
+		else {
+			res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+		}
 	}
 	
+	/**
+	 * Permet à un client de se déconnecter
+	 */
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (req.getUserPrincipal() != null) {
 			HttpSession session = req.getSession();
 			session.invalidate();
 			req.logout();
+		}
+		else {
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 	}
 

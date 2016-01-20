@@ -38,7 +38,7 @@ public class MessageDao extends Dao<Integer> {
 	public int insertMessage(int id, int userId, String content) {
 		try (Connection con = getConnection()) {
 			// Création de la discussion
-			String query = "INSERT INTO message (subscriber_id, discussion_id) VALUES (?, ?)";
+			String query = "INSERT INTO message (subscriber_id, discussion_id, content) VALUES (?, ?, ?)";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			st.setInt(2, id);
@@ -50,7 +50,7 @@ public class MessageDao extends Dao<Integer> {
 			st = con.prepareStatement(query);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return rs.getInt(0);
+				return rs.getInt(1);
 			}
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
