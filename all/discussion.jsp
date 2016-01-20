@@ -11,9 +11,9 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>Discussion - QuoiDNeuf</title>
 
-  <link href="css/style_classic.css" rel="stylesheet">
+  <link href="../css/style_classic.css" rel="stylesheet">
   <!-- Bootstrap -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -44,7 +44,7 @@
               <li><a href="profile.jsp">Profil</a></li>
               <li><a href="#">Amis</a></li>
               <li><a href="#">Discussions</a></li>
-              <li><a class="" href="#" type="button" data-toggle="collapse" data-target="#membres">Membres</a></li>
+              <li><a type="button" data-toggle="collapse" data-target="#membres">Membres</a></li>
             </ul>
           </div>
         </div>
@@ -115,14 +115,14 @@
           Projet Web/BDD - WhatsApp-Like - Cattez Edouard - Ferro Thomas - Licence Pro DA2I - 2015/2016
         </div>
 
-        <a href="https://www-iut.univ-lille1.fr/" class="pull-right"><img src="img/iut.png" alt="Logo IUT" width="80" height="50"/></a>
-        <a href="https://github.com/ecattez/quoidneuf" class="pull-right"><img src="img/github.png" alt="Logo GitHub" class="pull-right" width="50" height="50"/></a>
+        <a href="https://www-iut.univ-lille1.fr/" class="pull-right"><img src="../img/iut.png" alt="Logo IUT" width="80" height="50"/></a>
+        <a href="https://github.com/ecattez/quoidneuf" class="pull-right"><img src="../img/github.png" alt="Logo GitHub" class="pull-right" width="50" height="50"/></a>
       </div>
     </footer>
     <!-- Footer -->
   </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="js/bootstrap.js"></script>
+  <script src="../js/bootstrap.js"></script>
 </body>
 </html>

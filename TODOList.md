@@ -5,7 +5,7 @@
 # Discussion
 - [x] Trouver solution pour aligner bouton au texte pour ajout utilisateur (alignés quand on enleve le css de test)
 - [x] Préparer espace pour les messages
-- [ ] En version mobile, passer les membres en liste avec panel réduit.
+- [x] En version mobile, passer les membres en liste avec panel réduit.
 - [ ] Intégration du travail d'Edouard.
 
 # Login
