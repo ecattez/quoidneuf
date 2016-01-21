@@ -30,12 +30,6 @@
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="#">QuoiDNeuf</a>
           </div>
 
@@ -60,16 +54,16 @@
         <h2>Déjà inscrit</h2>
 
         <div class="row">
-          <form class="form-connection col-sm-4 col-sm-offset-4 col-md-5 col-md-offset-3 col-lg-5 col-lg-offset-3" action="#" method="post">
+          <form class="form-connection col-sm-4 col-sm-offset-4 col-md-5 col-md-offset-3 col-lg-5 col-lg-offset-3" action="#" method="post" onSubmit="JavaScript:login()">
             <div class="form-group">
               <label for="connection_login">Login</label><br/>
-              <input type="text" name="connection_login" id="connection_login" placeholder="Login" />
+              <input class="form-control" type="text" name="connection_login" id="connection_login" placeholder="Login" />
             </div>
             <div class="form-group">
               <label for="connection_password">Mot de passe</label><br>
-              <input type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" />
+              <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" />
             </div>
-            <button class="center-block" type="submit" name="button_login">Connexion</button>
+            <button class="center-block  btn btn-default" type="button" name="button_login" onclick="login()">Connexion</button>
           </form>
         </div>
       </div>
@@ -85,60 +79,60 @@
             <div class="row">
               <div class="form-group col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-3">
                 <label for="inscription_login">Login*</label><br/>
-                <input type="text" name="inscription_login" id="inscription_login" placeholder="Login" />
+                <input class="form-control" type="text" name="inscription_login" id="inscription_login" placeholder="Login" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-md-6">
                 <label for="inscription_password">Mot de passe*</label><br/>
-                <input type="password" name="inscription_password" id="inscription_password" placeholder="Mot de passe" />
+                <input class="form-control" type="password" name="inscription_password" id="inscription_password" placeholder="Mot de passe" />
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">
                 <label for="inscription_validation_password">Valider mot de passe*</label><br/>
-                <input type="password" name="inscription_validation_password" id="inscription_validation_password" placeholder="Valider mot de passe" />
+                <input class="form-control" type="password" name="inscription_validation_password" id="inscription_validation_password" placeholder="Valider mot de passe" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-md-6">
                 <label for="inscription_last_name">Nom*</label><br/>
-                <input type="text" name="inscription_last_name" id="inscription_last_name" placeholder="Nom" />
+                <input class="form-control" type="text" name="inscription_last_name" id="inscription_last_name" placeholder="Nom" />
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">
                 <label for="inscription_first_name">Prénom*</label><br/>
-                <input type="text" name="inscription_first_name" id="inscription_first_name" placeholder="Prénom" />
+                <input class="form-control" type="text" name="inscription_first_name" id="inscription_first_name" placeholder="Prénom" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-3">
                 <label for="inscription_birth_date">Date de naissance* <br/>(jj-mm-aaaa)</label><br/>
-                <input type="date" name="inscription_birth_date" id="inscription_birth_date" />
+                <input class="form-control" type="date" name="inscription_birth_date" id="inscription_birth_date" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-md-6">
                 <label for="inscription_email">E-Mail*</label><br/>
-                <input type="text" name="inscription_email" id="inscription_email" placeholder="E-Mail" />
+                <input class="form-control" type="text" name="inscription_email" id="inscription_email" placeholder="E-Mail" />
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">
                 <label for="inscription_phone">Téléphone*</label><br/>
-                <input type="text" name="inscription_phone" id="inscription_phone" placeholder="Téléphone" />
+                <input class="form-control" type="text" name="inscription_phone" id="inscription_phone" placeholder="Téléphone" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-12">
                 <label for="inscription_description">Description</label><br/>
-                <textarea name="inscription_description" id="inscription_description" form="form_inscription" rows="4" cols="30" placeholder="Description"></textarea>
+                <textarea class="form-control" name="inscription_description" id="inscription_description" form="form_inscription" rows="4" cols="30" placeholder="Description"></textarea>
               </div>
             </div>
-            <button class="center-block" type="submit" name="button_inscription">Inscription</button>
+            <button class="center-block btn btn-default" type="submit" name="button_inscription">Inscription</button>
           </form>
         </div>
       </div>
@@ -163,7 +157,8 @@
     <!-- Footer -->
   </div>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="scripts/jquery.min.js"></script>
+  <script type="text/javascript" src="scripts/scripts_ajax.js"></script>
   <script src="js/bootstrap.js"></script>
 </body>
 </html>

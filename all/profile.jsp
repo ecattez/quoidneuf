@@ -79,15 +79,15 @@
             <form class="col-lg-12" action="#" method="post">
               <div class="form-group col-lg-4">
                 <label for="birth_date">Date de naissance :</label>
-                <input type="text" id="birth_date" name="birth_date" value="08/12/1968" />
+                <input class="form-control" type="text" id="birth_date" name="birth_date" value="08/12/1968" />
               </div>
               <div class="form-group col-lg-4">
                 <label for="e_mail">E-Mail :</label>
-                <input type="text" id="e_mail" name="e_mail" value="p.katerine@wanadoo.fr" />
+                <input class="form-control" type="text" id="e_mail" name="e_mail" value="p.katerine@wanadoo.fr" />
               </div>
               <div class="form-group col-lg-4">
                 <label for="phone">Téléphone</label>
-                <input type="text" id="phone" name="phone" value="/" />
+                <input class="form-control" type="text" id="phone" name="phone" value="/" />
               </div>
             </form>
           </div>
@@ -101,7 +101,7 @@
             <form class="col-lg-12" id="form_description" action="#" method="post">
               <div class="form-group col-lg-12">
                 <label for="description">Description</label><br/>
-                <textarea name="description" id="description" form="form_description" rows="4" cols="40" placeholder="Description"></textarea>
+                <textarea class="form-control" name="description" id="description" form="form_description" rows="4" cols="40" placeholder="Description"></textarea>
               </div>
             </form>
           </div>

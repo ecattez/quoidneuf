@@ -44,7 +44,7 @@
               <li><a href="profile.jsp">Profil</a></li>
               <li><a href="#">Amis</a></li>
               <li><a href="#">Discussions</a></li>
-              <li><a type="button" data-toggle="collapse" data-target="#membres">Membres</a></li>
+              <li><a data-toggle="collapse" data-target="#membres">Membres</a></li>
             </ul>
           </div>
         </div>
@@ -122,7 +122,8 @@
     <!-- Footer -->
   </div>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="../scripts/jquery.min.js"></script>
+  <script type="text/javascript" src="../scripts/scripts_ajax.js"></script>
   <script src="../js/bootstrap.js"></script>
 </body>
 </html>
