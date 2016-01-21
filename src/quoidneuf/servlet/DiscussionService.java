@@ -1,189 +1,162 @@
 package quoidneuf.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import quoidneuf.dao.DiscussionDao;
+import quoidneuf.dao.SubscriberDao;
 import quoidneuf.entity.Discussion;
-import quoidneuf.entity.Message;
 import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
-import quoidneuf.util.Pool;
 
-@WebServlet("/api/discussion")
+@WebServlet("/api/discussions")
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.NONE, rolesAllowed = {"user", "super-user", "admin"}))
 public class DiscussionService extends JsonServlet {
 	
 	private static final long serialVersionUID = 5334642516196786048L;
+	
+	private DiscussionDao discussionDao;
+	private SubscriberDao subscriberDao;
+	
+	public DiscussionService() {
+		this.discussionDao = new DiscussionDao();
+		this.subscriberDao = new SubscriberDao();
+	}
 
 	/** Récupérer une discussion */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String idDiscussion = req.getParameter("id");
-		if (Matcher.isDigits(idDiscussion)) {
-			try (Connection con = Pool.getConnection()) {				
-				int id = Integer.parseInt(idDiscussion);
-				// On récupère tous les messages (avec l'utilisateur qui l'a écrit)
-				Discussion d = buildFromResultSet(con, id);
-				
-				// On récupère tous les utilisateurs présents dans la discussion
-				// Ils peuvent ne pas avoir (encore) écrit de messages
-				loadSubscribersInto(con, d);
-				
-				if (d == null) {
-					res.sendError(HttpServletResponse.SC_NOT_FOUND);
-				}
-				else {
-					sendJson(res, d);
-				}
-			} catch (NamingException | SQLException e) {
-				e.printStackTrace();
+		HttpSession session = req.getSession(true);
+		Integer userId = (Integer) session.getAttribute("user");
+		Integer discussionId = Matcher.convert(req.getParameter("id"));
+		
+		// L'utilisateur n'est pas connecté, il n'est pas autorisé à aller plus loin
+		if (userId == null) {
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		// Aucune discussion précisée, on récupère toutes les discussions de l'utilisateur
+		else if (discussionId == null) {
+			List<Discussion> discussions = discussionDao.getDiscussionsOf(userId);
+			if (discussions.size() == 0) {
+				res.sendError(HttpServletResponse.SC_NO_CONTENT);
+			}
+			else {
+				sendJson(res, discussions);
 			}
 		}
+		// Au contraire, on charge la discussion et ses abonnés
+		else if (discussionDao.exist(discussionId)) {
+			if (!discussionDao.userExistIn(discussionId, userId)) {
+				res.sendError(HttpServletResponse.SC_FORBIDDEN);
+			}
+			else {
+				Discussion discussion = discussionDao.getDiscussion(discussionId);
+				List<Subscriber> subscribers = discussionDao.getSubscribersOf(discussionId);
+				discussion.setSubscribers(subscribers);
+				sendJson(res, discussion);
+			}
+		}
+		// Si la discussion n'existe pas, on renvoie 404
 		else {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			res.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
-	
+
 	/** Créer une discussion */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String name = req.getParameter("name");
-		if (name == null || name.length() == 0) {
+		HttpSession session = req.getSession(true);
+		Integer userId = (Integer) session.getAttribute("user");
+		String discussionName = req.getParameter("name");
+		
+		if (userId == null) {
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		else if (Matcher.isEmpty(discussionName)) {
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		else {
-			try (Connection con = Pool.getConnection()) {
-				// Création de la discussion
-				String query = "INSERT INTO discussion (discussion_name, enabled) VALUES (?, true)";
-				PreparedStatement st = con.prepareStatement(query);
-				st.setString(1, name);
-				st.executeUpdate();
-				
-				// On récupère l'id de la discussion insérée
-				query = "SELECT MAX(discussion_id) as id FROM discussion";
-				st = con.prepareStatement(query);
-				
-				ResultSet rs = st.executeQuery();
-				if (rs.next()) {
-					sendJson(res, new Discussion(rs.getInt("id"), name));
-				}
-				else {
-					res.sendError(HttpServletResponse.SC_NOT_FOUND);
-				}
-			} catch (NamingException | SQLException e) {
-				e.printStackTrace();
+			int discussionId = discussionDao.insertDiscussion(discussionName);
+			if (discussionId == -1) {
+				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+			}
+			else if (discussionDao.insertUserIn(discussionId, userId) > 0) {					
+				sendJson(res, discussionId);
+			}
+			else {
+				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
 			}
 		}
 	}
 	
 	/** Ajouter un ou plusieurs contacts à une discussion */
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String idDiscussion = req.getParameter("id");
-		String[] idUsers = req.getParameterValues("user");
-
-		if (Matcher.isDigits(idDiscussion) && idUsers != null) {
-			try (Connection con = Pool.getConnection()) {
-				// Création de la discussion
-				String query = "INSERT INTO belong_to VALUES (?,?)";
-				PreparedStatement st;
-				
-				for (String idUser : idUsers) {
-					if (Matcher.isDigits(idUser)) {
-						st = con.prepareStatement(query);
-						st.setInt(1, Integer.parseInt(idUser));
-						st.setInt(2, Integer.parseInt(idDiscussion));
-						try {
-							st.executeUpdate();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				res.sendError(HttpServletResponse.SC_CREATED);
-			} catch (NamingException | SQLException e) {
-				e.printStackTrace();
-			}
+		HttpSession session = req.getSession(true);
+		Integer userId = (Integer) session.getAttribute("user");
+		Integer discussionId = Matcher.convert(req.getParameter("id"));
+		String[] strUserIds = req.getParameterValues("users");
+		
+		if (userId == null) {
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		else if (discussionId == null) {
+			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		else if (!discussionDao.exist(discussionId)) {
+			res.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+		else if (!discussionDao.userExistIn(discussionId, userId)) {
+			res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			List<Integer> userIds = new ArrayList<>();
+			for (String user : strUserIds) {
+				if (Matcher.isDigits(user)) {
+					userIds.add(Integer.parseInt(user));
+				}
+			}
+			userIds = subscriberDao.correctIds(userIds);
+			if (discussionDao.insertUsersIn(discussionId, userIds) > 0) {
+				res.sendError(HttpServletResponse.SC_NO_CONTENT);
+			}
+			else {
+				res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+			}
 		}
 	}
 	
 	/** Quitter une discussion */
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String idDiscussion = req.getParameter("id");
-		String idUser = req.getParameter("user");
+		HttpSession session = req.getSession(true);
+		Integer userId = (Integer) session.getAttribute("user");
+		Integer discussionId = Matcher.convert(req.getParameter("id"));
 		
-		if (Matcher.isDigits(idDiscussion) && Matcher.isDigits(idUser)) {
-			try (Connection con = Pool.getConnection()) {
-				// Création de la discussion
-				String query = "DELETE FROM belong_to WHERE subscriber_id = ? AND discussion_id = ?";
-				PreparedStatement st = con.prepareStatement(query);
-				st.setInt(1, Integer.parseInt(idUser));
-				st.setInt(2, Integer.parseInt(idDiscussion));
-				
-				if (st.executeUpdate() == 1) {
-					res.sendError(HttpServletResponse.SC_NO_CONTENT);					
-				}
-				else {
-					res.sendError(HttpServletResponse.SC_NOT_FOUND);
-				}
-			} catch (NamingException | SQLException e) {
-				e.printStackTrace();
-			}
+		if (userId == null) {
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
-		else {
+		else if (discussionId == null) {
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
-	}
-	
-	private Discussion buildFromResultSet(Connection con, int id) throws SQLException {
-		String query =
-				"SELECT s.subscriber_id as _from, s.first_name as _first_name, s.last_name as _last_name, d.discussion_id as _to, d.discussion_name as _name, content as _content, written_date as _date"
-				+ " FROM discussion d LEFT JOIN message m ON (d.discussion_id = m.discussion_id)"
-				+ " LEFT JOIN subscriber s ON (m.subscriber_id = s.subscriber_id)"
-				+ " WHERE d.discussion_id = ? ORDER BY written_date DESC LIMIT 100";
-		PreparedStatement st = con.prepareStatement(query);
-		st.setInt(1, id);
-		ResultSet rs = st.executeQuery();
-		Discussion d = null;
-		while (rs.next()) {
-			if (d == null) {
-				d = new Discussion();
-				d.setId(rs.getInt("_to"));
-				d.setName(rs.getString("_name"));
-			}
-			if (rs.getTimestamp("_date") != null) {
-				Message m = new Message();
-				Subscriber s = new Subscriber(rs.getInt("_from"), rs.getString("_first_name"), rs.getString("_last_name"));
-				m.setSubscriber(s);
-				m.setContent(rs.getString("_content"));
-				m.setWrittenDate(rs.getTimestamp("_date"));
-				d.push(m);
-			}
+		else if (!discussionDao.exist(discussionId)) {
+			res.sendError(HttpServletResponse.SC_NOT_FOUND);
 		}
-		return d;
-	}
-	
-	private Discussion loadSubscribersInto(Connection con, Discussion d) throws SQLException {
-		String query = "SELECT * FROM subscriber WHERE subscriber_id IN (SELECT subscriber_id FROM belong_to WHERE discussion_id = ?)";
-		PreparedStatement st = con.prepareStatement(query);
-		st.setInt(1, d.getId());
-		ResultSet rs = st.executeQuery();
-		while (rs.next()) {
-			Subscriber s = new Subscriber();
-			s.setId(rs.getInt("subscriber_id"));
-			s.setFirstName(rs.getString("first_name"));
-			s.setLastName(rs.getString("last_name"));
-			d.push(s);
+		else if (!discussionDao.userExistIn(discussionId, userId)) {
+			res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}
-		return d;
+		else if (discussionDao.removeUserFrom(discussionId, userId) > 0) {
+			res.sendError(HttpServletResponse.SC_NO_CONTENT);
+		}
+		else {
+			res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+		}
 	}
 
 }
