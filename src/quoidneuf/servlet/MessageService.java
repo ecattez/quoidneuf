@@ -40,16 +40,16 @@ public class MessageService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		else if (discussionId == null) {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "discussion manquante");
 		}
 		else if (content == null) {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "contenu manquant");
 		}
 		else if (!discussionDao.exist(discussionId)) {
-			res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "discussion introuvable");
 		}
 		else if (!discussionDao.userExistIn(discussionId, userId)) {
-			res.sendError(HttpServletResponse.SC_FORBIDDEN);
+			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "utilisateur interdit dans la discussion");
 		}
 		else {
 			int id = messageDao.insertMessage(discussionId, userId, content);
@@ -57,7 +57,7 @@ public class MessageService extends JsonServlet {
 				sendJson(HttpServletResponse.SC_CREATED, res, id);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+				sendTicket(HttpServletResponse.SC_EXPECTATION_FAILED, res, "erreur lors de l'enregistrement du message");
 			}
 		}
 	}

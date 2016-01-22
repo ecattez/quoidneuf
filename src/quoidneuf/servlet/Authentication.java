@@ -30,23 +30,26 @@ public class Authentication extends JsonServlet {
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			
-			try {
-				req.login(username, password);
-				Subscriber subscriber = subscriberDao.getByLogin(username);
-				if (subscriber == null) {
-					res.sendError(HttpServletResponse.SC_NOT_FOUND);
-				}
-				else {
+			if (username == null) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "login manquant");
+			}
+			else if (password == null) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "mot de passe manquant");
+			}
+			else {
+				try {
 					HttpSession session = req.getSession();
+					req.login(username, password);
+					Subscriber subscriber = subscriberDao.getByLogin(username);
 					session.setAttribute("user", subscriber.getId());
 					sendJson(HttpServletResponse.SC_CREATED, res, subscriber);
+				} catch (ServletException e) {
+					sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "login ou mot de passe incorrect");
 				}
-			} catch (ServletException e) {
-				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+			sendTicket(HttpServletResponse.SC_NOT_MODIFIED, res, "utilisateur déjà connecté");
 		}
 	}
 	
@@ -61,7 +64,7 @@ public class Authentication extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			sendTicket(HttpServletResponse.SC_UNAUTHORIZED, res, "utilisateur non connecté");
 		}
 	}
 
