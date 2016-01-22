@@ -4,15 +4,15 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import quoidneuf.dao.SubscriberDao;
+import quoidneuf.entity.Subscriber;
 
 @WebServlet("/api/authentication")
-public class Authentication extends HttpServlet {
+public class Authentication extends JsonServlet {
 	
 	private static final long serialVersionUID = 7229118350560492306L;
 	
@@ -27,14 +27,20 @@ public class Authentication extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (req.getUserPrincipal() == null) {
-			HttpSession session = req.getSession();
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			
 			try {
 				req.login(username, password);
-				int id = subscriberDao.getIdByLogin(username);
-				session.setAttribute("user", id);
+				Subscriber subscriber = subscriberDao.getByLogin(username);
+				if (subscriber == null) {
+					res.sendError(HttpServletResponse.SC_NOT_FOUND);
+				}
+				else {
+					HttpSession session = req.getSession();
+					session.setAttribute("user", subscriber.getId());
+					sendJson(HttpServletResponse.SC_CREATED, res, subscriber);
+				}
 			} catch (ServletException e) {
 				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
@@ -52,6 +58,7 @@ public class Authentication extends HttpServlet {
 			HttpSession session = req.getSession();
 			session.invalidate();
 			req.logout();
+			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);

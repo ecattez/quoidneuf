@@ -89,7 +89,7 @@ public class DiscussionService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
 			}
 			else if (discussionDao.insertUserIn(discussionId, userId) > 0) {					
-				sendJson(res, discussionId);
+				sendJson(HttpServletResponse.SC_CREATED, res, discussionId);
 			}
 			else {
 				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
