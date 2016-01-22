@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import quoidneuf.entity.Subscriber;
+
 /**
  * DAO des utilisateurs.
  */
@@ -27,6 +29,29 @@ public class SubscriberDao extends Dao<Integer> {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	/**
+	 * Récupère un abonné à partir de ses identifiants d'authentification
+	 * 
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * 
+	 * @return	une instance de Subscriber, null sinon
+	 */
+	public Subscriber getByLogin(String login) {
+		try (Connection con = getConnection()) {
+			String query = "SELECT subscriber_id AS _id, first_name, last_name FROM subscriber WHERE login = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return new Subscriber(rs.getInt("_id"), rs.getString("first_name"), rs.getString("last_name"));
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**

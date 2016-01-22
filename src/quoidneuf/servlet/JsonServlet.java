@@ -10,11 +10,36 @@ public abstract class JsonServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3796747675330297774L;
 	
-	public void sendJson(HttpServletResponse res, Object json) throws IOException {
+	/**
+	 * Envoie un objet au client au format JSON.
+	 * 
+	 * @param	httpResponse
+	 * 			le code de la réponse HTTP
+	 * @param	res
+	 * 			la réponse HTTP
+	 * @param	json
+	 * 			l'objet JSONable
+	 * @throws	IOException
+	 * 			erreur à l'écriture de l'objet dans le flux de sortie
+	 */
+	public void sendJson(int httpResponse, HttpServletResponse res, Object json) throws IOException {
 		PrintWriter out = (PrintWriter) res.getWriter();
+		res.setStatus(httpResponse);
 		res.setContentType("application/json");
 		out.println(json);
 	}
-
-
+	
+	/**
+	 * Envoie un objet au client au format JSON au travers de la réponse SC_OK
+	 * 
+	 * @param	res
+	 * 			la réponse HTTP
+	 * @param	json
+	 * 			l'objet JSONable
+	 * @throws	IOException
+	 * 			erreur à l'écriture de l'objet dans le flux de sortie
+	 */
+	public void sendJson(HttpServletResponse res, Object json) throws IOException {
+		sendJson(HttpServletResponse.SC_OK, res, json);
+	}
 }

@@ -54,7 +54,7 @@ public class MessageService extends JsonServlet {
 		else {
 			int id = messageDao.insertMessage(discussionId, userId, content);
 			if (id > 0) {
-				sendJson(res, id);
+				sendJson(HttpServletResponse.SC_CREATED, res, id);
 			}
 			else {
 				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
