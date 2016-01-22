@@ -1,28 +1,26 @@
-function login() {
-  var username = document.getElementsByName('connection_login')[0].value;
-  var password = document.getElementsByName('connection_password')[0].value;
-  var json = JSON.stringify({
-    'username' : username,
-    'password' : password
-  });
-  console.log("Log : " + username);
-  console.log("Pass : " +password);
-  console.log("json : " + json)
+/**
+  * Authentification d'un utilisateur
+  * @param {string} username - Le login de l'utilisateur
+  * @param {string} password - Le mot de passe de l'utilisateur (crypté ?)
+  */
+function login(user, pass) {
   $.ajax({
 		type : 'POST',
-		contentType : 'application/json',
+		contentType : 'application/x-www-form-urlencoded',
 		url : '/quoidneuf/api/authentication',
-		dataType : "json",
-		data : json,
+		dataType : 'json',
+		data : { username : user, password : pass},
 		success : function(data, textStatus, jqXHR) {
-			console.log(data);
+			console.log(textStatus);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log('error: ' + textStatus);
 		}
 	});
 }
-/*
+/**
+  * Déconnexion de l'utilisateur actuellement authentifié
+  */
 function logout() {
 	$.ajax({
 		type : 'DELETE',
@@ -35,4 +33,12 @@ function logout() {
 		}
 	});
 }
-*/
+
+/**
+  * Retourne tous les messages d'une discussion
+  * @param {Number} discussionId - L'id de la discussion à retourner
+  * @return {json}
+  */
+function getDiscuttion(discussionId) {
+
+}

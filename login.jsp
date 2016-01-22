@@ -63,7 +63,7 @@
               <label for="connection_password">Mot de passe</label><br>
               <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" />
             </div>
-            <button class="center-block  btn btn-default" type="button" name="button_login" onclick="login()">Connexion</button>
+            <button class="center-block  btn btn-default" type="button" name="button_login" id="button_login">Connexion</button>
           </form>
         </div>
       </div>
@@ -159,6 +159,11 @@
 
   <script type="text/javascript" src="scripts/jquery.min.js"></script>
   <script type="text/javascript" src="scripts/scripts_ajax.js"></script>
-  <script src="js/bootstrap.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript">
+  document.getElementById("button_login").addEventListener("click", function() {
+    login(document.getElementsByName('connection_login')[0].value, document.getElementsByName('connection_password')[0].value);
+  }, false);
+  </script>
 </body>
 </html>
