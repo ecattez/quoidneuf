@@ -57,15 +57,17 @@
           <form class="form-connection col-sm-4 col-sm-offset-4 col-md-5 col-md-offset-3 col-lg-5 col-lg-offset-3" action="#" method="post" onSubmit="JavaScript:login()">
             <div class="form-group">
               <label for="connection_login">Login</label><br/>
-              <input class="form-control" type="text" name="connection_login" id="connection_login" placeholder="Login" />
+              <input class="form-control" type="text" name="connection_login" id="connection_login" placeholder="Login" value="ferrot" />
             </div>
             <div class="form-group">
               <label for="connection_password">Mot de passe</label><br>
-              <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" />
+              <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" value="toto"/>
             </div>
             <button class="center-block  btn btn-default" type="button" name="button_login" id="button_login">Connexion</button>
           </form>
         </div>
+
+        <div id="login_error" class="row alert alert-danger hidden" role="alert"></div>
       </div>
       <!-- Fin connexion -->
 
@@ -109,8 +111,8 @@
 
             <div class="row">
               <div class="form-group col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-3">
-                <label for="inscription_birth_date">Date de naissance* <br/>(jj-mm-aaaa)</label><br/>
-                <input class="form-control" type="date" name="inscription_birth_date" id="inscription_birth_date" />
+                <label for="inscription_birth_date">Date de naissance* <br/>(mm-jj-aaaa)</label><br/>
+                <input class="form-control" type="text" name="inscription_birth_date" id="inscription_birth_date" placeholder="mm-jj-aaaa" />
               </div>
             </div>
 
@@ -132,9 +134,11 @@
                 <textarea class="form-control" name="inscription_description" id="inscription_description" form="form_inscription" rows="4" cols="30" placeholder="Description"></textarea>
               </div>
             </div>
-            <button class="center-block btn btn-default" type="submit" name="button_inscription">Inscription</button>
+            <button class="center-block btn btn-default" type="button" name="button_inscription" id="button_inscription">Inscription</button>
           </form>
         </div>
+
+        <div id="inscription_error" class="row alert alert-danger hidden" role="alert">Merci de renseigner toutes les informations suivies d'une étoile.</div>
       </div>
       <!-- Fin inscription -->
 
@@ -160,10 +164,6 @@
   <script type="text/javascript" src="scripts/jquery.min.js"></script>
   <script type="text/javascript" src="scripts/scripts_ajax.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script type="text/javascript">
-  document.getElementById("button_login").addEventListener("click", function() {
-    login(document.getElementsByName('connection_login')[0].value, document.getElementsByName('connection_password')[0].value);
-  }, false);
-  </script>
+  <script type="text/javascript" src="scripts/login.js"></script>
 </body>
 </html>

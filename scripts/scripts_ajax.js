@@ -11,7 +11,8 @@
   * @return {Json}
   */
 function login(user, pass) {
-  return ajaxRequest('POST', '/quoidneuf/api/authentication', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
+  console.log(ajaxRequest('POST', '/quoidneuf/api/authentication', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass }));
+  // return ajaxRequest('POST', '/quoidneuf/api/authentication', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
 }
 
 /**
@@ -128,34 +129,30 @@ function getSubscribersProfile(userId) {
 function ajaxRequest(type, url, contentType, dataType, data) {
   if((!contentType) && (!dataType) && (!data)) {
     // Requête sans envoie de données
-    $.ajax({
+    return $.ajax({
   		type : type,
   		url : url,
   		success : function(data, textStatus, jqXHR) {
   			// console.log(textStatus);
-        return data;
   		},
   		error : function(jqXHR, textStatus, errorThrown) {
   			// console.log('error: ' + textStatus);
-        return textStatus;
   		}
   	});
   }
   else {
     // Requête avec envoie de données
-    $.ajax({
+    return $.ajax({
   		type : type,
   		contentType : contentType,
   		url : url,
   		dataType : dataType,
   		data : data,
   		success : function(data, textStatus, jqXHR) {
-  			// console.log(textStatus);
-        return data;
+        // console.log(textStatus);
   		},
   		error : function(jqXHR, textStatus, errorThrown) {
   			// console.log('error: ' + textStatus);
-        return textStatus;
   		}
   	});
   }
