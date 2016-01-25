@@ -84,7 +84,7 @@ function writeMessage(discussionId, content) {
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 
 /**
-  * TODO : Implémenter et tester
+  * TODO : Tester
   * Retourne les informations d'un utilisateur
   *
   * @param {Number} userId - L'id de l'utilisateur

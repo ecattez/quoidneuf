@@ -77,7 +77,7 @@ function callBackLogin(jqXHR) {
     $("#login_error").removeClass('hidden');
     $("#login_error").removeClass('alert-danger');
     $("#login_error").addClass('alert-success');
-    window.location.href = 'all/discussion.jsp?id='+jqXHR.responseJSON.id;
+    window.location.href = 'all/profile.jsp';
   }
   else {
     $("#login_error").text("Une erreur est survenue, merci de réesayer ultérieurement.");
