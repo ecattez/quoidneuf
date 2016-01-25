@@ -1,4 +1,4 @@
-// TODO : @param / @return de JSon : décrire chaque élément de l'objet.
+// TODO : @param / @return de JSon/Object : décrire chaque élément de l'objet.
 
 // Login / Logout :
 
@@ -14,7 +14,6 @@ function login(user, pass) {
 }
 
 /**
-  * TODO : Compléter doc et tester
   * Déconnexion de l'utilisateur actuellement authentifié
   */
 function logout() {
@@ -25,7 +24,6 @@ function logout() {
 // Pour navbar : Récupérer les discussions et les amis
 
 /**
-  * TODO : Tester
   * Retourne toutes les discussions d'un utilisateur (id en session)
   */
 function getDiscussions() {
@@ -46,31 +44,27 @@ function getFriends(userId) {
 // Pour page discussion : Récupérer les membres et les messages, écrire un message
 
 /**
-  * TODO : Implémenter et tester
+  * TODO : Tester
   * Retourne les membres de la discussion
   *
   * @param {Number} discussionId - L'id de la discussion
   */
 function getMembers(discussionId) {
-  var data = ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetMembers', undefined, 'json', { id : discussionId });
-  // return data.subscribers; ?
-  console.log('A implémenter');
+  ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetMembers', undefined, 'json', { id : discussionId });
 }
 
 /**
-  * TODO : Implémenter et tester
+  * TODO : Tester
   * Retourne les messages de la discussion
   *
   * @param {Number} discussionId - L'id de la discussion
   */
 function getMessages(discussionId) {
-  var data = ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetMessages', undefined, 'json', { id : discussionId });
-  // return data.discussion; ?
-  console.log('A implémenter');
+  ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetMessages', undefined, 'json', { id : discussionId });
 }
 
 /**
-  * TODO : Implémenter et tester
+  * TODO : Tester
   * Ecrit un message dans une discussion (id utilisateur dans la session)
   *
   * @param {Number} discussionId - L'id de la discussion
@@ -98,7 +92,6 @@ function getSubscribersProfile(userId) {
 // Gabarits pour requêtes Ajax
 
 /**
-  * TODO : Tester
   * Template de requête Ajax
   *
   * @param {String} type - Le type de requête HTTP ('GET'/'POST'/'PUT'/'PUT'/'DELETE')
@@ -126,7 +119,7 @@ function ajaxRequest(type, url, fonction, contentType, dataType, data) {
   }
   else {
     // Requête avec envoie de données
-    return $.ajax({
+    $.ajax({
   		type : type,
   		contentType : contentType,
   		url : url,
@@ -142,6 +135,3 @@ function ajaxRequest(type, url, fonction, contentType, dataType, data) {
   	});
   }
 }
-
-//-----------------------------------------------
-// Pour les tests :

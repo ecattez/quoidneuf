@@ -76,7 +76,7 @@
 
       <!-- Profil -->
       <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 contents center_div img-rounded">
-        <h2>Profil de XXX</h2>
+        <h2>Profil de <span id="nom_utilisateur"></span></h2>
         <!-- Informations -->
         <div class="row">
           <h3>Informations</h3>
