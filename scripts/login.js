@@ -10,9 +10,7 @@ function initLoginPage() {
       $("#login_error").removeClass('hidden');
     }
     else {
-      var user = login(username, password);
-      // TODO : Trouver un moyen de le faire fonctionner
-      $("#login_error").addClass('hidden');
+      login(username, password);
     }
   }, false);
 
@@ -31,6 +29,7 @@ function initLoginPage() {
       $("#inscription_error").removeClass('hidden');
     }
     else {
+      // TODO : Une fois l'ajout d'utilisateur fonctionnel.
       $("#inscription_error").addClass('hidden');
     }
   }, false);
@@ -65,6 +64,30 @@ function checkRegistrationParameters(username, password, passwordCheck, firstnam
     || (birthdate == '') || (birthdate == undefined)
     || (mail == '') || (mail == undefined)
     || (phone == '') || (phone == undefined));
+}
+
+/**
+  * Méthode apppelée par la requête Ajax, redirige vers la page de profil si la connexion s'est bien effectuée
+  *
+  * @param {Object} jqXHR - L'objet renvoyé par la requête Ajax contenant toutes les informations sur cette dernière, dont sa réussite ou non
+  */
+function callBackLogin(jqXHR) {
+  if(jqXHR.status == 201) {
+    $("#login_error").text("Bonjour " + jqXHR.responseJSON.firstName + " !");
+    $("#login_error").removeClass('hidden');
+    $("#login_error").removeClass('alert-danger');
+    $("#login_error").addClass('alert-success');
+    window.location.href = 'all/discussion.jsp?id='+jqXHR.responseJSON.id;
+  }
+  else {
+    $("#login_error").text("Une erreur est survenue, merci de réesayer ultérieurement.");
+    $("#login_error").removeClass('hidden');
+  }
+}
+
+// A supprimer
+function callBackLogout(jqXHR) {
+  console.log(jqXHR.status == 204);
 }
 
 

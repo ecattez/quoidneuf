@@ -57,7 +57,7 @@
           <form class="form-connection col-sm-4 col-sm-offset-4 col-md-5 col-md-offset-3 col-lg-5 col-lg-offset-3" action="#" method="post" onSubmit="JavaScript:login()">
             <div class="form-group">
               <label for="connection_login">Login</label><br/>
-              <input class="form-control" type="text" name="connection_login" id="connection_login" placeholder="Login" value="ferrot" />
+              <input class="form-control" type="text" name="connection_login" id="connection_login" placeholder="Login" value="catteze" />
             </div>
             <div class="form-group">
               <label for="connection_password">Mot de passe</label><br>
