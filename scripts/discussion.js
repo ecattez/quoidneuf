@@ -18,6 +18,10 @@ function callBackGetMembers(jqXHR) {
   var membres = jqXHR.responseJSON.current_subscribers;
   for(var membre in membres) {
     //line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"+membres[membre].firstName + " " + membres[membre].lastName + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\"><button type=\"button\" name=\"button_add_friend"++"\">+</button></div></div></li>";
+    line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"
+    + membres[membre].firstName.substring(0,1) + "." + membres[membre].lastName
+    + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\">"
+    + "<button type=\"button\" name=\"button_add_friend"+  membres[membre].id +"\">+</button></div></div></li>"
     $("#discussion_membres").append(line);
   }
 }
