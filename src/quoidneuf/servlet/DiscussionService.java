@@ -37,7 +37,7 @@ public class DiscussionService extends JsonServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convert(req.getParameter("id"));
+		Integer discussionId = Matcher.convertInt(req.getParameter("id"));
 		
 		// L'utilisateur n'est pas connecté, il n'est pas autorisé à aller plus loin
 		if (userId == null) {
@@ -45,18 +45,12 @@ public class DiscussionService extends JsonServlet {
 		}
 		// Aucune discussion précisée, on récupère toutes les discussions de l'utilisateur
 		else if (discussionId == null) {
-			List<Discussion> discussions = discussionDao.getDiscussionsOf(userId);
-			if (discussions.size() == 0) {
-				res.sendError(HttpServletResponse.SC_NO_CONTENT);
-			}
-			else {
-				sendJson(res, discussions);
-			}
+			sendJson(res, discussionDao.getDiscussionsOf(userId));
 		}
 		// Au contraire, on charge la discussion et ses abonnés
 		else if (discussionDao.exist(discussionId)) {
 			if (!discussionDao.userExistIn(discussionId, userId)) {
-				res.sendError(HttpServletResponse.SC_FORBIDDEN);
+				sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
 			}
 			else {
 				Discussion discussion = discussionDao.getDiscussion(discussionId);
@@ -67,7 +61,7 @@ public class DiscussionService extends JsonServlet {
 		}
 		// Si la discussion n'existe pas, on renvoie 404
 		else {
-			res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
 		}
 	}
 
@@ -81,7 +75,7 @@ public class DiscussionService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		else if (Matcher.isEmpty(discussionName)) {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'name' manquant");
 		}
 		else {
 			int discussionId = discussionDao.insertDiscussion(discussionName);
@@ -101,20 +95,20 @@ public class DiscussionService extends JsonServlet {
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convert(req.getParameter("id"));
+		Integer discussionId = Matcher.convertInt(req.getParameter("id"));
 		String[] strUserIds = req.getParameterValues("users");
 		
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		else if (discussionId == null) {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'id' manquant");
 		}
 		else if (!discussionDao.exist(discussionId)) {
-			res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "discussion introuvable");
 		}
 		else if (!discussionDao.userExistIn(discussionId, userId)) {
-			res.sendError(HttpServletResponse.SC_FORBIDDEN);
+			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
 		}
 		else {
 			List<Integer> userIds = new ArrayList<>();
@@ -128,7 +122,7 @@ public class DiscussionService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
 			}
 		}
 	}
@@ -137,25 +131,25 @@ public class DiscussionService extends JsonServlet {
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convert(req.getParameter("id"));
+		Integer discussionId = Matcher.convertInt(req.getParameter("id"));
 		
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		else if (discussionId == null) {
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'id' manquant");
 		}
 		else if (!discussionDao.exist(discussionId)) {
-			res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "discussion introuvable");
 		}
 		else if (!discussionDao.userExistIn(discussionId, userId)) {
-			res.sendError(HttpServletResponse.SC_FORBIDDEN);
+			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
 		}
 		else if (discussionDao.removeUserFrom(discussionId, userId) > 0) {
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+			res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
 		}
 	}
 

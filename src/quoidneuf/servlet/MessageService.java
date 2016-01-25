@@ -33,7 +33,7 @@ public class MessageService extends JsonServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convert(req.getParameter("discussion"));
+		Integer discussionId = Matcher.convertInt(req.getParameter("discussion"));
 		String content = req.getParameter("content");
 		
 		if (userId == null) {

@@ -23,8 +23,7 @@ public class SubscriberDao extends Dao<Integer> {
 			String query = "SELECT 1 FROM subscriber WHERE subscriber_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
-			ResultSet rs = st.executeQuery();
-			return rs.next();
+			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
@@ -41,12 +40,12 @@ public class SubscriberDao extends Dao<Integer> {
 	 */
 	public Subscriber getByLogin(String login) {
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS _id, first_name, last_name FROM subscriber WHERE login = ?";
+			String query = "SELECT subscriber_id AS id, first_name, last_name FROM subscriber WHERE login = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, login);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return new Subscriber(rs.getInt("_id"), rs.getString("first_name"), rs.getString("last_name"));
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();

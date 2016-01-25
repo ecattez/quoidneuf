@@ -12,11 +12,18 @@ public final class Matcher {
 		return str != null && str.matches("[0-9]+");
 	}
 	
-	public static Integer convert(String str) {
+	public static Integer convertInt(String str) {
 		if (isDigits(str)) {
 			return Integer.parseInt(str);
 		}
 		return null;
+	}
+	
+	public static Boolean convertBoolean(String str) {
+		if (str == null) {
+			return null;
+		}
+		return Boolean.valueOf(str.toLowerCase());
 	}
 
 }

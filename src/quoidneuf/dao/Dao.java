@@ -17,7 +17,7 @@ public abstract class Dao<T> {
 	 * @throws	SQLException
 	 * 			erreur SQL
 	 */
-	public static Connection getConnection() throws NamingException, SQLException {
+	public Connection getConnection() throws NamingException, SQLException {
 		Context initCtx = new InitialContext();
 		Context envCtx = (Context) initCtx.lookup("java:comp/env");
 		DataSource ds = (DataSource) envCtx.lookup("qdnPool");

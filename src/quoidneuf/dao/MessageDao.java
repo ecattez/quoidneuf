@@ -15,8 +15,7 @@ public class MessageDao extends Dao<Integer> {
 			String query = "SELECT 1 FROM message WHERE message_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
-			ResultSet rs = st.executeQuery();
-			return rs.next();
+			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
