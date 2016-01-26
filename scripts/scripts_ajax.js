@@ -71,6 +71,7 @@ function getMessages(discussionId) {
   * @param {String} content - Le contenu du Message
   */
 function writeMessage(discussionId, content) {
+  console.log("C'est oui");
   ajaxRequest('POST', '/quoidneuf/api/messages', 'callBackWriteMessage', undefined, 'json', { discussion : discussionId, content : content });
 }
 
@@ -84,7 +85,7 @@ function writeMessage(discussionId, content) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getSubscribersProfile(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/profils', 'callBackGetSubscribersProfile', undefined, 'json', { id : userId });
+  ajaxRequest('GET', '/quoidneuf/api/profils', 'refreshMessages', undefined, 'json', { id : userId });
 }
 
 

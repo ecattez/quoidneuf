@@ -73,8 +73,8 @@
 
         <!-- Message à envoyer -->
         <div class="row">
-          <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11"><input type="text" class="form-control" placeholder="Message..."></div>
-          <button class="btn btn-default col-lg-1 col-md-1 col-sm-1 col-xs-1" type="button"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
+          <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11"><input type="text" class="form-control" placeholder="Message..." id="message_input"></input></div>
+          <button class="btn btn-default col-lg-1 col-md-1 col-sm-1 col-xs-1" type="button" id="send_message"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
         </div>
         <!-- Fin message à envoyer -->
       </div>
