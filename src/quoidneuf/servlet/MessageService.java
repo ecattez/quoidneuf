@@ -16,7 +16,7 @@ import quoidneuf.dao.MessageDao;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/messages")
-@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.NONE, rolesAllowed = {"user", "super-user", "admin"}))
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL, rolesAllowed = {"user", "super-user", "admin"}))
 public class MessageService extends JsonServlet {
 
 	private static final long serialVersionUID = 1733305686404777515L;
@@ -57,7 +57,7 @@ public class MessageService extends JsonServlet {
 				sendJson(HttpServletResponse.SC_CREATED, res, id);
 			}
 			else {
-				sendTicket(HttpServletResponse.SC_EXPECTATION_FAILED, res, "erreur lors de l'enregistrement du message");
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'enregistrement du message");
 			}
 		}
 	}

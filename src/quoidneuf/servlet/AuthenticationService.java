@@ -3,23 +3,33 @@ package quoidneuf.servlet;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import quoidneuf.dao.AuthenticationDao;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.entity.Subscriber;
+import quoidneuf.util.Matcher;
 
 @WebServlet("/api/authentication")
-public class Authentication extends JsonServlet {
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL))
+public class AuthenticationService extends JsonServlet {
+	
+	/* https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html */
 	
 	private static final long serialVersionUID = 7229118350560492306L;
 	
 	private SubscriberDao subscriberDao;
+	private AuthenticationDao authenticationDao;
 	
-	public Authentication() {
-		subscriberDao = new SubscriberDao();
+	public AuthenticationService() {
+		this.subscriberDao = new SubscriberDao();
+		this.authenticationDao = new AuthenticationDao();
 	}
 
 	/**
@@ -54,17 +64,38 @@ public class Authentication extends JsonServlet {
 	}
 	
 	/**
+	 * Modifie le mot de passe de l'utilisateur
+	 */
+	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		if (req.getUserPrincipal() == null) {
+			sendTicket(HttpServletResponse.SC_UNAUTHORIZED, res, "utilisateur non connecté");
+		}
+		else {
+			String password = req.getParameter("password");
+			if (Matcher.isEmpty(password)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'password' manquant");
+			}
+			else if (authenticationDao.changePassword(req.getRemoteUser(), password) > 0) {
+				res.sendError(HttpServletResponse.SC_NO_CONTENT);
+			}
+			else {
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+		}
+	}
+	
+	/**
 	 * Permet à un client de se déconnecter
 	 */
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (req.getUserPrincipal() != null) {
+		if (req.getUserPrincipal() == null) {
+			sendTicket(HttpServletResponse.SC_UNAUTHORIZED, res, "utilisateur non connecté");
+		}
+		else {
 			HttpSession session = req.getSession();
 			session.invalidate();
 			req.logout();
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
-		}
-		else {
-			sendTicket(HttpServletResponse.SC_UNAUTHORIZED, res, "utilisateur non connecté");
 		}
 	}
 

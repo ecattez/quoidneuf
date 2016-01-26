@@ -31,6 +31,29 @@ public class SubscriberDao extends Dao<Integer> {
 	}
 	
 	/**
+	 * Récupère un abonné à partir de son identifiant d'utilisateur
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * 
+	 * @return	une instance de Subscriber, null sinon
+	 */
+	public Subscriber getById(int userId) {
+		try (Connection con = getConnection()) {
+			String query = "SELECT subscriber_id AS id, first_name, last_name FROM subscriber WHERE subscriber_id = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setInt(1, userId);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * Récupère un abonné à partir de ses identifiants d'authentification
 	 * 
 	 * @param	login

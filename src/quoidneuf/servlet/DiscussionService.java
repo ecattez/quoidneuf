@@ -20,7 +20,7 @@ import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/discussions")
-@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.NONE, rolesAllowed = {"user", "super-user", "admin"}))
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL, rolesAllowed = {"user", "super-user", "admin"}))
 public class DiscussionService extends JsonServlet {
 	
 	private static final long serialVersionUID = 5334642516196786048L;
@@ -80,7 +80,7 @@ public class DiscussionService extends JsonServlet {
 		else {
 			int discussionId = discussionDao.insertDiscussion(discussionName);
 			if (discussionId == -1) {
-				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
 			else if (discussionDao.insertUserIn(discussionId, userId) > 0) {					
 				sendJson(HttpServletResponse.SC_CREATED, res, discussionId);
@@ -122,7 +122,7 @@ public class DiscussionService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
 		}
 	}
@@ -149,7 +149,7 @@ public class DiscussionService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 

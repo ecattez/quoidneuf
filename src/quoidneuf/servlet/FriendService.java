@@ -16,7 +16,7 @@ import quoidneuf.dao.SubscriberDao;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/friends")
-@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.NONE, rolesAllowed = {"user", "super-user", "admin"}))
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL, rolesAllowed = {"user", "super-user", "admin"}))
 public class FriendService extends JsonServlet {
 	
 	private static final long serialVersionUID = -7109249752388549689L;
@@ -71,7 +71,7 @@ public class FriendService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_CREATED, res, "demande d'ajout créée");
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class FriendService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
 		}
 		else {
