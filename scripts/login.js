@@ -81,6 +81,7 @@ function callBackLogin(jqXHR) {
   }
   else {
     $("#login_error").text("Une erreur est survenue, merci de réesayer ultérieurement.");
+    // $("#login_error").text(jqXHR.status);
     $("#login_error").removeClass('hidden');
   }
 }

@@ -61,7 +61,7 @@
             </div>
             <div class="form-group">
               <label for="connection_password">Mot de passe</label><br>
-              <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" value="toto"/>
+              <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" value="coyote"/>
             </div>
             <button class="center-block  btn btn-default" type="button" name="button_login" id="button_login">Connexion</button>
           </form>
