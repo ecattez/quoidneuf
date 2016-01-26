@@ -190,11 +190,7 @@ public class DiscussionDao extends Dao<Integer> {
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			st.setInt(2, id);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -218,11 +214,7 @@ public class DiscussionDao extends Dao<Integer> {
 			st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			st.setInt(2, id);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -248,11 +240,7 @@ public class DiscussionDao extends Dao<Integer> {
 				st = con.prepareStatement(query);
 				st.setInt(1, userId);
 				st.setInt(2, id);
-				try {
-					i += st.executeUpdate();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				i += st.executeUpdate();
 			}
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();

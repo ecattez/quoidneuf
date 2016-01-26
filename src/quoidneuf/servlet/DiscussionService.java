@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.DiscussionDao;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.entity.Discussion;
@@ -29,8 +30,8 @@ public class DiscussionService extends JsonServlet {
 	private SubscriberDao subscriberDao;
 	
 	public DiscussionService() {
-		this.discussionDao = new DiscussionDao();
-		this.subscriberDao = new SubscriberDao();
+		this.discussionDao = DaoProvider.getDao(DiscussionDao.class);
+		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
 	}
 
 	/** Récupérer une discussion */

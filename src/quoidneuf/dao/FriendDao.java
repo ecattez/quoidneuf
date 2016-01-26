@@ -51,11 +51,7 @@ public class FriendDao extends Dao<Integer> {
 			st.setInt(1, sort[0]);
 			st.setInt(2, sort[1]);
 			st.setBoolean(3, status);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
@@ -71,11 +67,7 @@ public class FriendDao extends Dao<Integer> {
 			st.setBoolean(1, status);
 			st.setInt(2, sort[0]);
 			st.setInt(3, sort[1]);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
@@ -90,11 +82,7 @@ public class FriendDao extends Dao<Integer> {
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, sort[0]);
 			st.setInt(2, sort[1]);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,6 @@
 package quoidneuf.dao;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -8,7 +9,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public abstract class Dao<T> {
+public abstract class Dao<T extends Serializable> {
 	
 	/**
 	 * @return	retourne une connexion à la base de données via le pool de connexion

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.FriendDao;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.util.Matcher;
@@ -25,8 +26,8 @@ public class FriendService extends JsonServlet {
 	private SubscriberDao subscriberDao;
 	
 	public FriendService() {
-		this.friendDao = new FriendDao();
-		this.subscriberDao = new SubscriberDao();
+		this.friendDao = DaoProvider.getDao(FriendDao.class);
+		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
 	}
 	
 	/** Récupérer la liste des amis ou les demandes d'ajouts */

@@ -15,21 +15,64 @@ import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import quoidneuf.dao.AuthenticationDao;
+import quoidneuf.dao.DaoProvider;
+import quoidneuf.dao.SubscriberDao;
+
 @WebServlet("/api/recover")
 @ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL))
-public class RecoverService extends HttpServlet {
+public class RecoverService extends JsonServlet {
 
 	private static final long serialVersionUID = -7213105238757666032L;
 	
+	private AuthenticationDao authenticationDao;
+	private SubscriberDao subscriberDao;
+	
+	public RecoverService() {
+		this.authenticationDao = DaoProvider.getDao(AuthenticationDao.class);
+		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
+	}
+	
 	/** Demande de récupération de mot de passe */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Context initCtx;
+		String login = req.getParameter("login");
+		String email = req.getParameter("email");
+		
+		if (login == null) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "login manquant");
+		}
+		else if (email == null) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "email manquant");	
+		}
+		else if (subscriberDao.exist(login, email)) {
+			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "login ou email incorrect");
+		}
+		else {
+			String password = authenticationDao.resetPassword(login);
+			if (sendMessage(login, password)) {
+				sendTicket(HttpServletResponse.SC_CREATED, res, "email envoyé à l'adresse " + email);
+			}
+			else {
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'envoie du mail à l'adresse " + email);
+			}
+		}		
+	}
+	
+	private boolean sendMessage(String login, String password) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<h1>Bonjour Thomas</h1>");
+		builder.append("<p>Tu as demandé à réinitialiser ton mot de passe, voici donc tes nouveaux identifiants:</p>");
+		builder.append("<ul><li>Login: " + login + "</li>");
+		builder.append("<li>Password: " + password + "</li></ul>");
+		builder.append("<p>Nous te conseillons de changer de mot de passe dès que tu te seras connecté sur Quoidneuf</p>");
+		builder.append("<hr>");
+		builder.append("<b>Merci de ta fidélité - Team Quoidneuf</b>");
+		
 		try {
-			initCtx = new InitialContext();
+			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 			javax.mail.Session sess = (javax.mail.Session) envCtx.lookup("mail/Session");
 			Message message = new MimeMessage(sess);
@@ -38,13 +81,14 @@ public class RecoverService extends HttpServlet {
 			to[0] = new InternetAddress("t.ferro184@gmail.com");
 			message.setRecipients(Message.RecipientType.TO, to);
 			message.setSubject("[Quoidneuf] Réinitialisation de mot de passe");
-			message.setContent("Bonjour Thomas", "text/plain");
+			message.setContent(builder.toString(), "text/html");
 			Transport.send(message);
-			res.setStatus(HttpServletResponse.SC_CREATED);
+			return true;
 		} catch (NamingException | MessagingException e) {
 			e.printStackTrace();
-			res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+		
+		return false;
 	}
 
 }

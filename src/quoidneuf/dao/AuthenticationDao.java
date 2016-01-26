@@ -5,24 +5,12 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Random;
 
 import javax.naming.NamingException;
 
 public class AuthenticationDao extends Dao<String> {
 
-	@Override
-	public boolean exist(String id) {
-		try (Connection con = getConnection()) {
-			String query = "SELECT 1 FROM credential WHERE login = ?";
-			PreparedStatement st = con.prepareStatement(query);
-			st.setString(1, id);
-			return st.executeQuery().next();
-		} catch (SQLException | NamingException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
 	/* Hash un mot de passe en clair avec MD5 */
 	private String encode(String password) {
 		byte[] unique = password.getBytes();
@@ -49,6 +37,26 @@ public class AuthenticationDao extends Dao<String> {
 	}
 	
 	/**
+	 * @return	un mot de passe généré aléatoirement à 8 caractères
+	 */
+	private String randomPassword() {
+		return encode(String.valueOf(new Random().nextInt())).substring(0, 8);
+	}
+	
+	@Override
+	public boolean exist(String id) {
+		try (Connection con = getConnection()) {
+			String query = "SELECT 1 FROM credential WHERE login = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, id);
+			return st.executeQuery().next();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
 	 * 
 	 * @param login
 	 * @param password
@@ -60,16 +68,28 @@ public class AuthenticationDao extends Dao<String> {
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, encode(password));
 			st.setString(2, login);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
 		return -1;
 		
+	}
+	
+	public String resetPassword(String login) {
+		try (Connection con = getConnection()) {
+			String query = "UPDATE credential SET password_hash = ? WHERE login = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			String password = randomPassword();
+			st.setString(1, encode(password));
+			st.setString(2, login);
+			if (st.executeUpdate() > 0) {
+				return password;
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 }

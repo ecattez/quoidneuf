@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import quoidneuf.dao.AuthenticationDao;
+import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
@@ -28,8 +29,8 @@ public class AuthenticationService extends JsonServlet {
 	private AuthenticationDao authenticationDao;
 	
 	public AuthenticationService() {
-		this.subscriberDao = new SubscriberDao();
-		this.authenticationDao = new AuthenticationDao();
+		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
+		this.authenticationDao = DaoProvider.getDao(AuthenticationDao.class);
 	}
 
 	/**

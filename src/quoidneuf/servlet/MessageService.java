@@ -5,12 +5,13 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.DiscussionDao;
 import quoidneuf.dao.MessageDao;
 import quoidneuf.util.Matcher;
@@ -25,8 +26,8 @@ public class MessageService extends JsonServlet {
 	private MessageDao messageDao;
 	
 	public MessageService() {
-		discussionDao = new DiscussionDao();
-		messageDao = new MessageDao();
+		this.discussionDao = DaoProvider.getDao(DiscussionDao.class);
+		this.messageDao = DaoProvider.getDao(MessageDao.class);
 	}
 	
 	/** Ecrire un message dans une discussion */

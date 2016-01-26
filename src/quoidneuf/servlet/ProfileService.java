@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.dao.SubscriberMetaDao;
 import quoidneuf.entity.Subscriber;
@@ -27,8 +28,8 @@ public class ProfileService extends JsonServlet {
 	private SubscriberMetaDao subscriberMetaDao;
 	
 	public ProfileService() {
-		this.subscriberDao = new SubscriberDao();
-		this.subscriberMetaDao = new SubscriberMetaDao();
+		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
+		this.subscriberMetaDao = DaoProvider.getDao(SubscriberMetaDao.class);
 	}
 	
 	/** Récupérer un profil */

@@ -30,6 +30,19 @@ public class SubscriberDao extends Dao<Integer> {
 		return false;
 	}
 	
+	public boolean exist(String login, String email) {
+		try (Connection con = getConnection()) {
+			String query = "SELECT 1 FROM subscriber WHERE login = ? AND subscriber_id = (SELECT subscriber_id FROM subscriber_meta WHERE email = ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			st.setString(2, email);
+			return st.executeQuery().next();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	/**
 	 * Récupère un abonné à partir de son identifiant d'utilisateur
 	 * 
@@ -124,5 +137,24 @@ public class SubscriberDao extends Dao<Integer> {
 		return ids;
 	}
 	
+	/**
+	 * Supprime un utilisateur de la base
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * 
+	 * @return	un entier positif si la suppression a fonctionnée
+	 */
+	public int remove(int userId) {
+		try (Connection con = getConnection()) {
+			String query = "DELETE FROM credential WHERE login = (SELECT login FROM subscriber WHERE subscriber_id = ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setInt(1, userId);
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 
 }
