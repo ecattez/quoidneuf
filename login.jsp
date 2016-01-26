@@ -165,5 +165,6 @@
   <script type="text/javascript" src="scripts/scripts_ajax.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script type="text/javascript" src="scripts/login.js"></script>
+  <script type="text/javascript">initLoginPage(${user});</script>
 </body>
 </html>

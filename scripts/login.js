@@ -1,7 +1,14 @@
 /**
   * Ajoute les EventListeners aux boutons
   */
-function initLoginPage() {
+function initLoginPage(uid) {
+  if(uid != null) {
+    $("#login_error").text("Utilisateur déjà authentifié, redirection vers la page de profile...");
+    $("#login_error").removeClass('hidden');
+    $("#login_error").removeClass('alert-danger');
+    $("#login_error").addClass('alert-success');
+    window.location.href = 'all/profile.jsp';
+  }
   document.getElementById("button_login").addEventListener("click", function() {
     var username = document.getElementsByName('connection_login')[0].value;
     var password = document.getElementsByName('connection_password')[0].value;
@@ -90,6 +97,3 @@ function callBackLogin(jqXHR) {
 function callBackLogout(jqXHR) {
   console.log(jqXHR.status == 204);
 }
-
-
-initLoginPage();
