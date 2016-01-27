@@ -62,7 +62,7 @@ public class DiscussionService extends JsonServlet {
 		}
 		// Si la discussion n'existe pas, on renvoie 404
 		else {
-			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
+			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "discussion non trouvée");
 		}
 	}
 
@@ -87,7 +87,7 @@ public class DiscussionService extends JsonServlet {
 				sendJson(HttpServletResponse.SC_CREATED, res, discussionId);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_EXPECTATION_FAILED);
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
 		}
 	}

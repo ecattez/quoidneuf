@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.dao.SubscriberMetaDao;
@@ -42,9 +44,9 @@ public class ProfileService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		else if (profilId == null) {
-			sendTicket(HttpServletResponse.SC_BAD_GATEWAY, res, "paramètre 'id' manquant");
+			profilId = userId;
 		}
-		else if (!subscriberDao.exist(profilId)) {
+		if (!subscriberDao.exist(profilId)) {
 			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "utilisateur " + profilId + " inexistant");
 		}
 		else {
@@ -65,8 +67,42 @@ public class ProfileService extends JsonServlet {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
 		
+		String picture = req.getParameter("picture");
+		String description = req.getParameter("description");
+		String email = req.getParameter("email");
+		String phone = req.getParameter("phone");
+		
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		else if (Matcher.isEmpty(email)) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email non spécifiée");
+		}
+		else if (!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email incorrecte");
+		}
+		else if (!Matcher.isEmpty(phone) && phone.matches("[0-9]{10}")) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "numéro de téléphone incorrect");
+		}
+		else {
+			if (!Matcher.isEmpty(description)) {
+				description = StringEscapeUtils.escapeHtml4(description);
+			}
+			SubscriberMeta meta = new SubscriberMeta();
+			meta.setPictureUri(picture);
+			meta.setDescription(description);
+			meta.setEmail(email);
+			meta.setPhone(phone);
+			int update = subscriberMetaDao.updateFromSubscriber(userId, meta);
+			if (update > 0) {
+				res.sendError(HttpServletResponse.SC_NO_CONTENT);
+			}
+			else if (update == 0) {
+				res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+			}
+			else {				
+				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
 		}
 	}
 	

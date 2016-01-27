@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class DaoProvider {
 	
-	public static DaoProvider daoProvider;
+	private static DaoProvider daoProvider;
 	
 	public static <T extends Dao<?>> T getDao(Class<T> clazz) {
 		if (daoProvider == null) {

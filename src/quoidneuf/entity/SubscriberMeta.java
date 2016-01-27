@@ -27,6 +27,9 @@ public class SubscriberMeta extends Jsonable {
 	}
 
 	public String getDescription() {
+		if (description == null) {
+			description = "";
+		}
 		return description;
 	}
 
@@ -35,6 +38,9 @@ public class SubscriberMeta extends Jsonable {
 	}
 
 	public String getEmail() {
+		if (email == null) {
+			email = "";
+		}
 		return email;
 	}
 
@@ -43,6 +49,9 @@ public class SubscriberMeta extends Jsonable {
 	}
 
 	public String getPhone() {
+		if (phone == null) {
+			phone = "";
+		}
 		return phone;
 	}
 

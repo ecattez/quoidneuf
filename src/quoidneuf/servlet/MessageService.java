@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.DiscussionDao;
 import quoidneuf.dao.MessageDao;
@@ -53,7 +55,7 @@ public class MessageService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "utilisateur interdit dans la discussion");
 		}
 		else {
-			int id = messageDao.insertMessage(discussionId, userId, content);
+			int id = messageDao.insertMessage(discussionId, userId, StringEscapeUtils.escapeHtml4(content));
 			if (id > 0) {
 				sendJson(HttpServletResponse.SC_CREATED, res, id);
 			}

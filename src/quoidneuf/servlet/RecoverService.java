@@ -47,12 +47,13 @@ public class RecoverService extends JsonServlet {
 		else if (email == null) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "email manquant");	
 		}
-		else if (subscriberDao.exist(login, email)) {
+		else if (!subscriberDao.exist(login, email)) {
 			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "login ou email incorrect");
 		}
 		else {
 			String password = authenticationDao.resetPassword(login);
-			if (sendMessage(login, password)) {
+			String firstname = subscriberDao.getByLogin(login).getFirstName();
+			if (sendMessage(firstname, login, password, email)) {
 				sendTicket(HttpServletResponse.SC_CREATED, res, "email envoyé à l'adresse " + email);
 			}
 			else {
@@ -61,9 +62,9 @@ public class RecoverService extends JsonServlet {
 		}		
 	}
 	
-	private boolean sendMessage(String login, String password) {
+	private boolean sendMessage(String firstname, String login, String password, String email) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("<h1>Bonjour Thomas</h1>");
+		builder.append("<h1>Bonjour " + firstname + "</h1>");
 		builder.append("<p>Tu as demandé à réinitialiser ton mot de passe, voici donc tes nouveaux identifiants:</p>");
 		builder.append("<ul><li>Login: " + login + "</li>");
 		builder.append("<li>Password: " + password + "</li></ul>");
@@ -78,7 +79,7 @@ public class RecoverService extends JsonServlet {
 			Message message = new MimeMessage(sess);
 			message.setFrom(new InternetAddress("edouard.cattez@sfr.fr"));
 			InternetAddress to[] = new InternetAddress[1];
-			to[0] = new InternetAddress("t.ferro184@gmail.com");
+			to[0] = new InternetAddress(email);
 			message.setRecipients(Message.RecipientType.TO, to);
 			message.setSubject("[Quoidneuf] Réinitialisation de mot de passe");
 			message.setContent(builder.toString(), "text/html");
