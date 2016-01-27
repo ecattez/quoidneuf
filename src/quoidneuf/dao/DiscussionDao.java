@@ -16,16 +16,16 @@ import quoidneuf.entity.Subscriber;
 /**
  * DAO des discussions.
  */
-public class DiscussionDao extends Dao<Integer> {
+public class DiscussionDao extends Dao<String> {
 
 	public DiscussionDao() {}
 	
 	@Override
-	public boolean exist(Integer id) {
+	public boolean exist(String id) {
 		try (Connection con = getConnection()) {
 			String query = "SELECT 1 FROM discussion WHERE discussion_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, id);
+			st.setString(1, id);
 			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -43,11 +43,11 @@ public class DiscussionDao extends Dao<Integer> {
 	 * 
 	 * @return	<true> si l'utilisateur existe dans la discussion, <false> sinon
 	 */
-	public boolean userExistIn(int id, int userId) {
+	public boolean userExistIn(String id, int userId) {
 		try (Connection con = getConnection()) {
 			String query = "SELECT 1 FROM belong_to WHERE discussion_id = ? AND subscriber_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, id);
+			st.setString(1, id);
 			st.setInt(2, userId);
 			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
@@ -64,18 +64,16 @@ public class DiscussionDao extends Dao<Integer> {
 	 * 
 	 * @return	une instance de Discussion, null sinon
 	 */
-	public Discussion getDiscussion(int id) {
+	public Discussion getDiscussion(String id) {
 		Discussion discussion = null;
 		try (Connection con = getConnection()) {
 			String query = "SELECT * FROM subscriber_message_discussion WHERE _to = ? LIMIT 100";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, id);
+			st.setString(1, id);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				if (discussion == null) {
-					discussion = new Discussion();
-					discussion.setId(rs.getInt("_to"));
-					discussion.setName(rs.getString("_name"));
+					discussion = new Discussion(rs.getString("_to"), rs.getString("_name"));
 				}
 				if (rs.getTimestamp("_date") != null) {
 					Message m = new Message();
@@ -108,7 +106,7 @@ public class DiscussionDao extends Dao<Integer> {
 			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
-				discussions.add(new Discussion(rs.getInt("_to"), rs.getString("_name")));
+				discussions.add(new Discussion(rs.getString("_to"), rs.getString("_name")));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -124,19 +122,19 @@ public class DiscussionDao extends Dao<Integer> {
 	 * 
 	 * @return	la liste des abonnés présents dans une discussion
 	 */
-	public List<Subscriber> getSubscribersOf(int id) {
+	public List<Subscriber> getSubscribersOf(String id) {
 		List<Subscriber> subscribers = new ArrayList<>();
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS _from, first_name AS _first_name, last_name AS _last_name"
+			String query = "SELECT subscriber_id AS _from, first_name, last_name"
 					+ " FROM subscriber WHERE subscriber_id IN (SELECT subscriber_id FROM belong_to WHERE discussion_id = ?)";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, id);
+			st.setString(1, id);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				Subscriber s = new Subscriber();
 				s.setId(rs.getInt("_from"));
-				s.setFirstName(rs.getString("_first_name"));
-				s.setLastName(rs.getString("_last_name"));
+				s.setFirstName(rs.getString("first_name"));
+				s.setLastName(rs.getString("last_name"));
 				subscribers.add(s);
 			}
 		} catch (SQLException | NamingException e) {
@@ -151,23 +149,15 @@ public class DiscussionDao extends Dao<Integer> {
 	 * @param	name
 	 * 			le nom de la discussion
 	 * 
-	 * @return	l'id de la discussion crée, -1 sinon
+	 * @return	un entier positif si la discussion a bien été créée, -1 sinon
 	 */
-	public int insertDiscussion(String name) {
+	public int insertDiscussion(String id, String name) {
 		try (Connection con = getConnection()) {
-			// Création de la discussion
-			String query = "INSERT INTO discussion (discussion_name) VALUES (?)";
+			String query = "INSERT INTO discussion (discussion_id, discussion_name) VALUES (?, ?)";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setString(1, name);
-			st.executeUpdate();
-			
-			// On récupère l'id de la discussion insérée
-			query = "SELECT MAX(discussion_id) AS _to FROM discussion";
-			st = con.prepareStatement(query);
-			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return rs.getInt(0);
-			}
+			st.setString(1, id);
+			st.setString(2, name);
+			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -184,12 +174,12 @@ public class DiscussionDao extends Dao<Integer> {
 	 * 
 	 * @return	un entier positif en cas de succès, -1 sinon
 	 */
-	public int removeUserFrom(int id, int userId) {
+	public int removeUserFrom(String id, int userId) {
 		try (Connection con = getConnection()) {
 			String query = "DELETE FROM belong_to WHERE subscriber_id = ? AND discussion_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
-			st.setInt(2, id);
+			st.setString(2, id);
 			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
@@ -207,13 +197,13 @@ public class DiscussionDao extends Dao<Integer> {
 	 * 
 	 * @return	un entier positif en cas de succès, -1 sinon
 	 */
-	public int insertUserIn(int id, int userId) {
+	public int insertUserIn(String id, int userId) {
 		try (Connection con = getConnection()) {
 			String query = "INSERT INTO belong_to VALUES (?,?)";
 			PreparedStatement st;
 			st = con.prepareStatement(query);
 			st.setInt(1, userId);
-			st.setInt(2, id);
+			st.setString(2, id);
 			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
@@ -231,7 +221,7 @@ public class DiscussionDao extends Dao<Integer> {
 	 * 
 	 * @return	le nombre d'utilisateurs ajoutés à la discussion
 	 */
-	public int insertUsersIn(int id, List<Integer> usersIds) {
+	public int insertUsersIn(String id, List<Integer> usersIds) {
 		int i = 0;
 		try (Connection con = getConnection()) {
 			String query = "INSERT INTO belong_to VALUES (?,?)";
@@ -239,7 +229,7 @@ public class DiscussionDao extends Dao<Integer> {
 			for (int userId : usersIds) {
 				st = con.prepareStatement(query);
 				st.setInt(1, userId);
-				st.setInt(2, id);
+				st.setString(2, id);
 				i += st.executeUpdate();
 			}
 		} catch (NamingException | SQLException e) {
