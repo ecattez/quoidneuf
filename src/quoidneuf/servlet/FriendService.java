@@ -34,6 +34,7 @@ public class FriendService extends JsonServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
+		Integer profilId = Matcher.convertInt(req.getParameter("id"));
 		Boolean status = Matcher.convertBoolean(req.getParameter("status"));
 		
 		if (userId == null) {
@@ -43,7 +44,10 @@ public class FriendService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "status manquant");
 		}
 		else {
-			sendJson(res, friendDao.getLinkedWith(userId, status));
+			if (profilId == null) {
+				profilId = userId;
+			}
+			sendJson(res, friendDao.getLinkedWith(profilId, status));
 		}
 	}
 	
