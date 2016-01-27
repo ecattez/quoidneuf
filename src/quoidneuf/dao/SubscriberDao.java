@@ -1,6 +1,5 @@
 package quoidneuf.dao;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -124,10 +123,20 @@ public class SubscriberDao extends Dao<Integer> {
 	public List<Integer> correctIds(List<Integer> userIds) {
 		List<Integer> ids = new ArrayList<>();
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id FROM subscriber WHERE subscriber_id IN (?)";
+			String query = "SELECT subscriber_id FROM subscriber WHERE subscriber_id IN";
+			String s = "";
+			int size = userIds.size();
+			for (int i=0; i < size; i++) {
+				s += "?";
+				if (i < size - 1) {
+					s += ",";
+				}
+			}
+			query += "(" + s + ")";
 			PreparedStatement st = con.prepareStatement(query);
-			Array array = con.createArrayOf("integer", userIds.toArray());
-			st.setArray(1, array);
+			for (int i=1; i <= size; i++) {
+				st.setInt(i, userIds.get(i-1));
+			}
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				ids.add(rs.getInt(1));
