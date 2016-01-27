@@ -40,6 +40,22 @@ function initLoginPage(uid) {
       $("#inscription_error").addClass('hidden');
     }
   }, false);
+
+  document.getElementById("button_reset_password").addEventListener("click", function() {
+    var login = $("#modal_login").val();
+    var email = $("#modal_email").val();
+
+    if(!checkResetParameters(login, email)) {
+      $("#reset_error").removeClass('hidden');
+    }
+    else {
+      $("#reset_error").text("Vérification de vos données...");
+      $("#reset_error").removeClass('hidden');
+      $("#reset_error").removeClass('alert-danger');
+      $("#reset_error").addClass('alert-success');
+      //TODO : Envoyer req reset mdp
+    }
+  }, false);
 }
 
 /**
@@ -74,9 +90,20 @@ function checkRegistrationParameters(username, password, passwordCheck, firstnam
 }
 
 /**
+  * Vérifie la présence de tous les champs de réinitialisation de mot de passe
+  *
+  * @param {String} Les champs de réinitialisation du mot de passe
+  *
+  * @return {Boolean} <true> Si tous les champs sont valides, <false> sinon
+  */
+function checkResetParameters(login, email) {
+  return !((login == '') || (login == undefined) || (email == '') || (email == undefined));
+}
+
+/**
   * Méthode apppelée par la requête Ajax, redirige vers la page de profil si la connexion s'est bien effectuée
   *
-  * @param {Object} jqXHR - L'objet renvoyé par la requête Ajax contenant toutes les informations sur cette dernière, dont sa réussite ou non
+  * @param {Object} data - L'objet renvoyé par la requête Ajax contenant des infos sur l'utilisateur ou un code d'erreur et un message
   */
 function callBackLogin(jqXHR) {
   if(jqXHR.status == 201) {

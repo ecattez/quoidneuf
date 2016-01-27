@@ -50,11 +50,21 @@ function callBackGetMessages(jqXHR) {
     date = formeDate(jqXHR.responseJSON.messages[mess].writtenDate);
     user = jqXHR.responseJSON.messages[mess].subscriber.firstName + "." +jqXHR.responseJSON.messages[mess].subscriber.lastName.substring(0,1);
     content = jqXHR.responseJSON.messages[mess].content;
-    $("#messages").prepend(user + " \t[" + date + "] : \t" + content + "\n");
+    $("#messages").append(user + " \t[" + date + "] : \t" + content + "\n");
   }
   nbMessages = jqXHR.responseJSON.messages.length;
 }
 
+/**
+  *
+  */
+function callBackWriteMessage(jqXHR) {
+  refreshMessages();
+}
+
+/**
+  * Mise en forme de la date au format YYYY-MM-DD hh:mm:ss
+  */
 function formeDate(date) {
   d = new Date(date);
   year = "" + d.getFullYear();
@@ -70,7 +80,7 @@ function formeDate(date) {
   * Ajoute les nouveaux messages à la suite de la discussion
   */
 function refreshMessages() {
-
+  getMessages(discussionId);
 }
 
 /**

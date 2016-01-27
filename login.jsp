@@ -63,14 +63,44 @@
               <label for="connection_password">Mot de passe</label><br>
               <input class="form-control" type="password" name="connection_password" id="connection_password" placeholder="Mot de passe" value="coyote"/>
             </div>
-            <button class="center-block  btn btn-default" type="button" name="button_login" id="button_login">Connexion</button>
+            <button class="center-block btn btn-default" type="button" name="button_login" id="button_login">Connexion</button>
           </form>
         </div>
+
+        <a data-toggle="modal" data-target="#modal_mdp_oublie" class="row">Mot de passe oublié ?</a>
 
         <div id="login_error" class="row alert alert-danger hidden" role="alert"></div>
       </div>
       <!-- Fin connexion -->
 
+
+      <!-- Fenetre modale "Mot de passe oublié" -->
+
+      <div class="modal fade" tabindex="-1" role="dialog" id="modal_mdp_oublie">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Formulaire réinitialisation de mot de passe</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+              <label for="modal_login">Login :</label><br/>
+              <input type="text" placeholder="Login" id="modal_login"></input><br/>
+              <label for="modal_email">E-mail :</label><br/>
+              <input type="text" placeholder="E-mail" id="modal_email"></input><br/>
+              <div id="reset_error" class="alert alert-danger hidden" role="alert">Merci d'indiquer votre login et votre adresse E-Mail</div>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+              <button type="button" class="btn btn-primary" id="button_reset_password">Envoyer mail de récupération</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+      <!-- Fin fenetre modale "Mot de passe oublié" -->
 
       <!-- Inscription -->
       <div class="col-lg-6 col-md-6 col-lg-offset-1 col-md-offset-1 contents img-rounded center_div">

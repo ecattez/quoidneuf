@@ -54,7 +54,6 @@ function getMembers(discussionId) {
 }
 
 /**
-  * TODO : Tester
   * Retourne les messages de la discussion
   *
   * @param {Number} discussionId - L'id de la discussion
@@ -71,7 +70,6 @@ function getMessages(discussionId) {
   * @param {String} content - Le contenu du Message
   */
 function writeMessage(discussionId, content) {
-  console.log("C'est oui");
   ajaxRequest('POST', '/quoidneuf/api/messages', 'callBackWriteMessage', undefined, 'json', { discussion : discussionId, content : content });
 }
 
@@ -109,10 +107,11 @@ function ajaxRequest(type, url, fonction, contentType, dataType, data) {
   		type : type,
   		url : url,
   		success : function(data, textStatus, jqXHR) {
-  			// console.log(textStatus);
+  			// console.log(data);
         window[fonction](jqXHR);
   		},
   		error : function(jqXHR, textStatus, errorThrown) {
+  			// console.log(data);
   			// console.log('error: ' + textStatus);
         window[fonction](jqXHR);
   		}
@@ -127,9 +126,11 @@ function ajaxRequest(type, url, fonction, contentType, dataType, data) {
   		dataType : dataType,
   		data : data,
   		success : function(data, textStatus, jqXHR) {
+  			// console.log(data);
         window[fonction](jqXHR);
   		},
   		error : function(jqXHR, textStatus, errorThrown) {
+  			// console.log(data);
   			// console.log('error: ' + textStatus);
         window[fonction](jqXHR);
   		}
