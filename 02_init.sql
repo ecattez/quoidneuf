@@ -42,18 +42,6 @@ INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) 
 INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (9,'picturepath', 'Description test', '9@mail.com', '9999999999');
 INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (10,'picturepath', 'Description test', '10@mail.com', '1010101010');
 
--- Discussion :
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 1');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 2');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 3');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 4');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 5');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 6');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 7');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 8');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 9');
-INSERT INTO discussion (discussion_name) VALUES ('Nom de la discussion 10');
-
 -- Friend_with :
 INSERT INTO friend_with VALUES (1, 2);
 INSERT INTO friend_with VALUES (1, 3);
@@ -75,6 +63,18 @@ INSERT INTO friend_with VALUES (2, 10);
 INSERT INTO friend_with VALUES (3, 4);
 INSERT INTO friend_with VALUES (3, 5);
 INSERT INTO friend_with VALUES (3, 6);
+
+-- Discussion :
+INSERT INTO discussion VALUES ('63d92b1e-c145-4e64-bd3a-e2a24d135d41', 'Nom de la discussion 1');
+INSERT INTO discussion VALUES ('6783a5e5-27fe-4412-ba97-dc8d775891ac', 'Nom de la discussion 2');
+INSERT INTO discussion VALUES ('352213d8-cec6-4ab6-9c41-815b5294d9af', 'Nom de la discussion 3');
+INSERT INTO discussion VALUES ('16b2c067-fe4f-486d-8026-dcd7e10c885f', 'Nom de la discussion 4');
+INSERT INTO discussion VALUES ('55c9a487-fc92-435d-bb19-727bc6e8d276', 'Nom de la discussion 5');
+INSERT INTO discussion VALUES ('548b28ea-4e7b-4566-87b9-9ebe0c4778fb', 'Nom de la discussion 6');
+INSERT INTO discussion VALUES ('9c40df67-6ad6-4e1d-8ec3-03b3e7df313c', 'Nom de la discussion 7');
+INSERT INTO discussion VALUES ('c87f3598-ac2f-41c5-af77-4f28789c3b05', 'Nom de la discussion 8');
+INSERT INTO discussion VALUES ('092fa7b6-0eca-43e3-be69-0999cb65cf16', 'Nom de la discussion 9');
+INSERT INTO discussion VALUES ('e26bcb2a-0406-4950-aff9-c3d8d9611637', 'Nom de la discussion 10');
 
 -- Belong_to :
 INSERT INTO belong_to VALUES (1, 1);
@@ -99,23 +99,18 @@ INSERT INTO belong_to VALUES (4, 9);
 INSERT INTO belong_to VALUES (4, 10);
 
 -- Message :
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 1', 1, 1);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 2', 2, 3);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 3', 4, 1);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 4', 1, 2);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 5', 9, 10);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 6', 5, 3);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 7', 1, 1);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 8', 9, 1);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 9', 4, 5);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 10', 6, 2);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 11', 7, 1);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 12', 3, 8);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 13', 7, 1);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 14', 1, 5);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 15', 3, 5);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 16', 1, 5);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 17', 4, 5);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 18', 1, 6);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 19', 7, 9);
-INSERT INTO message (content, subscriber_id, discussion_id) VALUES ('Message test 20', 4, 6);
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
+INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES ('', 1, 1, 'Message test 1');
