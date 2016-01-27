@@ -7,7 +7,6 @@
 - [x] Préparer espace pour les messages
 - [x] En version mobile, passer les membres en liste avec panel réduit.
 - [ ] Intégration du travail d'Edouard.
- - [ ] Après avoir pull : Vérifier que ça fonctionne comme prévu
  - [ ] Changer la navbar, ne pas recharger toute la page au changement de discussion
  - [ ] Ajout d'un utilisateur à la discussion
 
@@ -31,5 +30,5 @@
 
 # Toutes les pages
 - [ ] Chargement des amis + ajout de ces derniers (avec une partie "Amis" et une autre "Demandes en attente")
-- [ ] Revoir le js pour passer tout en jquery
-- [ ] Revoir requetes ajax + methodes callBack pour récup les data
+- [x] Revoir le js pour passer tout en jquery
+- [x] Revoir requetes ajax + methodes callBack pour récup les data

@@ -11,6 +11,7 @@ function initNavbar(user) {
 
   $("#navbar_amis").on("click", function() {
     getFriends(user);
+    getRequestedFriends(user);
   });
 
   $("#navbar_discussions").on("click", function() {
@@ -36,7 +37,23 @@ function callBackLogout(data) {
   */
 function callBackGetFriends(data) {
   $("#dropdown_navbar_amis").empty();
+  $("#dropdown_navbar_amis").append("<li><a>Amis</a></li>");
   var line = '';
+  for(var ami in data) {
+    line = "<li><a href=\"profile.jsp?id=" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a></li>";
+    $("#dropdown_navbar_amis").append(line);
+  }
+}
+
+/**
+  * Mise à jour de l'affichage avec les demande d'amis de l'utilisateur
+  *
+  * @param {Object} data - L'objet renvoyée par la requête Ajax avec le tableau d'amis.
+  */
+function callBackGetFriendRequests(data) {
+  $("#dropdown_navbar_amis").append("<li role=\"separator\" class=\"divider\"></li>");
+  $("#dropdown_navbar_amis").append("<li><a>Demandes en attentes</a></li>");
+  var line = '<>';
   for(var ami in data) {
     line = "<li><a href=\"profile.jsp?id=" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a></li>";
     $("#dropdown_navbar_amis").append(line);

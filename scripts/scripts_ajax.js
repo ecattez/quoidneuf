@@ -30,20 +30,27 @@ function getDiscussions() {
 }
 
 /**
-  * TODO : Implémenter et tester (Doit fonctionner avec l'utilisateur courant et n'importe quel autre avec l'id pour le profil)
   * Retourne tous les amis d'un utilisateur
   *
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getFriends(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriends', undefined, 'json', { status : false });
+  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriends', undefined, 'json', { id : userId, status : true });
+}
+
+/**
+  * Retourne tous les demandes d'amis d'un utilisateur
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function getRequestedFriends(userId) {
+  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendRequests', undefined, 'json', { id : userId, status : false });
 }
 
 //-----------------------------------------------
 // Pour page discussion : Récupérer les membres et les messages, écrire un message
 
 /**
-  * TODO : Tester
   * Retourne les membres de la discussion
   *
   * @param {Number} discussionId - L'id de la discussion
@@ -62,7 +69,6 @@ function getMessages(discussionId) {
 }
 
 /**
-  * TODO : Tester
   * Ecrit un message dans une discussion (id utilisateur dans la session)
   *
   * @param {Number} discussionId - L'id de la discussion

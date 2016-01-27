@@ -11,6 +11,8 @@ function initDiscussionPage(dId) {
   getMessages(discussionId);
 
   $("#send_message").on("click", ajoutMessage);
+
+  setInterval(refreshMessages, 1000);
 }
 
 /**
@@ -56,15 +58,11 @@ function callBackGetMessages(data) {
 }
 
 /**
-  *
-  */
-function callBackWriteMessage(data) {
-  $("#message_input").val("");
-  refreshMessages();
-}
-
-/**
   * Mise en forme de la date au format YYYY-MM-DD hh:mm:ss
+  *
+  * @param {String} date - La date au format epoch
+  *
+  * @return {String} La date au format YYYY-MM-DD hh:mm:ss
   */
 function formeDate(date) {
   d = new Date(date);
@@ -78,13 +76,6 @@ function formeDate(date) {
 }
 
 /**
-  * Ajoute les nouveaux messages à la suite de la discussion
-  */
-function refreshMessages() {
-  getMessages(discussionId);
-}
-
-/**
   * Ajoute une message à la discussion
   */
 function ajoutMessage() {
@@ -92,4 +83,26 @@ function ajoutMessage() {
   if(message != '') {
     writeMessage(discussionId, message);
   }
+  $("#message_input").val("");
+}
+
+/**
+  * Vérifie l'objet de retour de la méthode d'ajout de message
+  *
+  * @param {Object} data - L'id du message si ce dernier est bien envoyé, une erreur sinon.
+  */
+function callBackWriteMessage(data) {
+  if(data.id) {
+    // refreshMessages();
+  }
+  else {
+    //TODO : Gestion erreur
+  }
+}
+
+/**
+  * Ajoute les nouveaux messages à la suite de la discussion
+  */
+function refreshMessages() {
+  getMessages(discussionId);
 }

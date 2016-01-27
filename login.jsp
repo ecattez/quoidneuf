@@ -141,8 +141,8 @@
 
             <div class="row">
               <div class="form-group col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-3">
-                <label for="inscription_birth_date">Date de naissance* <br/>(mm-jj-aaaa)</label><br/>
-                <input class="form-control" type="text" name="inscription_birth_date" id="inscription_birth_date" placeholder="mm-jj-aaaa" />
+                <label for="inscription_birth_date">Date de naissance* <br/>(aaaa/mm/jj)</label><br/>
+                <input class="form-control" type="text" name="inscription_birth_date" id="inscription_birth_date" placeholder="aaaa/mm/jj" />
               </div>
             </div>
 
@@ -153,7 +153,7 @@
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">
-                <label for="inscription_phone">Téléphone*</label><br/>
+                <label for="inscription_phone">Téléphone</label><br/>
                 <input class="form-control" type="text" name="inscription_phone" id="inscription_phone" placeholder="Téléphone" />
               </div>
             </div>
