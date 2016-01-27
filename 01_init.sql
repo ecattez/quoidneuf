@@ -56,14 +56,14 @@ CREATE TABLE friend_with(
 );
 
 CREATE TABLE discussion(
-  discussion_id VARCHAR(36),
+  discussion_id CHAR(36),
   discussion_name VARCHAR(64) NOT NULL,
   CONSTRAINT pk_discussion PRIMARY KEY (discussion_id)
 );
 
 CREATE TABLE belong_to(
   subscriber_id INTEGER NOT NULL,
-  discussion_id INTEGER NOT NULL,
+  discussion_id CHAR(36) NOT NULL,
   CONSTRAINT pk_belong_to PRIMARY KEY (subscriber_id, discussion_id),
   CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
   CONSTRAINT fk_discussion FOREIGN KEY (discussion_id) REFERENCES discussion (discussion_id) ON UPDATE cascade
@@ -72,7 +72,7 @@ CREATE TABLE belong_to(
 CREATE TABLE message(
   message_id VARCHAR(36),
   subscriber_id INTEGER NOT NULL,
-  discussion_id INTEGER NOT NULL,
+  discussion_id CHAR(36) NOT NULL,
   content VARCHAR(512) NOT NULL,
   written_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT pk_message PRIMARY KEY (message_id),
