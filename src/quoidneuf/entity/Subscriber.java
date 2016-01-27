@@ -18,6 +18,8 @@
  */
 package quoidneuf.entity;
 
+import java.sql.Date;
+
 /**
  * Représentation d'un utilisateur de l'application
  */
@@ -26,14 +28,16 @@ public class Subscriber extends Jsonable {
 	private int id;
 	private String firstName;
 	private String lastName;
+	private Date birthday;
 	private SubscriberMeta meta;
 	
 	public Subscriber() {}
 	
-	public Subscriber(int id, String firstName, String lastName) {
+	public Subscriber(int id, String firstName, String lastName, Date birthday) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.birthday = birthday;
 	}
 
 	public int getId() {
@@ -59,6 +63,14 @@ public class Subscriber extends Jsonable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+	
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 	
 	public SubscriberMeta getMeta() {
 		return meta;
@@ -67,5 +79,6 @@ public class Subscriber extends Jsonable {
 	public void setMeta(SubscriberMeta meta) {
 		this.meta = meta;
 	}
+
 
 }

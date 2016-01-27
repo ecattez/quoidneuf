@@ -95,7 +95,10 @@ public class DiscussionDao extends Dao<String> {
 				}
 				if (rs.getTimestamp("_date") != null) {
 					Message m = new Message();
-					Subscriber s = new Subscriber(rs.getInt("_from"), rs.getString("_first_name"), rs.getString("_last_name"));
+					Subscriber s = new Subscriber();
+					s.setId(rs.getInt("_from"));
+					s.setFirstName(rs.getString("_first_name"));
+					s.setLastName(rs.getString("_last_name"));
 					m.setSubscriber(s);
 					m.setContent(rs.getString("_content"));
 					m.setWrittenDate(rs.getTimestamp("_date"));

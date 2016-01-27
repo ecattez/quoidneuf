@@ -76,7 +76,7 @@ public class SubscriberDao extends Dao<Integer> {
 			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday"));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -99,7 +99,7 @@ public class SubscriberDao extends Dao<Integer> {
 			st.setString(1, login);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday"));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -167,7 +167,7 @@ public class SubscriberDao extends Dao<Integer> {
 	
 	public int insert(String login, String firstname, String lastname, String birthday) {
 		try (Connection con = getConnection()) {
-			String query = "INSERT INTO subscriber(login, first_name, last_name, birthdate) VALUES (?, ?, ?, ?)";
+			String query = "INSERT INTO subscriber(login, first_name, last_name, birthday) VALUES (?, ?, ?, ?)";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, login);
 			st.setString(2, firstname);

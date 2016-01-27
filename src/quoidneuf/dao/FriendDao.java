@@ -126,7 +126,7 @@ public class FriendDao extends Dao<Integer> {
 			st.setBoolean(2, status);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
-				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name")));
+				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
