@@ -7,16 +7,16 @@ INSERT INTO role VALUES ('super-user');
 INSERT INTO role VALUES ('admin');
 
 -- Credential :
-INSERT INTO credential VALUES ('ferrot', 'passhashferrot', 'admin');
-INSERT INTO credential VALUES ('catteze', 'passhashcatteze', 'admin');
-INSERT INTO credential VALUES ('leleuj', 'passhashleleuj', 'super-user');
-INSERT INTO credential VALUES ('fevrer', 'passhashfevrer', 'super-user');
-INSERT INTO credential VALUES ('katerinep', 'passhashketrinep', 'user');
-INSERT INTO credential VALUES ('vincentf', 'passhashvincenf', 'user');
-INSERT INTO credential VALUES ('vincentl', 'passhashvincentl', 'user');
-INSERT INTO credential VALUES ('renk', 'passhashrenk', 'user');
-INSERT INTO credential VALUES ('jacksonsl', 'passhashjacksonsl', 'user');
-INSERT INTO credential VALUES ('scorsesem', 'passhashscorsesem', 'user');
+INSERT INTO credential VALUES ('ferrot', 'e6c7781b1965a5788d333e9000fb2e1e', 'admin');
+INSERT INTO credential VALUES ('catteze', 'c1e54c408022a92025fbe8db4a186945', 'admin');
+INSERT INTO credential VALUES ('leleuj', 'd8bba3394e12b06dc98ab612e27f275d', 'super-user');
+INSERT INTO credential VALUES ('fevrer', '2da154473efd1e5b9ed93aeb7339207f', 'super-user');
+INSERT INTO credential VALUES ('katerinep', 'c1da15a8de58597f3034079cdaf5c326', 'user');
+INSERT INTO credential VALUES ('vincentf', 'e8b539da0c9015b0379a1b153ea68d9d', 'user');
+INSERT INTO credential VALUES ('vincentl', '1108027adcf4ae6a5879735f328e6d09', 'user');
+INSERT INTO credential VALUES ('renk', '1108027adcf4ae6a5879735f328e6d09', 'user');
+INSERT INTO credential VALUES ('jacksonsl', '43ddea0d5568d98cc525f5adc7321447', 'user');
+INSERT INTO credential VALUES ('scorsesem', '3099ece3d8931fda8d907fd28de21234', 'user');
 
 -- Subscriber :
 INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('ferrot', 'Thomas', 'Ferro', '19-10-1995');
