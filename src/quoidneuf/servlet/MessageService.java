@@ -1,6 +1,7 @@
 package quoidneuf.servlet;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
@@ -16,7 +17,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.DiscussionDao;
 import quoidneuf.dao.MessageDao;
-import quoidneuf.util.Matcher;
 
 @WebServlet("/api/messages")
 @ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL, rolesAllowed = {"user", "super-user", "admin"}))
@@ -36,7 +36,7 @@ public class MessageService extends JsonServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convertInt(req.getParameter("discussion"));
+		String discussionId = req.getParameter("discussion");
 		String content = req.getParameter("content");
 		
 		if (userId == null) {
@@ -55,9 +55,10 @@ public class MessageService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "utilisateur interdit dans la discussion");
 		}
 		else {
-			int id = messageDao.insertMessage(discussionId, userId, StringEscapeUtils.escapeHtml4(content));
-			if (id > 0) {
-				sendJson(HttpServletResponse.SC_CREATED, res, id);
+			String uuid = UUID.randomUUID().toString();
+			int insert = messageDao.insertMessage(uuid, discussionId, userId, StringEscapeUtils.escapeHtml4(content));
+			if (insert > 0) {
+				sendJson(HttpServletResponse.SC_CREATED, res, "{\"id\" : \"" + uuid + "\"}");
 			}
 			else {
 				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'enregistrement du message");

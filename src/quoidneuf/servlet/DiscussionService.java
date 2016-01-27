@@ -3,6 +3,7 @@ package quoidneuf.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
@@ -38,7 +39,7 @@ public class DiscussionService extends JsonServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convertInt(req.getParameter("id"));
+		String discussionId = req.getParameter("id");
 		
 		// L'utilisateur n'est pas connecté, il n'est pas autorisé à aller plus loin
 		if (userId == null) {
@@ -79,12 +80,13 @@ public class DiscussionService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'name' manquant");
 		}
 		else {
-			int discussionId = discussionDao.insertDiscussion(discussionName);
-			if (discussionId == -1) {
+			String uuid = UUID.randomUUID().toString();
+			int insert = discussionDao.insertDiscussion(uuid, discussionName);
+			if (insert == -1) {
 				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
-			else if (discussionDao.insertUserIn(discussionId, userId) > 0) {					
-				sendJson(HttpServletResponse.SC_CREATED, res, discussionId);
+			else if (discussionDao.insertUserIn(uuid, userId) > 0) {					
+				sendJson(HttpServletResponse.SC_CREATED, res, "{\"id\" : \"" + uuid + "\"}");
 			}
 			else {
 				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -96,7 +98,7 @@ public class DiscussionService extends JsonServlet {
 	public void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convertInt(req.getParameter("id"));
+		String discussionId = req.getParameter("id");
 		String[] strUserIds = req.getParameterValues("users");
 		
 		if (userId == null) {
@@ -132,7 +134,7 @@ public class DiscussionService extends JsonServlet {
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
-		Integer discussionId = Matcher.convertInt(req.getParameter("id"));
+		String discussionId = req.getParameter("id");
 		
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);

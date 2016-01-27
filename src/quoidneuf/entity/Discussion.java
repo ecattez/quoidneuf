@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Discussion extends Jsonable {
 
-	private int id;
+	private String id;
 	private String name;
 	private List<Subscriber> subscribers = new LinkedList<>();
 	private List<Message> messages = new LinkedList<>();
@@ -21,16 +21,16 @@ public class Discussion extends Jsonable {
 		this.name = name;
 	}
 	
-	public Discussion(int id, String name) {
+	public Discussion(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

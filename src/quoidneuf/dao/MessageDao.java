@@ -2,19 +2,18 @@ package quoidneuf.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-public class MessageDao extends Dao<Integer> {
+public class MessageDao extends Dao<String> {
 
 	@Override
-	public boolean exist(Integer id) {
+	public boolean exist(String id) {
 		try (Connection con = getConnection()) {
 			String query = "SELECT 1 FROM message WHERE message_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, id);
+			st.setString(1, id);
 			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -32,25 +31,17 @@ public class MessageDao extends Dao<Integer> {
 	 * @param	content
 	 * 			le contenu du message
 	 * 
-	 * @return	l'id du message créé, -1 sinon
+	 * @return	un entier positif si le message a bien été créé, -1 sinon
 	 */
-	public int insertMessage(int id, int userId, String content) {
+	public int insertMessage(String id, String discussionId, int userId, String content) {
 		try (Connection con = getConnection()) {
-			// Création de la discussion
-			String query = "INSERT INTO message (subscriber_id, discussion_id, content) VALUES (?, ?, ?)";
+			String query = "INSERT INTO message (message_id, subscriber_id, discussion_id, content) VALUES (?, ?, ?, ?)";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, userId);
-			st.setInt(2, id);
-			st.setString(3, content);
-			st.executeUpdate();
-			
-			// On récupère l'id du message inséré
-			query = "SELECT MAX(message_id) AS _id FROM message";
-			st = con.prepareStatement(query);
-			ResultSet rs = st.executeQuery();
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
+			st.setString(1, id);
+			st.setInt(2, userId);
+			st.setString(3, discussionId);
+			st.setString(4, content);
+			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
