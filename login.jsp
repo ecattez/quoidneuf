@@ -84,13 +84,10 @@
               <h4 class="modal-title">Formulaire réinitialisation de mot de passe</h4>
             </div>
             <div class="modal-body">
-              <p>
-              <label for="modal_login">Login :</label><br/>
-              <input type="text" placeholder="Login" id="modal_login"></input><br/>
-              <label for="modal_email">E-mail :</label><br/>
-              <input type="text" placeholder="E-mail" id="modal_email"></input><br/>
+              <p><label for="modal_login">Login :</label><br/><input type="text" placeholder="Login" id="modal_login"></p>
+              <p><label for="modal_email">E-mail :</label><br/><input type="text" placeholder="E-mail" id="modal_email"></p>
               <div id="reset_error" class="alert alert-danger hidden" role="alert">Merci d'indiquer votre login et votre adresse E-Mail</div>
-              </p>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
