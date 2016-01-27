@@ -125,7 +125,7 @@ public class SubscriberDao extends Dao<Integer> {
 		try (Connection con = getConnection()) {
 			String query = "SELECT subscriber_id FROM subscriber WHERE subscriber_id IN (?)";
 			PreparedStatement st = con.prepareStatement(query);
-			Array array = con.createArrayOf("INTEGER", userIds.toArray());
+			Array array = con.createArrayOf("integer", userIds.toArray());
 			st.setArray(1, array);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
