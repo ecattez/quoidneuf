@@ -26,8 +26,7 @@ public class DiscussionDao extends Dao<Integer> {
 			String query = "SELECT 1 FROM discussion WHERE discussion_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
-			ResultSet rs = st.executeQuery();
-			return rs.next();
+			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
@@ -50,8 +49,7 @@ public class DiscussionDao extends Dao<Integer> {
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
 			st.setInt(2, userId);
-			ResultSet rs = st.executeQuery();
-			return rs.next();
+			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +67,7 @@ public class DiscussionDao extends Dao<Integer> {
 	public Discussion getDiscussion(int id) {
 		Discussion discussion = null;
 		try (Connection con = getConnection()) {
-			String query = "SELECT * FROM subscriber_message_discussion WHERE _to = ? LIMIT 100";
+			String query = "SELECT * FROM subscriber_message_discussion WHERE _to = ? ORDER BY _date ASC LIMIT 100";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -158,7 +156,7 @@ public class DiscussionDao extends Dao<Integer> {
 	public int insertDiscussion(String name) {
 		try (Connection con = getConnection()) {
 			// Création de la discussion
-			String query = "INSERT INTO discussion (discussion_name, enabled) VALUES (?, true)";
+			String query = "INSERT INTO discussion (discussion_name) VALUES (?)";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, name);
 			st.executeUpdate();
@@ -216,11 +214,7 @@ public class DiscussionDao extends Dao<Integer> {
 			st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			st.setInt(2, id);
-			try {
-				return st.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			return st.executeUpdate();
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -246,11 +240,7 @@ public class DiscussionDao extends Dao<Integer> {
 				st = con.prepareStatement(query);
 				st.setInt(1, userId);
 				st.setInt(2, id);
-				try {
-					i += st.executeUpdate();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				i += st.executeUpdate();
 			}
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();

@@ -23,12 +23,47 @@ public class SubscriberDao extends Dao<Integer> {
 			String query = "SELECT 1 FROM subscriber WHERE subscriber_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
-			ResultSet rs = st.executeQuery();
-			return rs.next();
+			return st.executeQuery().next();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public boolean exist(String login, String email) {
+		try (Connection con = getConnection()) {
+			String query = "SELECT 1 FROM subscriber WHERE login = ? AND subscriber_id = (SELECT subscriber_id FROM subscriber_meta WHERE email = ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			st.setString(2, email);
+			return st.executeQuery().next();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
+	 * Récupère un abonné à partir de son identifiant d'utilisateur
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * 
+	 * @return	une instance de Subscriber, null sinon
+	 */
+	public Subscriber getById(int userId) {
+		try (Connection con = getConnection()) {
+			String query = "SELECT subscriber_id AS id, first_name, last_name FROM subscriber WHERE subscriber_id = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setInt(1, userId);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
@@ -41,12 +76,12 @@ public class SubscriberDao extends Dao<Integer> {
 	 */
 	public Subscriber getByLogin(String login) {
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS _id, first_name, last_name FROM subscriber WHERE login = ?";
+			String query = "SELECT subscriber_id AS id, first_name, last_name FROM subscriber WHERE login = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, login);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return new Subscriber(rs.getInt("_id"), rs.getString("first_name"), rs.getString("last_name"));
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -102,5 +137,24 @@ public class SubscriberDao extends Dao<Integer> {
 		return ids;
 	}
 	
+	/**
+	 * Supprime un utilisateur de la base
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * 
+	 * @return	un entier positif si la suppression a fonctionnée
+	 */
+	public int remove(int userId) {
+		try (Connection con = getConnection()) {
+			String query = "DELETE FROM credential WHERE login = (SELECT login FROM subscriber WHERE subscriber_id = ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setInt(1, userId);
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 
 }

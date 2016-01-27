@@ -8,6 +8,7 @@ public class Subscriber extends Jsonable {
 	private int id;
 	private String firstName;
 	private String lastName;
+	private SubscriberMeta meta;
 	
 	public Subscriber() {}
 	
@@ -39,6 +40,14 @@ public class Subscriber extends Jsonable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public SubscriberMeta getMeta() {
+		return meta;
+	}
+	
+	public void setMeta(SubscriberMeta meta) {
+		this.meta = meta;
 	}
 
 }
