@@ -133,7 +133,7 @@
     <!-- Footer -->
   </div>
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="../scripts/jquery.min.js"></script>
   <script type="text/javascript" src="../scripts/scripts_ajax.js"></script>
   <script type="text/javascript" src="../scripts/profile.js"></script>
   <script type="text/javascript" src="../scripts/navbar.js"></script>

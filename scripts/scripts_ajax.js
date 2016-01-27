@@ -10,7 +10,6 @@
   */
 function login(user, pass) {
   ajaxRequest('POST', '/quoidneuf/api/authentication', 'callBackLogin', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
-  // return ajaxRequest('POST', '/quoidneuf/api/authentication', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
 }
 
 /**
@@ -37,7 +36,7 @@ function getDiscussions() {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getFriends(userId) {
-  console.log('A implémenter');
+  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriends', undefined, 'json', { status : false });
 }
 
 //-----------------------------------------------
@@ -107,12 +106,9 @@ function ajaxRequest(type, url, fonction, contentType, dataType, data) {
   		type : type,
   		url : url,
   		success : function(data, textStatus, jqXHR) {
-  			// console.log(data);
-        window[fonction](jqXHR);
+          window[fonction](data);
   		},
   		error : function(jqXHR, textStatus, errorThrown) {
-  			// console.log(data);
-  			// console.log('error: ' + textStatus);
         window[fonction](jqXHR);
   		}
   	});
@@ -126,12 +122,9 @@ function ajaxRequest(type, url, fonction, contentType, dataType, data) {
   		dataType : dataType,
   		data : data,
   		success : function(data, textStatus, jqXHR) {
-  			// console.log(data);
-        window[fonction](jqXHR);
+        window[fonction](data);
   		},
   		error : function(jqXHR, textStatus, errorThrown) {
-  			// console.log(data);
-  			// console.log('error: ' + textStatus);
         window[fonction](jqXHR);
   		}
   	});

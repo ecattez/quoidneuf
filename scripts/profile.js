@@ -1,3 +1,3 @@
-function callBackGetSubscribersProfile(jqXHR) {
-  console.log(jqXHR);
+function callBackGetSubscribersProfile(data) {
+  console.log(data);
 }

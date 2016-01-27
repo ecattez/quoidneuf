@@ -2,26 +2,29 @@
   * Ajoute les EventListeners aux elements de la navbar
   */
 function initNavbar(user) {
-  document.getElementById("navbar_deconnexion").addEventListener("click", function() {
+  if(user == undefined) {
+    window.location.href = '../';
+  }
+  $("#navbar_deconnexion").on("click", function() {
     logout();
-  }, false);
+  });
 
-  document.getElementById("navbar_amis").addEventListener("click", function() {
+  $("#navbar_amis").on("click", function() {
     getFriends(user);
-  }, false);
+  });
 
-  document.getElementById("navbar_discussions").addEventListener("click", function() {
+  $("#navbar_discussions").on("click", function() {
     getDiscussions();
-  }, false);
+  });
 }
 
 /**
   * Vérifie le code de retour de la déconnexion, méthode appelée par la requête Ajax
   *
-  * @param {Object} jqXHR - L'objet renvoyée par la requête Ajax avec entre autres le code de retour de cette dernière.
+  * @param {Object} data - L'objet renvoyé par le serveur, vide si réussi
   */
-function callBackLogout(jqXHR) {
-  if(jqXHR.status == 204) {
+function callBackLogout(data) {
+  if(data == undefined) {
     window.location.href = '../';
   }
 }
@@ -29,22 +32,27 @@ function callBackLogout(jqXHR) {
 /**
   * Mise à jour de l'affichage avec les amis de l'utilisateur, méthode appelée par la requête Ajax
   *
-  * @param {Object} jqXHR - L'objet renvoyée par la requête Ajax avec entre autres un tableau d'amis.
+  * @param {Object} data - L'objet renvoyée par la requête Ajax avec le tableau d'amis.
   */
-function callBackGetFriends(jqXHR) {
-  console.log(jqXHR);
+function callBackGetFriends(data) {
+  $("#dropdown_navbar_amis").empty();
+  var line = '';
+  for(var ami in data) {
+    line = "<li><a href=\"profile.jsp?id=" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a></li>";
+    $("#dropdown_navbar_amis").append(line);
+  }
 }
 
 /**
   * Mise à jour de l'affichage avec les discussions de l'utilisateur, méthode appelée par la requête Ajax
   *
-  * @param {Object} jqXHR - L'objet renvoyée par la requête Ajax avec entre autres un tableau de discussions.
+  * @param {Object} data - L'objet renvoyée par la requête Ajax avec entre autres un tableau de discussions.
   */
-function callBackGetDiscussions(jqXHR) {
+function callBackGetDiscussions(data) {
   $("#dropdown_navbar_discussions").empty();
   var line = '';
-  for(var discussion in jqXHR.responseJSON) {
-    line = "<li><a href=\"discussion.jsp?id=" + jqXHR.responseJSON[discussion].id + "\">" + jqXHR.responseJSON[discussion].name + "</a></li>";
+  for(var discussion in data) {
+    line = "<li><a href=\"discussion.jsp?id=" + data[discussion].id + "\">" + data[discussion].name + "</a></li>";
     $("#dropdown_navbar_discussions").append(line);
   }
 }

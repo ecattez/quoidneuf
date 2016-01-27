@@ -10,7 +10,7 @@ function initDiscussionPage(dId) {
   getMembers(discussionId);
   getMessages(discussionId);
 
-  document.getElementById("send_message").addEventListener("click", ajoutMessage, false);
+  $("#send_message").on("click", ajoutMessage);
 }
 
 /**
@@ -25,10 +25,10 @@ function resetDiscussionPage() {
 /**
   * Charge les membres de la discussion dans la page
   */
-function callBackGetMembers(jqXHR) {
+function callBackGetMembers(data) {
   var line = '';
-  $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">"+jqXHR.responseJSON.name+"</h2>");
-  var membres = jqXHR.responseJSON.current_subscribers;
+  $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">"+data.name+"</h2>");
+  var membres = data.current_subscribers;
   for(var membre in membres) {
     //line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"+membres[membre].firstName + " " + membres[membre].lastName + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\"><button type=\"button\" name=\"button_add_friend"++"\">+</button></div></div></li>";
     line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"
@@ -42,23 +42,24 @@ function callBackGetMembers(jqXHR) {
 /**
   * Charge les messages de la discussion courante
   */
-function callBackGetMessages(jqXHR) {
+function callBackGetMessages(data) {
   var date = '';
   var user = '';
   var content = '';
-  for(var mess = nbMessages; mess < jqXHR.responseJSON.messages.length; mess++) {
-    date = formeDate(jqXHR.responseJSON.messages[mess].writtenDate);
-    user = jqXHR.responseJSON.messages[mess].subscriber.firstName + "." +jqXHR.responseJSON.messages[mess].subscriber.lastName.substring(0,1);
-    content = jqXHR.responseJSON.messages[mess].content;
+  for(var mess = nbMessages; mess < data.messages.length; mess++) {
+    date = formeDate(data.messages[mess].writtenDate);
+    user = data.messages[mess].subscriber.firstName + "." +data.messages[mess].subscriber.lastName.substring(0,1);
+    content = data.messages[mess].content;
     $("#messages").append(user + " \t[" + date + "] : \t" + content + "\n");
   }
-  nbMessages = jqXHR.responseJSON.messages.length;
+  nbMessages = data.messages.length;
 }
 
 /**
   *
   */
-function callBackWriteMessage(jqXHR) {
+function callBackWriteMessage(data) {
+  $("#message_input").val("");
   refreshMessages();
 }
 
