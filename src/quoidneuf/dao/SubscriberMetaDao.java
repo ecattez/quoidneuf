@@ -24,6 +24,22 @@ public class SubscriberMetaDao extends Dao<Integer> {
 		return false;
 	}
 	
+	public int insert(String picture, String description, String email, String phone) {
+		try (Connection con = getConnection()) {
+			String query = "INSERT INTO subscriber_meta(subscriber_id, picture, description, email, phone)"
+					+ " SELECT MAX(subscriber_id), ?, ?, ?, ? FROM subscriber";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, picture == null ? "" : picture);
+			st.setString(2, description == null ? "" : description);
+			st.setString(3, email);
+			st.setString(4, phone == null ? "" : phone);
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public SubscriberMeta fromSubscriber(int userId) {
 		SubscriberMeta meta = null;
 		try (Connection con = getConnection()) {

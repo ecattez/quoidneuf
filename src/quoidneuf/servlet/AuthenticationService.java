@@ -79,7 +79,7 @@ public class AuthenticationService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la modification du mot de passe");
 			}
 		}
 	}

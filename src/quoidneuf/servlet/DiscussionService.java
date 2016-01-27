@@ -41,15 +41,12 @@ public class DiscussionService extends JsonServlet {
 		Integer userId = (Integer) session.getAttribute("user");
 		String discussionId = req.getParameter("id");
 		
-		// L'utilisateur n'est pas connecté, il n'est pas autorisé à aller plus loin
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
-		// Aucune discussion précisée, on récupère toutes les discussions de l'utilisateur
 		else if (discussionId == null) {
 			sendJson(res, discussionDao.getDiscussionsOf(userId));
 		}
-		// Au contraire, on charge la discussion et ses abonnés
 		else if (discussionDao.exist(discussionId)) {
 			if (!discussionDao.userExistIn(discussionId, userId)) {
 				sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
@@ -61,7 +58,6 @@ public class DiscussionService extends JsonServlet {
 				sendJson(res, discussion);
 			}
 		}
-		// Si la discussion n'existe pas, on renvoie 404
 		else {
 			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "discussion non trouvée");
 		}
@@ -83,13 +79,13 @@ public class DiscussionService extends JsonServlet {
 			String uuid = UUID.randomUUID().toString();
 			int insert = discussionDao.insertDiscussion(uuid, discussionName);
 			if (insert == -1) {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création de la discussion");
 			}
 			else if (discussionDao.insertUserIn(uuid, userId) > 0) {					
 				sendJson(HttpServletResponse.SC_CREATED, res, "{\"id\" : \"" + uuid + "\"}");
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'ajout de l'utilisateur dans la discussion");
 			}
 		}
 	}
@@ -125,7 +121,7 @@ public class DiscussionService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'ajout de l'utilisateur dans la discussion");
 			}
 		}
 	}
@@ -152,7 +148,7 @@ public class DiscussionService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la suppression de l'utilisateur dans la discussion");
 		}
 	}
 

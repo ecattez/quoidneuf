@@ -2,6 +2,7 @@ package quoidneuf.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
@@ -17,12 +18,13 @@ import quoidneuf.dao.CredentialDao;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.dao.SubscriberMetaDao;
+import quoidneuf.entity.Credential;
 import quoidneuf.entity.Subscriber;
 import quoidneuf.entity.SubscriberMeta;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/profiles")
-@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL, rolesAllowed = {"user", "super-user", "admin"}))
+@ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL))
 public class ProfileService extends JsonServlet {
 	
 	private static final long serialVersionUID = -7109249752388549689L;
@@ -62,7 +64,71 @@ public class ProfileService extends JsonServlet {
 	
 	/** Créer un profil (+ authentification) */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
+		String login = req.getParameter("username");
+		if (credentialDao.exist(login)) {
+			sendTicket(HttpServletResponse.SC_CONFLICT, res, "l'utilisateur " + login + " existe déjà");
+		}
+		else {
+			String password = req.getParameter("password");
+			String firstname = req.getParameter("firstname");
+			String lastname = req.getParameter("lastname");
+			String birthday = req.getParameter("birthday");
+			String picture = req.getParameter("picture");
+			String description = req.getParameter("description");
+			String email = req.getParameter("email");
+			String phone = req.getParameter("phone");
+			if (Matcher.isEmpty(password)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "mot de passe inexistant");
+			}
+			else if (!Matcher.isPassword(password)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "longueur du mot de passe < à " + Credential.MIN_PASSWORD_LENGTH);
+			}
+			else if (Matcher.isEmpty(firstname)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "prénom manquant");
+			}
+			else if (Matcher.isEmpty(lastname)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "nom de famille manquant");
+			}
+			else if (Matcher.isEmpty(birthday)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "date d'anniversaire manquante");
+			}
+			else if (!Matcher.isDate(birthday)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "date d'anniversaire incorrecte");
+			}
+			else if (Matcher.isEmpty(email)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email manquante");
+			}
+			else if (!Matcher.isEmail(email)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email incorrecte");
+			}
+			else if (!Matcher.isEmpty(phone) && !Matcher.isPhone(phone)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "numéro de téléphone incorrect");
+			}
+			else if (credentialDao.insert(login, password) == -1) {
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création du compte");
+			}
+			else if (subscriberDao.insert(login, firstname, lastname, birthday) == -1) {
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création du profil");
+			}
+			else if (subscriberMetaDao.insert(picture, description, email, phone) == -1) {
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création du profil");
+			}
+			else {
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/api/mails");
+				StringBuilder builder = new StringBuilder();
+				builder.append("<h1>Bienvenue " + firstname + " !</h1>");
+				builder.append("<p>Tu as créé ton compte Quoidneuf dont voici les identifiants: </p>");
+				builder.append("<ul><li>Login: " + login + "</li>");
+				builder.append("<li>Password: " + password + "</li></ul>");
+				builder.append("<p>Tu peux dès à présent te connecter sur Quoidneuf !</p>");
+				builder.append("<hr>");
+				builder.append("<b>A bientôt - Team Quoidneuf</b>");
+				req.setAttribute("email", email);
+				req.setAttribute("title", "[Quoidneuf] Inscription réussie !");
+				req.setAttribute("content", builder.toString());
+				dispatcher.forward(req, res);
+			}
+		}
 	}
 	
 	/** Modifier le profil */
@@ -70,6 +136,7 @@ public class ProfileService extends JsonServlet {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
 		
+		String password = req.getParameter("password");
 		String picture = req.getParameter("picture");
 		String description = req.getParameter("description");
 		String email = req.getParameter("email");
@@ -81,30 +148,42 @@ public class ProfileService extends JsonServlet {
 		else if (Matcher.isEmpty(email)) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email non spécifiée");
 		}
-		else if (!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+		else if (!Matcher.isEmail(email)) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email incorrecte");
 		}
-		else if (!Matcher.isEmpty(phone) && phone.matches("[0-9]{10}")) {
+		else if (phone != null && !Matcher.isPhone(phone)) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "numéro de téléphone incorrect");
 		}
 		else {
-			if (!Matcher.isEmpty(description)) {
-				description = StringEscapeUtils.escapeHtml4(description);
+			boolean ok = true;
+			if (!Matcher.isEmpty(password)) {
+				if (!Matcher.isPassword(password)) {
+					sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "longueur du mot de passe < à " + Credential.MIN_PASSWORD_LENGTH);
+				}
+				ok = credentialDao.changePassword(req.getRemoteUser(), password) > 0;
 			}
-			SubscriberMeta meta = new SubscriberMeta();
-			meta.setPictureUri(picture);
-			meta.setDescription(description);
-			meta.setEmail(email);
-			meta.setPhone(phone);
-			int update = subscriberMetaDao.updateFromSubscriber(userId, meta);
-			if (update > 0) {
-				res.sendError(HttpServletResponse.SC_NO_CONTENT);
+			if (!ok) {
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors du changement du mot de passe");
 			}
-			else if (update == 0) {
-				res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
-			}
-			else {				
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			else {
+				if (!Matcher.isEmpty(description)) {
+					description = StringEscapeUtils.escapeHtml4(description);
+				}
+				SubscriberMeta meta = new SubscriberMeta();
+				meta.setPictureUri(picture);
+				meta.setDescription(description);
+				meta.setEmail(email);
+				meta.setPhone(phone);
+				int update = subscriberMetaDao.updateFromSubscriber(userId, meta);
+				if (update > 0) {
+					res.sendError(HttpServletResponse.SC_NO_CONTENT);
+				}
+				else if (update == 0) {
+					res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+				}
+				else {				
+					sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la mise à jour du profil");
+				}
 			}
 		}
 	}
@@ -121,7 +200,7 @@ public class ProfileService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la suppression du profil");
 		}
 	}
 

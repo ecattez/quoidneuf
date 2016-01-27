@@ -11,6 +11,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import quoidneuf.entity.Subscriber;
+import quoidneuf.util.Matcher;
 
 /**
  * DAO des utilisateurs.
@@ -135,6 +136,21 @@ public class SubscriberDao extends Dao<Integer> {
 			e.printStackTrace();
 		}
 		return ids;
+	}
+	
+	public int insert(String login, String firstname, String lastname, String birthday) {
+		try (Connection con = getConnection()) {
+			String query = "INSERT INTO subscriber(login, first_name, last_name, birthdate) VALUES (?, ?, ?, ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			st.setString(2, firstname);
+			st.setString(3, lastname);
+			st.setDate(4, new java.sql.Date(Matcher.convertDate(birthday).getTime()));
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	/**

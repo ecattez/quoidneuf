@@ -76,7 +76,7 @@ public class FriendService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_CREATED, res, "demande d'ajout créée");
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la demande d'ajout");
 		}
 	}
 	
@@ -120,7 +120,7 @@ public class FriendService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la suppression du lien d'amitié");
 			}
 		}
 		else {
