@@ -62,14 +62,11 @@
       <!-- Amis -->
       <div class="col-lg-3 col-md-3 contents center_div img-rounded">
         <h2>Amis</h2>
-        <div class="row">
-          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Nom ami1</div>
-          <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
-        </div>
-        <!-- Fin pour chaque utilisateur -->
-        <div class="row">
-          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Nom ami2</div>
-          <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
+        <div id="amis">
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Nom ami1</div>
+            <div class="col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1"><button type="button" name="button_add_friend">+</button></div>
+          </div>
         </div>
       </div>
       <!-- Fin amis -->
@@ -112,6 +109,11 @@
           </div>
         </div>
         <!-- Fin description -->
+
+        <!-- Bouton Modifier / Demande d'ami / Accepter demande -->
+        <div class="row" id="button">
+        </div>
+
       </div>
       <!-- Fin informations -->
 
@@ -139,4 +141,5 @@
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <script type="text/javascript">initNavbar(${user});</script>
+  <script type="text/javascript">initProfilePage(${user}, "${param.id}");</script>
 </body>

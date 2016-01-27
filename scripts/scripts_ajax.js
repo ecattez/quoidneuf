@@ -39,6 +39,15 @@ function getFriends(userId) {
 }
 
 /**
+  * Retourne tous les amis d'un utilisateur
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function getFriendsProfile(userId) {
+  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendsProfile', undefined, 'json', { id : userId, status : false });
+}
+
+/**
   * Retourne tous les demandes d'amis d'un utilisateur
   *
   * @param {Number} userId - L'id de l'utilisateur
@@ -82,15 +91,25 @@ function writeMessage(discussionId, content) {
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 
 /**
-  * TODO : Tester
   * Retourne les informations d'un utilisateur
   *
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getSubscribersProfile(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/profils', 'refreshMessages', undefined, 'json', { id : userId });
+  ajaxRequest('GET', '/quoidneuf/api/profiles', 'callBackGetSubscribersProfile', undefined, 'json', { id : userId });
 }
 
+/**
+  * Met à jour les informations de l'utilisateur courant
+  *
+  * @param {String} picture - Le chemin vers la photo de profil.
+  * @param {String} description - La description de l'utilisateur
+  * @param {String} email - Le nouveau mail de l'utilisateur
+  * @param {String} phone - Le téléphone de l'utilisateur
+  */
+function modifySubscribersProfile(picture, description, email, phone) {
+  ajaxRequest('PUT', '/quoidneuf/api/profiles', 'callBackModifySubscribersProfile', undefined, 'json', { picture : picture, description : description, email : email, phone : phone });
+}
 
 //-----------------------------------------------
 // Gabarits pour requêtes Ajax

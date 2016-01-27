@@ -23,6 +23,7 @@
 - [ ] Intégration du travail d'Edouard.
  - [ ] Charger profile de l'utilisateur courant avec bouton modifier et champs accessibles si pas d'id
  - [ ] Charger profile de l'utilisateur dont l'id est passé en parametre avec champs innaccessibles etc sinon
+ - [ ] Gestion de picture
 
 # Page 404
 - [x] Faire la page
