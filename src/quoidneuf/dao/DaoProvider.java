@@ -40,7 +40,7 @@ public class DaoProvider {
 	
 	private DaoProvider() {
 		map = new HashMap<>();
-		map.put(AuthenticationDao.class, new AuthenticationDao());
+		map.put(CredentialDao.class, new CredentialDao());
 		map.put(DiscussionDao.class, new DiscussionDao());
 		map.put(FriendDao.class, new FriendDao());
 		map.put(MessageDao.class, new MessageDao());

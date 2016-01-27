@@ -67,7 +67,7 @@ public class DiscussionDao extends Dao<Integer> {
 	public Discussion getDiscussion(int id) {
 		Discussion discussion = null;
 		try (Connection con = getConnection()) {
-			String query = "SELECT * FROM subscriber_message_discussion WHERE _to = ? ORDER BY _date ASC LIMIT 100";
+			String query = "SELECT * FROM subscriber_message_discussion WHERE _to = ? LIMIT 100";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();

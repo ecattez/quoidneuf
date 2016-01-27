@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.naming.NamingException;
 
-public class AuthenticationDao extends Dao<String> {
+public class CredentialDao extends Dao<String> {
 
 	/* Hash un mot de passe en clair avec MD5 */
 	private String encode(String password) {
@@ -90,6 +90,18 @@ public class AuthenticationDao extends Dao<String> {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	public int remove(String login) {
+		try (Connection con = getConnection()) {
+			String query = "DELETE FROM credential WHERE login = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 }

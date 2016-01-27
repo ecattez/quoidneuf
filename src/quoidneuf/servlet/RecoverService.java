@@ -18,7 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import quoidneuf.dao.AuthenticationDao;
+import quoidneuf.dao.CredentialDao;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 
@@ -28,11 +28,11 @@ public class RecoverService extends JsonServlet {
 
 	private static final long serialVersionUID = -7213105238757666032L;
 	
-	private AuthenticationDao authenticationDao;
+	private CredentialDao authenticationDao;
 	private SubscriberDao subscriberDao;
 	
 	public RecoverService() {
-		this.authenticationDao = DaoProvider.getDao(AuthenticationDao.class);
+		this.authenticationDao = DaoProvider.getDao(CredentialDao.class);
 		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
 	}
 	

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import quoidneuf.dao.CredentialDao;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.dao.SubscriberMetaDao;
@@ -26,10 +27,12 @@ public class ProfileService extends JsonServlet {
 	
 	private static final long serialVersionUID = -7109249752388549689L;
 
+	private CredentialDao credentialDao;
 	private SubscriberDao subscriberDao;
 	private SubscriberMetaDao subscriberMetaDao;
 	
 	public ProfileService() {
+		this.credentialDao = DaoProvider.getDao(CredentialDao.class);
 		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
 		this.subscriberMetaDao = DaoProvider.getDao(SubscriberMetaDao.class);
 	}
@@ -106,13 +109,19 @@ public class ProfileService extends JsonServlet {
 		}
 	}
 	
-	/** Supprimer le profil (suppression logique) */
+	/** Supprimer le profil (suppression logique, c'est à dire qu'on ne supprime que les données d'authentification) */
 	public void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
 		
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		else if (credentialDao.remove(req.getRemoteUser()) > 0) {
+			res.sendError(HttpServletResponse.SC_NO_CONTENT);
+		}
+		else {
+			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 

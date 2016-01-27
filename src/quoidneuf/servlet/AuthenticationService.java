@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import quoidneuf.dao.AuthenticationDao;
+import quoidneuf.dao.CredentialDao;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
 import quoidneuf.util.Matcher;
@@ -25,11 +25,11 @@ public class AuthenticationService extends JsonServlet {
 	private static final long serialVersionUID = 7229118350560492306L;
 	
 	private SubscriberDao subscriberDao;
-	private AuthenticationDao authenticationDao;
+	private CredentialDao authenticationDao;
 	
 	public AuthenticationService() {
 		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
-		this.authenticationDao = DaoProvider.getDao(AuthenticationDao.class);
+		this.authenticationDao = DaoProvider.getDao(CredentialDao.class);
 	}
 
 	/**
