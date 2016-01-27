@@ -56,7 +56,7 @@ CREATE TABLE friend_with(
 );
 
 CREATE TABLE discussion(
-  discussion_id SERIAL,
+  discussion_id VARCHAR(36),
   discussion_name VARCHAR(64) NOT NULL,
   CONSTRAINT pk_discussion PRIMARY KEY (discussion_id)
 );
@@ -70,7 +70,7 @@ CREATE TABLE belong_to(
 );
 
 CREATE TABLE message(
-  message_id SERIAL,
+  message_id VARCHAR(36),
   subscriber_id INTEGER NOT NULL,
   discussion_id INTEGER NOT NULL,
   content VARCHAR(512) NOT NULL,
