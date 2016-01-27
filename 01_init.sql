@@ -40,7 +40,7 @@ CREATE TABLE subscriber_meta(
   subscriber_id INTEGER,
   picture TEXT,
   description TEXT,
-  email TEXT,
+  email TEXT NOT NULL,
   phone CHAR(10),
   CONSTRAINT pk_subscriber_meta PRIMARY KEY (subscriber_meta_id),
   CONSTRAINT fk_subscriber FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON UPDATE cascade
