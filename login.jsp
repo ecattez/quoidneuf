@@ -87,7 +87,6 @@
               <p><label for="modal_login">Login :</label><br/><input type="text" placeholder="Login" id="modal_login"></p>
               <p><label for="modal_email">E-mail :</label><br/><input type="text" placeholder="E-mail" id="modal_email"></p>
               <div id="reset_error" class="alert alert-danger hidden" role="alert">Merci d'indiquer votre login et votre adresse E-Mail</div>
-
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>

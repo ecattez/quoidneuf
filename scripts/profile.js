@@ -34,23 +34,41 @@ function checkFriend(user) {
 function loadButtonModify() {
   $("#button").empty();
   $("#button").append("<p><button type=\"button\" class=\"btn btn-primary\" name=\"Bouton modifier\" id=\"button_modify\">Modifier</button></p>");
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton changer mot de passe\" id=\"button_modify_password\">Changer de mot de passe</button></p>");
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton changer mot de passe\" id=\"button_open_modal\" data-toggle=\"modal\" data-target=\"#modale_change_password\">Changer de mot de passe</button></p>");
   $("#button_modify").on("click", modifyProfile);
-  $("#button_modify_password").on("click", modifyPassword);
+  $("#button_modify_password").on("click", sendModifyPassword);
 }
 
 /**
-  * Envoyer la requête de modification du profil
+  * Envoyer la requête de modification de mot de passe
   */
-function modifyProfile() {
-  modifySubscribersProfile('', $("#description").val(), $("#e_mail").val(), $("#phone").val());
+function sendModifyPassword() {
+  $("#modify_password_error").removeClass('hidden');
+  $("#modify_password_error").removeClass('alert-success');
+  $("#modify_password_error").removeClass('alert-danger');
+  if(($("#modal_password1").val() != '') && ($("#modal_password1").val() == $("#modal_password2").val())) {
+    $("#modify_password_error").text("Modification en cours...");
+    $("#modify_password_error").addClass('alert-success');
+    modifyPassword($("#modal_password1").val());
+  }
+  else {
+    $("#modify_password_error").text("Merci d'entrer deux fois votre mot de passe");
+    $("#modify_password_error").addClass('alert-danger');
+  }
 }
 
 /**
-  * Ouvre la fenetre modale de modification de mot de passe
+  * Met à jour l'affichae en fonction du résultat de la modification de mot de passe
   */
-function modifyPassword() {
-  console.log("A implementer");
+function callBackmodifyPassword(data) {
+  if(data == undefined) {
+    $("#modify_password_error").text("Mot de passe modifié.");
+    $("#modify_password_error").addClass('alert-success');
+  }
+  else {
+    $("#modify_password_error").text("Erreur : " + data.code + " : " + data.message);
+    $("#modify_password_error").addClass('alert-danger');
+  }
 }
 
 /**
@@ -88,9 +106,8 @@ function loadButtonAccept(user) {
   * @param {Object} data - Le profil de l'utilisateur
   */
 function callBackGetSubscribersProfile(data) {
-  console.log(data);
   $("#nom_utilisateur").text(data.firstName + " " + data.lastName);
-  $("#birth_date").val("IL MANQUE LA DATE DE NAISSANCE EDOUARD TU FOUS QUOI !");
+  $("#birth_date").val(data.birthday);
   $("#e_mail").val(data.meta.email);
   $("#phone").val(data.meta.phone);
   $("#description").val(data.meta.description);
@@ -117,11 +134,38 @@ function callBackGetFriendsProfile(data) {
   }
 }
 
+
+/**
+  * Envoyer la requête de modification du profil
+  */
+function modifyProfile() {
+  $("#error_div").removeClass("hidden");
+  $("#error_div").removeClass('alert-success');
+  $("#error_div").removeClass('alert-danger');
+  if(($("#e_mail").val() == undefined) || ($("#e_mail").val() == '')) {
+    $("#error_div").addClass("alert-danger");
+    $("#error_div").text("Merci de renseigner les champs précédés d'une étoile");
+  }
+  else {
+    $("#error_div").addClass("alert-success");
+    $("#error_div").text("Modification en cours...");
+    modifySubscribersProfile('picturepath', $("#description").val(), $("#e_mail").val(), $("#phone").val());
+  }
+}
+
 /**
   * Méthode de retour de la mise à jour du profil
   *
   * @param {Object} data - Message de retour du serveur
   */
 function callBackModifySubscribersProfile(data) {
-  console.log(data);
+  if(data == undefined) {
+    $("#error_div").text("Profil modifié.");
+    $("#error_div").addClass('alert-success');
+  }
+  else {
+    console.log(data);
+    $("#error_div").text("Erreur : " + data.code + " : " + data.message);
+    $("#error_div").addClass('alert-danger');
+  }
 }

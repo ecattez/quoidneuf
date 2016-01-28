@@ -12,6 +12,15 @@ function initDiscussionPage(dId) {
 
   $("#send_message").on("click", ajoutMessage);
 
+  $("#message_input").on("enterKey", ajoutMessage);
+
+  $("#message_input").keyup(function(e) {
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+  });
+
   setInterval(refreshMessages, 1000);
 }
 

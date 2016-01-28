@@ -108,7 +108,16 @@ function getSubscribersProfile(userId) {
   * @param {String} phone - Le téléphone de l'utilisateur
   */
 function modifySubscribersProfile(picture, description, email, phone) {
-  ajaxRequest('PUT', '/quoidneuf/api/profiles', 'callBackModifySubscribersProfile', undefined, 'json', { picture : picture, description : description, email : email, phone : phone });
+  ajaxRequest('PUT', '/quoidneuf/api/profiles?picture='+picture+'&description='+description+'&email='+email+'&phone='+phone, 'callBackModifySubscribersProfile');
+}
+
+/**
+  * Change le mot de passe de l'utilisateur
+  *
+  * @param {String} password - Le nouveau mot de passe de l'utilisateur
+  */
+function modifyPassword(password) {
+  ajaxRequest('PUT', '/quoidneuf/api/authentication?password='+password, 'callBackmodifyPassword');
 }
 
 //-----------------------------------------------

@@ -81,14 +81,14 @@
             <form class="col-lg-12" action="#" method="post">
               <div class="form-group col-lg-4">
                 <label for="birth_date">Date de naissance :</label>
-                <input class="form-control" type="text" id="birth_date" name="birth_date" value="08/12/1968" />
+                <input class="form-control" type="text" id="birth_date" name="birth_date" value="08/12/1968" readonly="true"/>
               </div>
               <div class="form-group col-lg-4">
-                <label for="e_mail">E-Mail :</label>
+                <label for="e_mail">E-Mail :*</label>
                 <input class="form-control" type="text" id="e_mail" name="e_mail" value="p.katerine@wanadoo.fr" />
               </div>
               <div class="form-group col-lg-4">
-                <label for="phone">Téléphone</label>
+                <label for="phone">Téléphone :</label>
                 <input class="form-control" type="text" id="phone" name="phone" value="/" />
               </div>
             </form>
@@ -113,6 +113,33 @@
         <!-- Bouton Modifier / Demande d'ami / Accepter demande -->
         <div class="row" id="button">
         </div>
+        <!-- Fin bouton Modifier / Demande d'ami / Accepter demande -->
+
+        <!-- Message d'erreur -->
+        <div id="error_div" class="row alert hidden" role="alert"></div>
+        <!-- Fin message d'erreur -->
+
+        <!-- Fenêtre modale modification mot de passe -->
+        <div class="row modal fade" id="modale_change_password" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modifier mot de passe</h4>
+              </div>
+              <div class="modal-body">
+                <p><label for="modal_password1">Mot de passe :</label><br/><input type="password" placeholder="Mot de passe..." id="modal_password1"></p>
+                <p><label for="modal_password2">Vérification :</label><br/><input type="password" placeholder="Vérification mot de passe..." id="modal_password2"></p>
+                <div id="modify_password_error" class="alert hidden" role="alert"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="button_modify_password">Valider changement</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- Fin fenêtre modale modification mot de passe -->
 
       </div>
       <!-- Fin informations -->
