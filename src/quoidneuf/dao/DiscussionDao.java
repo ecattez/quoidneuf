@@ -1,3 +1,21 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.dao;
 
 import java.sql.Connection;
@@ -77,7 +95,10 @@ public class DiscussionDao extends Dao<String> {
 				}
 				if (rs.getTimestamp("_date") != null) {
 					Message m = new Message();
-					Subscriber s = new Subscriber(rs.getInt("_from"), rs.getString("_first_name"), rs.getString("_last_name"));
+					Subscriber s = new Subscriber();
+					s.setId(rs.getInt("_from"));
+					s.setFirstName(rs.getString("_first_name"));
+					s.setLastName(rs.getString("_last_name"));
 					m.setSubscriber(s);
 					m.setContent(rs.getString("_content"));
 					m.setWrittenDate(rs.getTimestamp("_date"));

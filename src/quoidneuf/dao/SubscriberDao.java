@@ -1,6 +1,23 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.dao;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +28,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import quoidneuf.entity.Subscriber;
+import quoidneuf.util.Matcher;
 
 /**
  * DAO des utilisateurs.
@@ -58,7 +76,7 @@ public class SubscriberDao extends Dao<Integer> {
 			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday"));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -81,7 +99,7 @@ public class SubscriberDao extends Dao<Integer> {
 			st.setString(1, login);
 			ResultSet rs = st.executeQuery();
 			if (rs.next()) {
-				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"));
+				return new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday"));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -123,10 +141,20 @@ public class SubscriberDao extends Dao<Integer> {
 	public List<Integer> correctIds(List<Integer> userIds) {
 		List<Integer> ids = new ArrayList<>();
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id FROM subscriber WHERE subscriber_id IN (?)";
+			String query = "SELECT subscriber_id FROM subscriber WHERE subscriber_id IN";
+			String s = "";
+			int size = userIds.size();
+			for (int i=0; i < size; i++) {
+				s += "?";
+				if (i < size - 1) {
+					s += ",";
+				}
+			}
+			query += "(" + s + ")";
 			PreparedStatement st = con.prepareStatement(query);
-			Array array = con.createArrayOf("integer", userIds.toArray());
-			st.setArray(1, array);
+			for (int i=1; i <= size; i++) {
+				st.setInt(i, userIds.get(i-1));
+			}
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				ids.add(rs.getInt(1));
@@ -135,6 +163,21 @@ public class SubscriberDao extends Dao<Integer> {
 			e.printStackTrace();
 		}
 		return ids;
+	}
+	
+	public int insert(String login, String firstname, String lastname, String birthday) {
+		try (Connection con = getConnection()) {
+			String query = "INSERT INTO subscriber(login, first_name, last_name, birthday) VALUES (?, ?, ?, ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			st.setString(2, firstname);
+			st.setString(3, lastname);
+			st.setDate(4, new java.sql.Date(Matcher.convertDate(birthday).getTime()));
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	/**

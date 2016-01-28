@@ -1,6 +1,32 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import quoidneuf.entity.Credential;
+
 public final class Matcher {
+	
+	public static final String DATE_PATTERN = "yyyy-MM-dd";
 
 	private Matcher() {}
 	
@@ -10,6 +36,28 @@ public final class Matcher {
 	
 	public static boolean isDigits(String str) {
 		return str != null && str.matches("[0-9]+");
+	}
+	
+	public static boolean isDate(String str) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(DATE_PATTERN).parse(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date != null;
+	}
+	
+	public static boolean isEmail(String email) {
+		return email != null && email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+	}
+	
+	public static boolean isPhone(String phone) {
+		return phone != null && phone.matches("[0-9]{10}");
+	}
+	
+	public static boolean isPassword(String password) {
+		return password != null && password.length() > Credential.MIN_PASSWORD_LENGTH;
 	}
 	
 	public static Integer convertInt(String str) {
@@ -24,6 +72,16 @@ public final class Matcher {
 			return null;
 		}
 		return Boolean.valueOf(str.toLowerCase());
+	}
+	
+	public static Date convertDate(String str) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(DATE_PATTERN).parse(str);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
 	}
 
 }

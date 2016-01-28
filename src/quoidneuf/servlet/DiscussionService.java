@@ -1,3 +1,21 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.servlet;
 
 import java.io.IOException;
@@ -41,15 +59,12 @@ public class DiscussionService extends JsonServlet {
 		Integer userId = (Integer) session.getAttribute("user");
 		String discussionId = req.getParameter("id");
 		
-		// L'utilisateur n'est pas connecté, il n'est pas autorisé à aller plus loin
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
-		// Aucune discussion précisée, on récupère toutes les discussions de l'utilisateur
 		else if (discussionId == null) {
 			sendJson(res, discussionDao.getDiscussionsOf(userId));
 		}
-		// Au contraire, on charge la discussion et ses abonnés
 		else if (discussionDao.exist(discussionId)) {
 			if (!discussionDao.userExistIn(discussionId, userId)) {
 				sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
@@ -61,7 +76,6 @@ public class DiscussionService extends JsonServlet {
 				sendJson(res, discussion);
 			}
 		}
-		// Si la discussion n'existe pas, on renvoie 404
 		else {
 			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "discussion non trouvée");
 		}
@@ -83,13 +97,13 @@ public class DiscussionService extends JsonServlet {
 			String uuid = UUID.randomUUID().toString();
 			int insert = discussionDao.insertDiscussion(uuid, discussionName);
 			if (insert == -1) {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création de la discussion");
 			}
 			else if (discussionDao.insertUserIn(uuid, userId) > 0) {					
 				sendJson(HttpServletResponse.SC_CREATED, res, "{\"id\" : \"" + uuid + "\"}");
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'ajout de l'utilisateur dans la discussion");
 			}
 		}
 	}
@@ -125,7 +139,7 @@ public class DiscussionService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de l'ajout de l'utilisateur dans la discussion");
 			}
 		}
 	}
@@ -152,7 +166,7 @@ public class DiscussionService extends JsonServlet {
 			res.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la suppression de l'utilisateur dans la discussion");
 		}
 	}
 

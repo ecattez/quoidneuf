@@ -1,3 +1,21 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.dao;
 
 import java.sql.Connection;
@@ -108,7 +126,7 @@ public class FriendDao extends Dao<Integer> {
 			st.setBoolean(2, status);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
-				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name")));
+				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
 			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();

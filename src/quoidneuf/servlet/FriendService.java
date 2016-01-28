@@ -1,3 +1,21 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.servlet;
 
 import java.io.IOException;
@@ -76,7 +94,7 @@ public class FriendService extends JsonServlet {
 			sendTicket(HttpServletResponse.SC_CREATED, res, "demande d'ajout créée");
 		}
 		else {
-			res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la demande d'ajout");
 		}
 	}
 	
@@ -120,7 +138,7 @@ public class FriendService extends JsonServlet {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
-				res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la suppression du lien d'amitié");
 			}
 		}
 		else {

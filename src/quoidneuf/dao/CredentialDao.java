@@ -1,47 +1,37 @@
+/**
+ * This file is part of quoidneuf.
+ *
+ * quoidneuf is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * quoidneuf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.				 
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with quoidneuf.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @author Edouard CATTEZ <edouard.cattez@sfr.fr> (La 7 Production)
+ */
 package quoidneuf.dao;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Random;
 
 import javax.naming.NamingException;
 
+import quoidneuf.entity.Credential;
+
+import static quoidneuf.entity.Credential.*;
+
+/**
+ * DAO de l'authentification.
+ */
 public class CredentialDao extends Dao<String> {
-
-	/* Hash un mot de passe en clair avec MD5 */
-	private String encode(String password) {
-		byte[] unique = password.getBytes();
-		byte[] hash = null;
-
-		try {
-			hash = MessageDigest.getInstance("MD5").digest(unique);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		
-		StringBuilder builder = new StringBuilder();
-		String hex;
-		for (int i=0; i < hash.length; i++) {
-			hex = Integer.toHexString(hash[i]);
-			if (hex.length() == 1) {
-				builder.append('0').append(hex);
-			}
-			else {
-				builder.append(hex.substring(hex.length() - 2));
-			}
-		}
-		return builder.toString();
-	}
-	
-	/**
-	 * @return	un mot de passe généré aléatoirement à 8 caractères
-	 */
-	private String randomPassword() {
-		return encode(String.valueOf(new Random().nextInt())).substring(0, 8);
-	}
 	
 	@Override
 	public boolean exist(String id) {
@@ -54,6 +44,37 @@ public class CredentialDao extends Dao<String> {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param login
+	 * @param password
+	 * @return
+	 */
+	public int insert(String login, String password) {
+		return insert(login, password, Credential.DEFAULT_ROLE);
+	}
+	
+	/**
+	 * 
+	 * @param login
+	 * @param password
+	 * @param role
+	 * @return
+	 */
+	public int insert(String login, String password, String role) {
+		try (Connection con = getConnection()) {
+			String query = "INSERT INTO credential VALUES (?, ?, ?)";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, login);
+			st.setString(2, encode(password));
+			st.setString(3, role);
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	/**
@@ -76,6 +97,11 @@ public class CredentialDao extends Dao<String> {
 		
 	}
 	
+	/**
+	 * 
+	 * @param login
+	 * @return
+	 */
 	public String resetPassword(String login) {
 		try (Connection con = getConnection()) {
 			String query = "UPDATE credential SET password_hash = ? WHERE login = ?";
@@ -92,6 +118,11 @@ public class CredentialDao extends Dao<String> {
 		return "";
 	}
 	
+	/**
+	 * 
+	 * @param login
+	 * @return
+	 */
 	public int remove(String login) {
 		try (Connection con = getConnection()) {
 			String query = "DELETE FROM credential WHERE login = ?";
