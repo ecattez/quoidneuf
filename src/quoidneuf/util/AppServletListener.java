@@ -28,6 +28,9 @@ import javax.servlet.ServletContextListener;
  */
 public class AppServletListener implements ServletContextListener {
 	
+	public static final String SUBSCRIBER_PATH_KEY = "subscriberPath";
+	public static final String DISCUSSION_PATH_KEY = "discussionPath";
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent e) {
 		// Nothing TODO
@@ -35,9 +38,10 @@ public class AppServletListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent e) {
+		System.out.println("Démarrage de l'application");
 		ServletContext ctx = e.getServletContext();
-		ctx.setAttribute("subscriberPath", ctx.getRealPath(ctx.getInitParameter("subscribers")));
-		ctx.setAttribute("discussionPath", ctx.getRealPath(ctx.getInitParameter("discussions")));
+		ctx.setAttribute(SUBSCRIBER_PATH_KEY, ctx.getRealPath(ctx.getInitParameter("subscribers")));
+		ctx.setAttribute(DISCUSSION_PATH_KEY, ctx.getRealPath(ctx.getInitParameter("discussions")));
 	}
 
 }

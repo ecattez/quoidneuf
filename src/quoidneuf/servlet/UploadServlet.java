@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import static quoidneuf.util.AppServletListener.*;
 import quoidneuf.util.Matcher;
 
 /**
@@ -50,34 +51,42 @@ public class UploadServlet extends JsonServlet {
 	private static final long serialVersionUID = -1041983016810957406L;
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		ServletContext ctx = req.getServletContext();
-		HttpSession session = req.getSession(true);
-		Integer userId = (Integer) session.getAttribute("user");
-		String dest = req.getParameter("dest");
-		Part part = req.getPart("file");
-		String filename = getFileName(part);
-		
-		if (userId == null) {
-			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-		}
-		else if (Matcher.isEmpty(dest)) {
-			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "parametre 'dest' manquant");
-		}
-		else if (ctx.getAttribute(dest) == null) {
-			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "destination non trouvée");
+		if (!req.getContentType().contains("multipart/form-data")) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "content-type incorrect");
 		}
 		else {
-			Path target = Paths.get(dest, String.valueOf(userId));
-			try {
-				Files.createDirectories(target);
-				Files.copy(part.getInputStream(), target.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-				sendTicket(HttpServletResponse.SC_CREATED, res, "fichier uploadé");
-			} catch (IOException e) {
-				e.printStackTrace();
-				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la copie du fichier");
+			ServletContext ctx = req.getServletContext();
+			HttpSession session = req.getSession(true);
+			Integer userId = (Integer) session.getAttribute("user");
+			String dest = req.getParameter("dest");
+			
+			if (userId == null) {
+				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			else if (Matcher.isEmpty(dest)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "parametre 'dest' manquant");
+			}
+			else if (!(dest.equals(SUBSCRIBER_PATH_KEY) || dest.equals(DISCUSSION_PATH_KEY)) || ctx.getAttribute(dest) == null) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "destination non trouvée");
+			}
+			else {
+				try {
+					Part part = req.getPart("file");
+					String filename = getFileName(part);
+					Path target = Paths.get(dest, String.valueOf(userId));
+					try {
+						Files.createDirectories(target);
+						Files.copy(part.getInputStream(), target.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+						sendTicket(HttpServletResponse.SC_CREATED, res, "fichier uploadé");
+					} catch (IOException e) {
+						e.printStackTrace();
+						sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la copie du fichier");
+					}
+				} catch (Exception e) {
+					sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "aucun fichier à télécharger");
+				}
 			}
 		}
-		
 	}
 	
 	/** Récupère le nom du fichier dans le content-disposition de l'en-tête http */	
