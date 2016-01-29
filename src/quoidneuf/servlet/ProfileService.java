@@ -169,7 +169,7 @@ public class ProfileService extends JsonServlet {
 		else if (!Matcher.isEmail(email)) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "adresse email incorrecte");
 		}
-		else if (phone != null && !Matcher.isPhone(phone)) {
+		else if (!Matcher.isEmpty(phone) && !Matcher.isPhone(phone)) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "numéro de téléphone incorrect");
 		}
 		else {

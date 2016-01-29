@@ -71,7 +71,7 @@ public class SubscriberDao extends Dao<Integer> {
 	 */
 	public Subscriber getById(int userId) {
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS id, first_name, last_name FROM subscriber WHERE subscriber_id = ?";
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM subscriber WHERE subscriber_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			ResultSet rs = st.executeQuery();
@@ -94,7 +94,7 @@ public class SubscriberDao extends Dao<Integer> {
 	 */
 	public Subscriber getByLogin(String login) {
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS id, first_name, last_name FROM subscriber WHERE login = ?";
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM subscriber WHERE login = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, login);
 			ResultSet rs = st.executeQuery();
