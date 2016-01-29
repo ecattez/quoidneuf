@@ -19,16 +19,16 @@ INSERT INTO credential VALUES ('jacksonsl', '43ddea0d5568d98cc525f5adc7321447', 
 INSERT INTO credential VALUES ('scorsesem', '3099ece3d8931fda8d907fd28de21234', 'user');
 
 -- Subscriber :
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('ferrot', 'Thomas', 'Ferro', '19-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('catteze', 'Edouard', 'Cattez', '20-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('leleuj', 'Julien', 'Leleu', '21-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('fevrer', 'Remy', 'Fevre', '22-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('katerinep', 'Philippe', 'Katerine', '23-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('vincentf', 'Francky', 'Vincent', '24-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('vincentl', 'Lagaff', 'Vincent', '25-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('renk', 'Kylo', 'Ren', '26-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('jacksonsl', 'Samuel L', 'Jackson', '27-10-1995');
-INSERT INTO subscriber (login, first_name, last_name, birthdate) VALUES ('scorsesem', 'Martin', 'Scorsese', '28-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('ferrot', 'Thomas', 'Ferro', '19-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('catteze', 'Edouard', 'Cattez', '20-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('leleuj', 'Julien', 'Leleu', '21-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('fevrer', 'Remy', 'Fevre', '22-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('katerinep', 'Philippe', 'Katerine', '23-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('vincentf', 'Francky', 'Vincent', '24-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('vincentl', 'Lagaff', 'Vincent', '25-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('renk', 'Kylo', 'Ren', '26-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('jacksonsl', 'Samuel L', 'Jackson', '27-10-1995');
+INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('scorsesem', 'Martin', 'Scorsese', '28-10-1995');
 
 -- Subscriber_meta :
 INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (1, 'picturepath', 'Description test', '1@mail.com', '1111111111');
