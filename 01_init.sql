@@ -30,7 +30,7 @@ CREATE TABLE subscriber(
   login VARCHAR(16),
   first_name VARCHAR(64) NOT NULL,
   last_name VARCHAR(64) NOT NULL,
-  birthdate DATE NOT NULL,
+  birthday DATE NOT NULL,
   CONSTRAINT pk_subscriber PRIMARY KEY (subscriber_id),
   CONSTRAINT fk_credential FOREIGN KEY (login) REFERENCES credential (login) ON UPDATE cascade ON DELETE SET NULL
 );
