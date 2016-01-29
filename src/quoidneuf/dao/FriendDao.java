@@ -37,7 +37,7 @@ public class FriendDao extends Dao<Integer> {
 	@Override
 	public boolean exist(Integer id) {
 		try (Connection con = getConnection()) {
-			String query = "SELECT 1 FROM friend_with WHERE friend_1 = ? or friend_2 = ?";
+			String query = "SELECT 1 FROM friend_with WHERE friend_1 = ? OR friend_2 = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, id);
 			st.setInt(2, id);
@@ -118,11 +118,12 @@ public class FriendDao extends Dao<Integer> {
 	public List<Subscriber> getLinkedWith(int userId, boolean status) {
 		List<Subscriber> friends = new ArrayList<Subscriber>();
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS id, first_name, last_name FROM friend_with INNER JOIN subscriber"
-					+ " ON friend_2 = subscriber_id AND friend_1 = ?"
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with INNER JOIN subscriber"
+					+ " ON (friend_2 = subscriber_id AND friend_1 = ?) OR (friend_1 = subscriber_id AND friend_2 = ?)"
 					+ " WHERE status = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
+			st.setInt(2, userId);
 			st.setBoolean(2, status);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
