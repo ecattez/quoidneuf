@@ -28,22 +28,30 @@ function initLoginPage(uid) {
     var firstname = $('#inscription_first_name').val();
     var lastname = $('#inscription_last_name').val();
     var birthdate = $('#inscription_birth_date').val();
+    var picture = 'picturePath';
     var mail = $('#inscription_email').val();
     var phone = $('#inscription_phone').val();
     var description = $('#inscription_description').val();
 
-    if(!checkRegistrationParameters(username, password, passwordCheck, firstname, lastname, birthdate, mail, phone)) {
+    if(!checkRegistrationParameters(username, password, passwordCheck, firstname, lastname, birthdate, mail)) {
       $("#inscription_error").text("Merci de renseigner toutes les informations suivies d'une étoile.");
       $("#inscription_error").removeClass('hidden');
+      $("#inscription_error").removeClass('alert-success');
+      $("#inscription_error").addClass('alert-danger');
     }
     else {
       if(password != passwordCheck) {
         $("#inscription_error").text("Mot de passe incorrect");
         $("#inscription_error").removeClass('hidden');
+        $("#inscription_error").removeClass('alert-success');
+        $("#inscription_error").addClass('alert-danger');
       }
       else {
-        // TODO : Une fois l'ajout d'utilisateur fonctionnel.
-        $("#inscription_error").addClass('hidden');
+        $("#inscription_error").text("Vérification des données...");
+        $("#inscription_error").removeClass('hidden');
+        $("#inscription_error").removeClass('alert-danger');
+        $("#inscription_error").addClass('alert-success');
+        createUser(username, password, firstname, lastname, birthdate, picture, description, mail, phone);
       }
     }
   });
@@ -66,6 +74,24 @@ function initLoginPage(uid) {
 }
 
 /**
+  * Vérifie le message de retour de la requête de création d'user
+  */
+function callBackCreateUser(data) {
+  if(data.code != 201) {
+    $("#inscription_error").text(data.responseJSON.message);
+    $("#inscription_error").removeClass('hidden');
+    $("#inscription_error").removeClass('alert-success');
+    $("#inscription_error").addClass('alert-danger');
+  }
+  else {
+    $("#inscription_error").text(data.message);
+    $("#inscription_error").removeClass('hidden');
+    $("#inscription_error").removeClass('alert-danger');
+    $("#inscription_error").addClass('alert-success');
+  }
+}
+
+/**
   * Vérifie la présence de tous les champs de connexion
   *
   * @param {String} Les champs de connexion
@@ -83,7 +109,7 @@ function checkLoginParameters(username, password) {
 *
 * @return {Boolean} <true> Si tous les champs sont valides, <false> sinon
   */
-function checkRegistrationParameters(username, password, passwordCheck, firstname, lastname, birthdate, mail, phone) {
+function checkRegistrationParameters(username, password, passwordCheck, firstname, lastname, birthdate, mail) {
   return !(
     (username == '') || (username == undefined)
     || (password == '') || (password == undefined)
@@ -91,8 +117,7 @@ function checkRegistrationParameters(username, password, passwordCheck, firstnam
     || (firstname == '') || (firstname == undefined)
     || (lastname == '') || (lastname == undefined)
     || (birthdate == '') || (birthdate == undefined)
-    || (mail == '') || (mail == undefined)
-    || (phone == '') || (phone == undefined));
+    || (mail == '') || (mail == undefined));
 }
 
 /**

@@ -106,6 +106,7 @@ function loadButtonAccept(user) {
   * @param {Object} data - Le profil de l'utilisateur
   */
 function callBackGetSubscribersProfile(data) {
+  console.log(data);
   $("#nom_utilisateur").text(data.firstName + " " + data.lastName);
   $("#birth_date").val(data.birthday);
   $("#e_mail").val(data.meta.email);
@@ -165,7 +166,7 @@ function callBackModifySubscribersProfile(data) {
   }
   else {
     console.log(data);
-    $("#error_div").text("Erreur : " + data.code + " : " + data.message);
+    $("#error_div").text("Erreur : " + data.responseJSON.code + " : " + data.responseJSON.message);
     $("#error_div").addClass('alert-danger');
   }
 }

@@ -19,6 +19,15 @@ function logout() {
   ajaxRequest('DELETE', '/quoidneuf/api/authentication', 'callBackLogout');
 }
 
+/**
+  * Création d'un compte
+  *
+  * @param Les informations du nouvel utilisateur
+  */
+function createUser(username, password, firstname, lastname, birthday, picture, description, email, phone) {
+  ajaxRequest('POST', '/quoidneuf/api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, picture : picture, description : description, email : email, phone : phone });
+}
+
 //-----------------------------------------------
 // Pour navbar : Récupérer les discussions et les amis
 
