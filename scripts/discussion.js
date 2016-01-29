@@ -1,5 +1,6 @@
 var discussionId;
 var nbMessages;
+var interval;
 
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
@@ -21,7 +22,13 @@ function initDiscussionPage(dId) {
     }
   });
 
-  setInterval(refreshMessages, 1000);
+  interval = setInterval(refreshMessages, 1000);
+}
+
+function changeDiscussion(dId) {
+  clearInterval(interval);
+  resetDiscussionPage();
+  initDiscussionPage(dId);
 }
 
 /**
@@ -29,7 +36,7 @@ function initDiscussionPage(dId) {
   */
 function resetDiscussionPage() {
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">Discussion</h2>");
-  $("#discussion_membres").replaceWith("");
+  $("#discussion_membres").empty();
   $("#messages").empty();
 }
 
@@ -39,13 +46,14 @@ function resetDiscussionPage() {
 function callBackGetMembers(data) {
   var line = '';
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">"+data.name+"</h2>");
+  $("#discussion_membres").empty();
   var membres = data.current_subscribers;
   for(var membre in membres) {
     //line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"+membres[membre].firstName + " " + membres[membre].lastName + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\"><button type=\"button\" name=\"button_add_friend"++"\">+</button></div></div></li>";
-    line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"
-    + membres[membre].firstName + "." + membres[membre].lastName.substring(0,1)
-    + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\">"
-    + "<button type=\"button\" name=\"button_add_friend_"+  membres[membre].id +"\">+</button></div></div></li>"
+    line = "<li><p class=\"row\">";
+    line += "<a href=\"profiles.jsp?id="+membres[membre].id+"\">";
+    line += membres[membre].firstName + " " + membres[membre].lastName;
+    line += "</a></p>";
     $("#discussion_membres").append(line);
   }
 }

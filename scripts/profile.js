@@ -1,3 +1,5 @@
+var id;
+
 /**
   * Charge les élements de la page
   *
@@ -5,10 +7,11 @@
   * @param {Number} user - Id de l'utilisateur de la page.
   */
 function initProfilePage(uid, user) {
-  if(user != '' && user != undefined) {
+  id = uid;
+  if(user != '' && user != undefined && user != uid) {
     // Si on ne précise pas d'utilisateur, on charge la page de l'utilisateur courant :
     uid = user;
-    checkFriend(user);
+    checkFriendStatus(user);
   }
   else {
     loadButtonModify();
@@ -22,10 +25,37 @@ function initProfilePage(uid, user) {
   *
   * @param {Number} user - Id de l'utilisateur à vérifier
   */
-function checkFriend(user) {
-  console.log("A implementer");
+function checkFriendStatus(user) {
+  // console.log("A implementer");
   //TODO : Vérifier si ami / en demande ou pas ami du tout pour charger les bons boutons
   loadButtonAdd(user);
+}
+
+/**
+  * Charge le bouton d'ajout d'ami
+  */
+function callBackCheckFriendStatus(data) {
+  if((data.status == 1) ||(data.status == 2)) {
+    // Demande en cours
+    //TODO : vérifie quel utilisateur à envoyé la demande, si c'est l'utilisateur courant on bloque le bouton avec "demande en attente...", sinon :
+    $("#button").empty();
+    $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" id=\"button_accept\">Accepter demande</button></p>");
+    $("#button_accept").on("click", acceptFriendRequest);
+  }
+  else {
+    // Pas amis et pas de demande en cours
+    $("#button").empty();
+    $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter aux amis\" id=\"button_send_friend_request\">Envoyer demande d'ami</button></p>");
+    $("#button_send_friend_request").on("click", acceptFriendRequest);
+  }
+}
+
+/**
+  *
+  */
+function acceptFriendRequest() {
+  //TODO : Envoyer requete validation demande d'ami
+  console.log("validation demande d'ami à implementer");
 }
 
 /**
@@ -77,7 +107,6 @@ function callBackmodifyPassword(data) {
   * @param {Number} user - L'id de l'utilisateur à ajouter
   */
 function loadButtonAdd(user) {
-  console.log("A implementer");
 
   $("#button").empty();
   $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
@@ -88,7 +117,7 @@ function loadButtonAdd(user) {
   *
   */
 function addFriend(user) {
-  console.log("A implementer");
+  console.log("addFriend à implementer");
 }
 
 /**
@@ -106,7 +135,7 @@ function loadButtonAccept(user) {
   * @param {Object} data - Le profil de l'utilisateur
   */
 function callBackGetSubscribersProfile(data) {
-  console.log(data);
+  // console.log(data);
   $("#nom_utilisateur").text(data.firstName + " " + data.lastName);
   $("#birth_date").val(data.birthday);
   $("#e_mail").val(data.meta.email);
@@ -124,15 +153,21 @@ function callBackGetFriendsProfile(data) {
   var line = '';
   for(var ami in data) {
     line = "<div class=\"row\">";
-    line += "<div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8\">";
+    line += "<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12\">";
+    line += "<a id='profile_"+data[ami].id+"'>";
     line += data[ami].firstName + " " + data[ami].lastName;
-    line += "</div>";
-    line += "<div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\">";
-    line += "<button type=\"button\" name=\"button_add_friend\" id=add_friend_"+data[ami].id+">+</button></div>";
+    line += "</a>";
     line += "</div>";
     $("#amis").append(line);
-    // TODO : Ajouter le listener
+    ajoutEventListener(data[ami].id);
   }
+}
+
+/**
+  * Ajoute le listener au lien
+  */
+function ajoutEventListener(userId) {
+  $("#profile_"+userId).on("click", function() { initProfilePage(id, userId) });
 }
 
 
@@ -165,7 +200,6 @@ function callBackModifySubscribersProfile(data) {
     $("#error_div").addClass('alert-success');
   }
   else {
-    console.log(data);
     $("#error_div").text("Erreur : " + data.responseJSON.code + " : " + data.responseJSON.message);
     $("#error_div").addClass('alert-danger');
   }

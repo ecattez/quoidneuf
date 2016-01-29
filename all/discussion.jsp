@@ -117,7 +117,7 @@
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../scripts/discussion.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
-  <script type="text/javascript">initNavbar(${user});</script>
+  <script type="text/javascript">initNavbar(${user}, 'discussion');</script>
   <script type="text/javascript">initDiscussionPage("${param.id}");</script>
 </body>
 </html>
