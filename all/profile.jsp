@@ -81,7 +81,7 @@
             <form class="col-lg-12" action="#" method="post">
               <div class="form-group col-lg-4">
                 <label for="birth_date">Date de naissance :</label>
-                <input class="form-control" type="text" id="birth_date" name="birth_date" value="08/12/1968" readonly="true"/>
+                <input class="form-control" type="text" id="birth_date" name="birth_date" value="08/12/1968" readonly/>
               </div>
               <div class="form-group col-lg-4">
                 <label for="e_mail">E-Mail :*</label>

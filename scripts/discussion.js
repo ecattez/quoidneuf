@@ -11,6 +11,33 @@ function initDiscussionPage(dId) {
   getMembers(discussionId);
   getMessages(discussionId);
 
+  clearButtonListeners();
+  addButtonListeners();
+
+  interval = setInterval(refreshMessages, 1000);
+}
+
+/**
+  * Détache les EventListeners des boutons
+  */
+function clearButtonListeners() {
+  $("#send_message").off("click");
+
+  $("#message_input").off("enterKey");
+
+  $("#message_input").off("keyup");
+
+  $("#add_member").off("click");
+
+  $("#member_input").off("enterKey");
+
+  $("#member_input").off("keyup");
+}
+
+/**
+  * Ajoute les EventListeners aux boutons
+  */
+function addButtonListeners() {
   $("#send_message").on("click", ajoutMessage);
 
   $("#message_input").on("enterKey", ajoutMessage);
@@ -18,26 +45,31 @@ function initDiscussionPage(dId) {
   $("#message_input").keyup(function(e) {
     if(e.keyCode == 13)
     {
-        $(this).trigger("enterKey");
+      $(this).trigger("enterKey");
     }
   });
 
-  interval = setInterval(refreshMessages, 1000);
-}
+  $("#add_member").on("click", ajoutMembre);
 
-function changeDiscussion(dId) {
-  clearInterval(interval);
-  resetDiscussionPage();
-  initDiscussionPage(dId);
+  $("#member_input").on("enterKey", ajoutMembre);
+
+  $("#member_input").keyup(function(e) {
+    if(e.keyCode == 13)
+    {
+      $(this).trigger("enterKey");
+    }
+  });
 }
 
 /**
   * Vide la discussion, le nom de cette dernière et ses membres pour charger dynamiquement une nouvelle discussion
   */
-function resetDiscussionPage() {
+function changeDiscussion(dId) {
+  clearInterval(interval);
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">Discussion</h2>");
   $("#discussion_membres").empty();
   $("#messages").empty();
+  initDiscussionPage(dId);
 }
 
 /**
@@ -51,7 +83,7 @@ function callBackGetMembers(data) {
   for(var membre in membres) {
     //line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"+membres[membre].firstName + " " + membres[membre].lastName + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\"><button type=\"button\" name=\"button_add_friend"++"\">+</button></div></div></li>";
     line = "<li><p class=\"row\">";
-    line += "<a href=\"profiles.jsp?id="+membres[membre].id+"\">";
+    line += "<a href=\"profile.jsp?id="+membres[membre].id+"\">";
     line += membres[membre].firstName + " " + membres[membre].lastName;
     line += "</a></p>";
     $("#discussion_membres").append(line);
@@ -104,17 +136,63 @@ function ajoutMessage() {
 }
 
 /**
+  * Ajoute une message à la discussion
+  */
+function ajoutMembre() {
+  var member = $("#member_input").val();
+  if(member != '') {
+    //TODO : Trouver l'id du membre
+    addMember(discussionId, member);
+  }
+  $("#member_input").val("");
+}
+
+/**
   * Vérifie l'objet de retour de la méthode d'ajout de message
   *
   * @param {Object} data - L'id du message si ce dernier est bien envoyé, une erreur sinon.
   */
 function callBackWriteMessage(data) {
-  if(data.id) {
-    // refreshMessages();
+  if(!data.id) {
+    updateErrorMessage('error_div', false, 'Erreur à l\'envoie du message');
+  }
+}
+
+/**
+  * Vérifie l'objet de retour de la méthode d'ajout de membre
+  *
+  * @param {Object} data - Vide si bien ajouté, message d'erreur sinon
+  */
+function callBackAddMember(data) {
+  console.log(data);
+  if(data == undefined) {
+    getMembers(discussionId);
+    updateErrorMessage('error_div', true, 'Membre bien ajouté !');
   }
   else {
-    //TODO : Gestion erreur
+    updateErrorMessage('error_div', false, data.responseJSON.message);
   }
+}
+
+/**
+  * Met à jour une division d'erreur
+  *
+  * @param {String} div - La division à mettre à jour
+  * @param {Boolean} bool - <true> si message d'erreur, <false> si message de réussite
+  * @param {String} mess - Le message de la division
+  */
+function updateErrorMessage(div, bool, mess) {
+  $("#"+div).removeClass("hidden");
+  $("#"+div).removeClass("alert-success");
+  $("#"+div).removeClass("alert-danger");
+
+  if(bool == true) {
+    $("#"+div).addClass("alert-success");
+  }
+  else {
+    $("#"+div).addClass("alert-danger");
+  }
+  $("#"+div).append("<p>"+mess+"</p>");
 }
 
 /**

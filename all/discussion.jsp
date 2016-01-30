@@ -77,6 +77,10 @@
           <button class="btn btn-default col-lg-1 col-md-1 col-sm-1 col-xs-1" type="button" id="send_message"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
         </div>
         <!-- Fin message à envoyer -->
+
+        <!-- Error div-->
+        <div class="row alert hidden" role="alert" id="error_div"></div>
+        <!-- Fin Error Div-->
       </div>
       <!-- Fin Discussion -->
 
@@ -88,9 +92,9 @@
         <div class="row">
           <div class="input-group">
             <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              <button class="btn btn-default" type="button" id="add_member"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </span>
-            <input type="text" class="form-control" placeholder="Ajouter utilisateur...">
+            <input type="text" class="form-control" placeholder="Ajouter utilisateur..." id="member_input">
           </div><!-- /input-group -->
         </div>
       </div>

@@ -9,6 +9,8 @@
 - [ ] Intégration du travail d'Edouard.
   - [x] Changer la navbar, ne pas recharger toute la page au changement de discussion
   - [ ] Ajout d'un utilisateur à la discussion
+    - [ ] Rechercher les membres d'après le champs à chaque lettre tappée
+    - [ ] Retrouver l'id de l'utilisateur
 
 # Login
 - [x] Maquette
@@ -23,11 +25,11 @@
 - [ ] Intégration du travail d'Edouard.
   - [x] Changer la navbar, ne pas recharger toute la page au changement de discussion
   - [x] Charger profile de l'utilisateur courant avec bouton modifier et champs accessibles si pas d'id
-  - [ ] Charger profile de l'utilisateur dont l'id est passé en parametre avec champs innaccessibles etc sinon
+  - [x] Charger profile de l'utilisateur dont l'id est passé en parametre avec champs innaccessibles etc sinon
   - [ ] Gestion de picture
+  - [ ] Ajout d'un ami (avec une partie "Amis" et une autre "Demandes en attente")
 
 # Toutes les pages
-- [x] Chargement des amis 
-- [ ] Ajout d'un ami (avec une partie "Amis" et une autre "Demandes en attente")
+- [x] Chargement des amis
 - [x] Revoir le js pour passer tout en jquery
 - [x] Revoir requetes ajax + methodes callBack pour récup les data

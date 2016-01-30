@@ -96,6 +96,16 @@ function writeMessage(discussionId, content) {
   ajaxRequest('POST', '/quoidneuf/api/messages', 'callBackWriteMessage', undefined, 'json', { discussion : discussionId, content : content });
 }
 
+/**
+  * Ajoute un membre à la discussion
+  *
+  * @param {Number} discussionId - L'id de la discussion
+  * @param {Number} userId - L'id de l'utilisateur à ajouter à cette discussion
+  */
+function addMember(discussionId, userId) {
+  ajaxRequest('PUT', '/quoidneuf/api/discussions?id='+discussionId+'&users='+userId, 'callBackAddMember');
+}
+
 //-----------------------------------------------
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 
