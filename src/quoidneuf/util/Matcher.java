@@ -34,10 +34,26 @@ public final class Matcher {
 		return str == null || str.length() == 0;
 	}
 	
+	/**
+	 * Vérifie si une chaîne n'est composée que de chiffres
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à vérifier
+	 * 
+	 * @return	<true> si la chaîne de caractères n'est composée que de chiffres, <false> sinon
+	 */
 	public static boolean isDigits(String str) {
 		return str != null && str.matches("[0-9]+");
 	}
 	
+	/**
+	 * Vérifie si une chaîne de caractères est une date au format DATE_PATTERN
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à vérifier
+	 * 
+	 * @return	<true> si la chaîne de caractères est une date, <false> sinon
+	 */
 	public static boolean isDate(String str) {
 		Date date = null;
 		try {
@@ -48,18 +64,50 @@ public final class Matcher {
 		return date != null;
 	}
 	
-	public static boolean isEmail(String email) {
-		return email != null && email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+	/**
+	 * Vérifie si une chaîne de caractères est un email
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à vérifier
+	 * 
+	 * @return	<true> si la chaîne de caractères est un email, <false> sinon
+	 */
+	public static boolean isEmail(String str) {
+		return str != null && str.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 	}
 	
-	public static boolean isPhone(String phone) {
-		return phone != null && phone.matches("[0-9]{10}");
+	/**
+	 * Vérifie si une chaîne de caractères un numéro de téléphone (FR)
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à vérifier
+	 * 
+	 * @return	<true> si la chaîne de caractères est un numéro de téléphone, <false> sinon
+	 */
+	public static boolean isPhone(String str) {
+		return str != null && str.matches("[0-9]{10}");
 	}
 	
-	public static boolean isPassword(String password) {
-		return password != null && password.length() > Credential.MIN_PASSWORD_LENGTH;
+	/**
+	 * Vérifie si une chaîne de caractères est un mot de passe valide (taille > Credential.MIN_PASSWORD_LENGTH)
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à vérifier
+	 * 
+	 * @return	<true> si la chaîne de caractères est un mot de passe valide, <false> sinon
+	 */
+	public static boolean isPassword(String str) {
+		return str != null && str.length() > Credential.MIN_PASSWORD_LENGTH;
 	}
 	
+	/**
+	 * Converti une chaîne de caractères en entier
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à convertir
+	 * 
+	 * @return	une instance d'Integer en cas de succès, null sinon
+	 */
 	public static Integer convertInt(String str) {
 		if (isDigits(str)) {
 			return Integer.parseInt(str);
@@ -67,6 +115,14 @@ public final class Matcher {
 		return null;
 	}
 	
+	/**
+	 * Converti une chaîne de caractères en booléen
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à convertir
+	 * 
+	 * @return	une instance de Boolean en cas de succès, null sinon
+	 */
 	public static Boolean convertBoolean(String str) {
 		if (str == null) {
 			return null;
@@ -74,6 +130,14 @@ public final class Matcher {
 		return Boolean.valueOf(str.toLowerCase());
 	}
 	
+	/**
+	 * Converti une chaîne de caractères en date
+	 * 
+	 * @param	str
+	 * 			la chaîne de caractères à convertir
+	 * 
+	 * @return	une instance de Date en cas de succès, null sinon
+	 */
 	public static Date convertDate(String str) {
 		Date date = null;
 		try {

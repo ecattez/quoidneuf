@@ -40,45 +40,89 @@ public class Subscriber extends Jsonable {
 		this.birthday = birthday;
 	}
 
+	/**
+	 * @return	l'identifiant de l'utilisateur
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Saisi l'identifiant de l'utilisateur
+	 * 
+	 * @param	id
+	 * 			le nouvel identifiant de l'utilisateur
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return	le prénom de l'utilisateur
+	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
+	/**
+	 * Saisi le prénom de l'utilisateur
+	 * 
+	 * @param	firstName
+	 * 			le nouveau prénom de l'utilisateur
+	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	/**
+	 * @return	le nom de famille de l'utilisateur
+	 */
 	public String getLastName() {
 		return lastName;
 	}
 
+	/**
+	 * Saisi le nom de famille de l'utilisateur
+	 * 
+	 * @param	lastName
+	 * 			le nouveau nom de famille de l'utilisateur
+	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	/**
+	 * @return	la date d'anniversaire de l'utilisateur
+	 */
 	public Date getBirthday() {
 		return birthday;
 	}
 	
+	/**
+	 * Saisi la date d'anniversaire de l'utilisateur
+	 * 
+	 * @param	birthday
+	 * 			la nouvelle date d'anniversaire de l'utilisateur
+	 */
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 	
+	/**
+	 * @return	les méta-données de l'utilisateur
+	 */
 	public SubscriberMeta getMeta() {
 		return meta;
 	}
 	
+	/**
+	 * Saisi les méta-données de l'utilisateur
+	 * 
+	 * @param	meta
+	 * 			les nouvelles méta-données de l'utilisateur
+	 */
 	public void setMeta(SubscriberMeta meta) {
 		this.meta = meta;
 	}
-
-
+	
 }

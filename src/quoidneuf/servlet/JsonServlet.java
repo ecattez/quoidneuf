@@ -39,6 +39,7 @@ public abstract class JsonServlet extends HttpServlet {
 	 * 			la réponse HTTP
 	 * @param	json
 	 * 			l'objet JSONable
+	 * 
 	 * @throws	IOException
 	 * 			erreur à l'écriture de l'objet dans le flux de sortie
 	 */
@@ -56,6 +57,7 @@ public abstract class JsonServlet extends HttpServlet {
 	 * 			la réponse HTTP
 	 * @param	json
 	 * 			l'objet JSONable
+	 * 
 	 * @throws	IOException
 	 * 			erreur à l'écriture de l'objet dans le flux de sortie
 	 */
@@ -72,6 +74,7 @@ public abstract class JsonServlet extends HttpServlet {
 	 * 			la réponse HTTP
 	 * @param	message
 	 * 			le message du ticket
+	 * 
 	 * @throws	IOException
 	 * 			erreur à l'écriture de l'objet dans le flux de sortie
 	 */

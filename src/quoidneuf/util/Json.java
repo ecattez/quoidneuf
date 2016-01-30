@@ -33,6 +33,16 @@ public class Json {
 	
 	private Json() {}
 	
+	/**
+	 * Récupère un objet JAVA depuis une chaîne de caractères au format JSON
+	 * 
+	 * @param	src
+	 * 			l'objet JSON
+	 * @param	valueType
+	 * 			l'objet JAVA
+	 * 
+	 * @return	une instance de <T>
+	 */
 	public <T> T read(String src, Class<T> valueType) {
 		try {
 			return (T) mapper.readValue(src, valueType);
@@ -46,6 +56,14 @@ public class Json {
 		return null;
 	}
 	
+	/**
+	 * Transforme un objet JAVA en objet JSON
+	 * 
+	 * @param	value
+	 * 			l'objet JAVA
+	 * 
+	 * @return	une chaîne de caractères au format JSON
+	 */
 	public String write(Object value) {
 		try {
 			return mapper.writeValueAsString(value);
@@ -55,6 +73,9 @@ public class Json {
 		return null;
 	}
 	
+	/**
+	 * @return	l'instance unique de Json
+	 */
 	public static Json getInstance() {
 		if (jsonBuilder == null) {
 			jsonBuilder = new Json();

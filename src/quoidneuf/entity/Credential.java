@@ -22,6 +22,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+/**
+ * Représente les identifiants d'un utilisateur
+ */
 public class Credential extends Jsonable {
 	
 	public static final int MAX_LOGIN_LENGTH = 16;
@@ -36,18 +39,36 @@ public class Credential extends Jsonable {
 		this.password = password;
 	}
 	
+	/**
+	 * @return	le login de l'utilisateur
+	 */
 	public String getLogin() {
 		return login;
 	}
 	
+	/**
+	 * Saisi le login de l'utilisateur
+	 * 
+	 * @param	login
+	 * 			le nouveau login de l'utilisateur
+	 */
 	public void setLogin(String login) {
 		this.login = login;
 	}
 	
+	/**
+	 * @return	le mot de passe de l'utilisateur
+	 */
 	public String getPassword() {
 		return password;
 	}
 	
+	/**
+	 * Saisi le mot de passe de l'utilisateur
+	 * 
+	 * @param	password
+	 * 			le nouveau mot de passe de l'utilisateur
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}

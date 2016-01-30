@@ -21,42 +21,69 @@ package quoidneuf.entity;
 import java.sql.Timestamp;
 
 /**
- * Représentation d'un message écrit par un utilisateur.
+ * Représente un message écrit par un utilisateur.
  */
 public class Message extends Jsonable {
 	
-	private Subscriber subscriber;
+	private Subscriber owner;
 	private String content;
 	private Timestamp writtenDate;
 	
 	public Message() {}
 	
 	public Message(Subscriber subscriber, String content, Timestamp writtenDate) {
-		this.subscriber = subscriber;
+		this.owner = subscriber;
 		this.content = content;
 		this.writtenDate = writtenDate;
 	}
 	
-	public Subscriber getSubscriber() {
-		return subscriber;
+	/**
+	 * @return	le propriétaire du message
+	 */
+	public Subscriber getOwner() {
+		return owner;
 	}
 
-	public void setSubscriber(Subscriber subscriber) {
-		this.subscriber = subscriber;
+	/**
+	 * Saisi le propriétaire du message
+	 * 
+	 * @param	owner
+	 * 			le nouveau propriétaire du message
+	 */
+	public void setOwner(Subscriber owner) {
+		this.owner = owner;
 	}
 
+	/**
+	 * @return	le contenu du message
+	 */
 	public String getContent() {
 		return content;
 	}
 	
+	/**
+	 * Saisi le contenu du message
+	 * 
+	 * @param	content
+	 * 			le nouveau contenu du message
+	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 
+	/**
+	 * @return	la date d'écriture du message
+	 */
 	public Timestamp getWrittenDate() {
 		return writtenDate;
 	}
 
+	/**
+	 * Saisi la date d'écriture du message
+	 * 
+	 * @param	writtenDate
+	 * 			la nouvelle date d'écriture du message
+	 */
 	public void setWrittenDate(Timestamp writtenDate) {
 		this.writtenDate = writtenDate;
 	}

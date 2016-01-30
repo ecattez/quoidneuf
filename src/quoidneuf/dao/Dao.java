@@ -36,7 +36,10 @@ import javax.sql.DataSource;
 public abstract class Dao<T extends Serializable> {
 	
 	/**
-	 * @return	retourne une connexion à la base de données via le pool de connexion
+	 * Récupère une connexion dans le pool de connexion à la base de données
+	 * 
+	 * @return	une connexion à la base de données via le pool de connexion
+	 * 
 	 * @throws	NamingException
 	 * 			erreur dans le nom du pool
 	 * @throws	SQLException

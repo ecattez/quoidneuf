@@ -19,6 +19,7 @@
 package quoidneuf.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,10 +29,12 @@ import javax.servlet.annotation.ServletSecurity.TransportGuarantee;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import quoidneuf.dao.CredentialDao;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
+import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/recover")
@@ -46,6 +49,34 @@ public class RecoverService extends JsonServlet {
 	public RecoverService() {
 		this.authenticationDao = DaoProvider.getDao(CredentialDao.class);
 		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
+	}
+	
+	/** Récupère un ou plusieurs abonnés répondant à des critères de recherche */
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession(true);
+		Integer userId = (Integer) session.getAttribute("user");
+		
+		
+		if (userId == null) {
+			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		else {
+			String firstname = req.getParameter("firstname");
+			String lastname = req.getParameter("lastname");
+			String email = req.getParameter("email");
+			
+			if (firstname == null) { firstname = ""; }
+			if (lastname == null) { lastname = ""; }
+			if (email == null) { lastname = ""; }
+			
+			List<Subscriber> subscribers = subscriberDao.search(firstname, lastname, email);
+			if (subscribers.size() == 0) {
+				sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "aucun utilisateur ne correspond à la recherche");
+			}
+			else {
+				sendJson(res, subscribers);
+			}
+		}
 	}
 	
 	/** Demande de récupération de mot de passe */
