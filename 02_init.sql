@@ -45,24 +45,24 @@ INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) 
 -- Friend_with :
 INSERT INTO friend_with VALUES (1, 2, 2);
 INSERT INTO friend_with VALUES (1, 3, 1);
-INSERT INTO friend_with VALUES (1, 4, 3);
+INSERT INTO friend_with VALUES (1, 4, 0);
 INSERT INTO friend_with VALUES (1, 5, 2);
 INSERT INTO friend_with VALUES (1, 6, 1);
-INSERT INTO friend_with VALUES (1, 7, 3);
+INSERT INTO friend_with VALUES (1, 7, 0);
 INSERT INTO friend_with VALUES (1, 8, 2);
 INSERT INTO friend_with VALUES (1, 9, 1);
-INSERT INTO friend_with VALUES (1, 10, 3);
+INSERT INTO friend_with VALUES (1, 10, 0);
 INSERT INTO friend_with VALUES (2, 3, 2);
 INSERT INTO friend_with VALUES (2, 4, 1);
-INSERT INTO friend_with VALUES (2, 5, 3);
+INSERT INTO friend_with VALUES (2, 5, 0);
 INSERT INTO friend_with VALUES (2, 6, 2);
 INSERT INTO friend_with VALUES (2, 7, 1);
 INSERT INTO friend_with VALUES (2, 8, 2);
-INSERT INTO friend_with VALUES (2, 9, 3);
+INSERT INTO friend_with VALUES (2, 9, 0);
 INSERT INTO friend_with VALUES (2, 10, 2);
 INSERT INTO friend_with VALUES (3, 4, 1);
 INSERT INTO friend_with VALUES (3, 5, 2);
-INSERT INTO friend_with VALUES (3, 6, 3);
+INSERT INTO friend_with VALUES (3, 6, 0);
 
 -- Discussion :
 INSERT INTO discussion VALUES ('63d92b1e-c145-4e64-bd3a-e2a24d135d41', 'Nom de la discussion 1');
