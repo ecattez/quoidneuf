@@ -49,7 +49,7 @@ CREATE TABLE subscriber_meta(
 CREATE TABLE friend_with(
   friend_1 INTEGER NOT NULL,
   friend_2 INTEGER NOT NULL,
-  status BOOLEAN DEFAULT false,
+  status INTEGER NOT NULL,
   CONSTRAINT pk_friend_with PRIMARY KEY (friend_1, friend_2),
   CONSTRAINT fk_subscriber_1 FOREIGN KEY (friend_1) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
   CONSTRAINT fk_subscriber_2 FOREIGN KEY (friend_2) REFERENCES subscriber (subscriber_id) ON UPDATE cascade
