@@ -65,7 +65,12 @@ public class FriendService extends JsonServlet {
 			if (profilId == null) {
 				profilId = userId;
 			}
-			sendJson(res, friendDao.getLinkedWith(profilId, status));
+			if (status) {				
+				sendJson(res, friendDao.getFriendsOf(profilId));
+			}
+			else {
+				sendJson(res, friendDao.getRequestsOf(profilId));
+			}
 		}
 	}
 	

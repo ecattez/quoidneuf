@@ -24,7 +24,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Représentation d'une discussion entre plusieurs utilisateurs.
+ * Représente une discussion entre plusieurs utilisateurs.
  */
 public class Discussion extends Jsonable {
 
@@ -44,41 +44,83 @@ public class Discussion extends Jsonable {
 		this.name = name;
 	}
 	
+	/**
+	 * @return	l'identifiant de la discussion
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Saisi l'identifiant de la discussion
+	 * 
+	 * @param	id
+	 * 			le nouvel identifiant de la discussion
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	
+	/**
+	 * @return	le nom de la discussion
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Saisi le nom de la discussion
+	 * 
+	 * @param	name
+	 * 			le nouveau nom de la discussion
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * @return	la liste des abonnés à la discussion
+	 */
 	@JsonProperty("current_subscribers")
 	public List<Subscriber> getSubscribers() {
 		return subscribers;
 	}
 	
+	/**
+	 * Saisi la liste des abonnés à la discussion
+	 * 
+	 * @param	subscribers
+	 * 			la nouvelle liste d'abonnés
+	 */
 	public void setSubscribers(List<Subscriber> subscribers) {
 		this.subscribers = subscribers;
 	}
 	
+	/**
+	 * Ajoute un abonné à la discussion
+	 * 
+	 * @param	sbr
+	 * 			le nouvel abonné à ajouter
+	 */
+	public void push(Subscriber sbr) {
+		subscribers.add(sbr);
+	}
+	
+	/**
+	 * @return	la liste des messages de la discussion
+	 */
 	public List<Message> getMessages() {
 		return messages;
 	}
 	
+	/**
+	 * Ajoute un message à la discussion
+	 * 
+	 * @param	msg
+	 * 			le nouveau message à ajouter
+	 */
 	public void push(Message msg) {
 		messages.add(msg);
-	}
-	
-	public void push(Subscriber sbr) {
-		subscribers.add(sbr);
 	}
 
 }

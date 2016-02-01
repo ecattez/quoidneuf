@@ -48,6 +48,16 @@ public class SubscriberDao extends Dao<Integer> {
 		return false;
 	}
 	
+	/**
+	 * Vérifie si un utilisateur existe avec un certain login et un certain email
+	 * 
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * @param	email
+	 * 			l'email de l'utilisateur
+	 * 
+	 * @return	<true> si l'utilisateur existe, <false> sinon
+	 */
 	public boolean exist(String login, String email) {
 		try (Connection con = getConnection()) {
 			String query = "SELECT 1 FROM subscriber WHERE login = ? AND subscriber_id = (SELECT subscriber_id FROM subscriber_meta WHERE email = ?)";
@@ -108,6 +118,37 @@ public class SubscriberDao extends Dao<Integer> {
 	}
 	
 	/**
+	 * Récupère un ou plusieurs abonnés à partir de critères de recherche
+	 * 
+	 * @param	firstname
+	 * 			le prénom approximatif de l'utilisateur
+	 * @param	lastname
+	 * 			le nom de famille approximatif de l'utilisateur
+	 * @param	email
+	 * 			l'email approximatif de l'utilisateur
+	 * 
+	 * @return	une liste des Subscriber répondant à la recherche, la liste vide sinon
+	 */
+	public List<Subscriber> search(String firstname, String lastname, String email) {
+		List<Subscriber> subscribers = new ArrayList<>();
+		try (Connection con = getConnection()) {
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM subscriber INNER JOIN subscriber_meta USING(subscriber_id)"
+					+ " WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, "%" + firstname + "%");
+			st.setString(2, "%" + lastname + "%");
+			st.setString(3, "%" + email + "%");
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				subscribers.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return subscribers;
+	}
+	
+	/**
 	 * Récupère l'identifiant d'un utilisateur via son login
 	 * 
 	 * @param	login
@@ -165,6 +206,20 @@ public class SubscriberDao extends Dao<Integer> {
 		return ids;
 	}
 	
+	/**
+	 * Ajoute un utilisateur dans la base de données
+	 * 
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * @param	firstname
+	 * 			le prénom de l'utilisateur
+	 * @param	lastname
+	 * 			le nom de l'utilisateur
+	 * @param	birthday
+	 * 			la date d'anniversaire de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
+	 */
 	public int insert(String login, String firstname, String lastname, String birthday) {
 		try (Connection con = getConnection()) {
 			String query = "INSERT INTO subscriber(login, first_name, last_name, birthday) VALUES (?, ?, ?, ?)";

@@ -47,21 +47,30 @@ public class CredentialDao extends Dao<String> {
 	}
 	
 	/**
+	 * Ajoute les identifiants de l'utilisateur dans la base de données
 	 * 
-	 * @param login
-	 * @param password
-	 * @return
+	 * @param	login
+	 * 			le login de l'utiliateur
+	 * @param	password
+	 * 			le mot de passe de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
 	 */
 	public int insert(String login, String password) {
 		return insert(login, password, Credential.DEFAULT_ROLE);
 	}
 	
 	/**
+	 * Ajoute les identifiants de l'utilisateur dans la base de données
 	 * 
-	 * @param login
-	 * @param password
-	 * @param role
-	 * @return
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * @param	password
+	 * 			le mot de passe de l'utilisateur
+	 * @param	role
+	 * 			le rôle de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
 	 */
 	public int insert(String login, String password, String role) {
 		try (Connection con = getConnection()) {
@@ -78,10 +87,14 @@ public class CredentialDao extends Dao<String> {
 	}
 	
 	/**
+	 * Modifie le mot de passe d'un utilisateur
 	 * 
-	 * @param login
-	 * @param password
-	 * @return
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * @param	password
+	 * 			le nouveau mot de passe de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
 	 */
 	public int changePassword(String login, String password) {
 		try (Connection con = getConnection()) {
@@ -98,9 +111,12 @@ public class CredentialDao extends Dao<String> {
 	}
 	
 	/**
+	 * Réinitialise le mot de passe d'un utilisateur
 	 * 
-	 * @param login
-	 * @return
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * 
+	 * @return	le nouveau mot de passe en cas de succès, la chaîne vide sinon
 	 */
 	public String resetPassword(String login) {
 		try (Connection con = getConnection()) {
@@ -119,9 +135,12 @@ public class CredentialDao extends Dao<String> {
 	}
 	
 	/**
+	 * Supprime les identifiants d'un utilisateur
 	 * 
-	 * @param login
-	 * @return
+	 * @param	login
+	 * 			le login de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
 	 */
 	public int remove(String login) {
 		try (Connection con = getConnection()) {

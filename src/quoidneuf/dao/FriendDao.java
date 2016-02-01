@@ -33,6 +33,17 @@ import quoidneuf.entity.Subscriber;
  * DAO autour des relations amicales.
  */
 public class FriendDao extends Dao<Integer> {
+	
+	/* Note : le status d'amitié est un nombre régit par la règle suivant :
+	 * 0 : demande d'ajout dans le sens ->
+	 * 1 : demande d'jaout dans le sens <-
+	 * 2 : amis
+	 */
+	
+	public static final int ADD_BY_LEFT = 0;
+	public static final int ADD_BY_RIGHT = 1;
+	public static final int ARE_FRIENDS = 2;
+	
 
 	@Override
 	public boolean exist(Integer id) {
@@ -61,14 +72,14 @@ public class FriendDao extends Dao<Integer> {
 	}
 	
 	/* Crée un lien d'amitié */
-	private int insertFriends(int userId_1, int userId_2, boolean status) {
+	private int insertFriends(int userId_1, int userId_2, int status) {
 		int[] sort = sort(userId_1, userId_2);
 		try (Connection con = getConnection()) {
 			String query = "INSERT INTO friend_with VALUES (?,?,?)";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, sort[0]);
 			st.setInt(2, sort[1]);
-			st.setBoolean(3, status);
+			st.setInt(3, status);
 			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -77,12 +88,12 @@ public class FriendDao extends Dao<Integer> {
 	}
 	
 	/* Met à jour un lien d'amitié */
-	private int updateStatus(int userId_1, int userId_2, boolean status) {
+	private int updateStatus(int userId_1, int userId_2, int status) {
 		int[] sort = sort(userId_1, userId_2);
 		try (Connection con = getConnection()) {
 			String query = "UPDATE friend_with SET status = ? WHERE friend_1 = ? AND friend_2 = ?";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setBoolean(1, status);
+			st.setInt(1, status);
 			st.setInt(2, sort[0]);
 			st.setInt(3, sort[1]);
 			return st.executeUpdate();
@@ -108,23 +119,24 @@ public class FriendDao extends Dao<Integer> {
 	}
 	
 	/**
-	 * Récupère la liste des utilisateurs liés à un utilisateur
-	 *  
+	 * Récupère la liste des utilisateurs qui doivent confirmer la demande d'ajout
+	 * de l'utilisateur passé en paramètre
+	 * 
 	 * @param	userId
-	 * 			l'identifiant de l'utilisateur
-	 * @param	status
-	 * 			le status de la liaison (demande d'ajout / amis)
+	 * 			l'identifiant de l'utilisateur principal
+	 * 
+	 * @return	la liste des futurs amis de l'utilisateur
 	 */
-	public List<Subscriber> getLinkedWith(int userId, boolean status) {
+	public List<Subscriber> getRequestsOf(int userId) {
 		List<Subscriber> friends = new ArrayList<Subscriber>();
 		try (Connection con = getConnection()) {
 			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with INNER JOIN subscriber"
-					+ " ON (friend_2 = subscriber_id AND friend_1 = ?) OR (friend_1 = subscriber_id AND friend_2 = ?)"
-					+ " WHERE status = ?";
+					+ " ON (friend_1 = ? AND friend_2 = subscriber_id AND status = ?) OR (friend_2 = ? AND friend_1 = subscriber_id AND status = ?)";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
+			st.setInt(2, ADD_BY_LEFT);
 			st.setInt(2, userId);
-			st.setBoolean(2, status);
+			st.setInt(4, ADD_BY_RIGHT);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
@@ -136,30 +148,56 @@ public class FriendDao extends Dao<Integer> {
 	}
 	
 	/**
-	 * Vérifie le status d'un lien d'amitié entre deux utilisateurs
+	 * Récupère la liste des utilisateurs amis à un utilisateur
+	 *  
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 */
+	public List<Subscriber> getFriendsOf(int userId) {
+		List<Subscriber> friends = new ArrayList<Subscriber>();
+		try (Connection con = getConnection()) {
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with INNER JOIN subscriber"
+					+ " ON (friend_1 = ? AND friend_2 = subscriber_id) OR (friend_2 = ? AND friend_1 = subscriber_id)"
+					+ " WHERE status = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setInt(1, userId);
+			st.setInt(2, userId);
+			st.setInt(2, ARE_FRIENDS);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return friends;
+	}
+	
+	/**
+	 * Récupère le status d'amitié entre deux utilisateurs
 	 * 
 	 * @param	userId_1
 	 * 			l'identifiant du premier utilisateur
 	 * @param	userId_2
 	 * 			l'identifiant du second utilisateur
-	 * @param	status
-	 * 			le status d'amitié (demande d'ajout / amis)
 	 * 
-	 * @return	<true> si les deux utilisateurs sont liés par le status en paramètre, <false> sinon
+	 * @return	le status d'amitié entre deux utilisateurs, -1 sinon
 	 */
-	public boolean hasStatus(int userId_1, int userId_2, boolean status) {
+	public int getStatus(int userId_1, int userId_2) {
 		int[] sort = sort(userId_1, userId_2);
 		try (Connection con = getConnection()) {
-			String query = "SELECT 1 FROM friend_with WHERE friend_1 = ? AND friend_2 = ? AND status = ?";
+			String query = "SELECT status FROM friend_with WHERE friend_1 = ? AND friend_2 = ?";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, sort[0]);
 			st.setInt(2, sort[1]);
-			st.setBoolean(3, status);
-			return st.executeQuery().next();
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("status");
+			}
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 	
 	/**
@@ -197,21 +235,22 @@ public class FriendDao extends Dao<Integer> {
 	 * @return	<true> si la création s'est effectuée, <false> sinon
 	 */
 	public int requestForFriendship(int userId_1, int userId_2) {
-		return insertFriends(userId_1, userId_2, false);
+		int status = (userId_1 < userId_2 ? ADD_BY_LEFT : ADD_BY_RIGHT);
+		return insertFriends(userId_1, userId_2, status);
 	}
 	
 	/**
 	 * Répond à une demande d'ajout entre deux utilisateurs
 	 * 
 	 * @param	userId_1
-	 * 			l'identifiant du premier utilisateur
+	 * 			l'identifiant de l'utilisateur qui accepte l'ajout
 	 * @param	userId_2
-	 * 			l'identifiant du second utilisateur
+	 * 			l'identifiant de l'utilisateur qui souhaitait etre ami
 	 * 
 	 * @return	<true> si la confirmation a lieu, <false> sinon
 	 */
 	public int answerToRequest(int userId_1, int userId_2) {
-		return updateStatus(userId_1, userId_2, true);
+		return updateStatus(userId_1, userId_2, ARE_FRIENDS);
 	}
 	
 	/**
@@ -225,7 +264,7 @@ public class FriendDao extends Dao<Integer> {
 	 * @return	<true> s'ils sont amis, <false> sinon
 	 */
 	public boolean areFriends(int userId_1, int userId_2) {
-		return hasStatus(userId_1, userId_2, true);
+		return getStatus(userId_1, userId_2) == ARE_FRIENDS;
 	}
 	
 	/**
@@ -239,33 +278,7 @@ public class FriendDao extends Dao<Integer> {
 	 * @return	<true> si une demande d'amis existe, <false> sinon
 	 */
 	public boolean requestedForFriendship(int userId_1, int userId_2) {
-		return hasStatus(userId_1, userId_2, false);
+		return getStatus(userId_1, userId_2) != ARE_FRIENDS;
 	}
-	
-	/**
-	 * Récupère la liste des utilisateurs qui doivent confirmer la demande d'ajout
-	 * de l'utilisateur passé en paramètre
-	 * 
-	 * @param	userId
-	 * 			l'identifiant de l'utilisateur principal
-	 * 
-	 * @return	la liste des futurs amis de l'utilisateur
-	 */
-	public List<Subscriber> getRequestsOf(int userId) {
-		return getLinkedWith(userId, false);
-	}
-	
-	/**
-	 * Récupère la liste des amis de l'utilisateur passé en paramètre
-	 * 
-	 * @param	userId
-	 * 			l'identifiant de l'utilisateur
-	 * 
-	 * @return	la liste des amis de l'utilisateur
-	 */
-	public List<Subscriber> getFriendsOf(int userId) {
-		return getLinkedWith(userId, true);
-	}
-	
 
 }

@@ -45,6 +45,20 @@ public class SubscriberMetaDao extends Dao<Integer> {
 		return false;
 	}
 	
+	/**
+	 * Ajoute les méta-données d'un utilisateur
+	 * 
+	 * @param	picture
+	 * 			la photo de profil de l'utilisateur
+	 * @param	description
+	 * 			la description du profil de l'utilisateur
+	 * @param	email
+	 * 			l'email de l'utilisateur
+	 * @param	phone
+	 * 			le numéro de téléphone de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon	
+	 */
 	public int insert(String picture, String description, String email, String phone) {
 		try (Connection con = getConnection()) {
 			String query = "INSERT INTO subscriber_meta(subscriber_id, picture, description, email, phone)"
@@ -61,6 +75,14 @@ public class SubscriberMetaDao extends Dao<Integer> {
 		return -1;
 	}
 	
+	/**
+	 * Récupère les méta-données d'un utilisateur
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * 
+	 * @return	une instance de SubscriberMeta, représentant les méta-données d'un utilisateur
+	 */
 	public SubscriberMeta fromSubscriber(int userId) {
 		SubscriberMeta meta = null;
 		try (Connection con = getConnection()) {
@@ -82,6 +104,16 @@ public class SubscriberMetaDao extends Dao<Integer> {
 		return meta;
 	}
 	
+	/**
+	 * Met à jour les méta-données d'un utilisateur
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * @param	meta
+	 * 			les nouvelles méta-données de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
+	 */
 	public int updateFromSubscriber(int userId, SubscriberMeta meta) {		
 		try (Connection con = getConnection()) {
 			String query = "UPDATE subscriber_meta SET picture = ?, description = ?, email = ?, phone = ? WHERE subscriber_id = ?";

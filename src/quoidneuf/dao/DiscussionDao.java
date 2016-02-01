@@ -99,7 +99,7 @@ public class DiscussionDao extends Dao<String> {
 					s.setId(rs.getInt("_from"));
 					s.setFirstName(rs.getString("_first_name"));
 					s.setLastName(rs.getString("_last_name"));
-					m.setSubscriber(s);
+					m.setOwner(s);
 					m.setContent(rs.getString("_content"));
 					m.setWrittenDate(rs.getTimestamp("_date"));
 					discussion.push(m);

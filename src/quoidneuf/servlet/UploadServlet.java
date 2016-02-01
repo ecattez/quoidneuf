@@ -50,6 +50,7 @@ public class UploadServlet extends JsonServlet {
 
 	private static final long serialVersionUID = -1041983016810957406L;
 	
+	/** Upload un fichier sur le serveur */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (!req.getContentType().contains("multipart/form-data")) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "content-type incorrect");

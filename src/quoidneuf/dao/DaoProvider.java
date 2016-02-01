@@ -29,6 +29,14 @@ public class DaoProvider {
 	
 	private static DaoProvider daoProvider;
 	
+	/**
+	 * Récupère un DAO dans la liste des DAO de l'application
+	 * 
+	 * @param	clazz
+	 * 			la classe du DAO à récupérer
+	 * 
+	 * @return	une instance de DAO, null sinon
+	 */
 	public static <T extends Dao<?>> T getDao(Class<T> clazz) {
 		if (daoProvider == null) {
 			daoProvider = new DaoProvider();
@@ -48,6 +56,14 @@ public class DaoProvider {
 		map.put(SubscriberMetaDao.class, new SubscriberMetaDao());
 	}
 	
+	/**
+	 * Récupère un DAO dans la liste des DAO de l'application
+	 * 
+	 * @param	clazz
+	 * 			la classe du DAO à récupérer
+	 * 
+	 * @return	une instance de DAO, null sinon
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Dao<?>> T accessDao(Class<T> clazz) {
 		return map.containsKey(clazz) ? (T) map.get(clazz) : null;

@@ -33,18 +33,36 @@ public class Ticket extends Jsonable {
 		this.message = message;
 	}
 
+	/**
+	 * @return	le code du ticket
+	 */
 	public int getCode() {
 		return code;
 	}
 
+	/**
+	 * Saisi le code du ticket
+	 * 
+	 * @param	code
+	 * 			le nouveau code du ticket
+	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
 
+	/**
+	 * @return	le message du ticket
+	 */
 	public String getMessage() {
 		return message;
 	}
 
+	/**
+	 * Saisi le message du ticket
+	 * 
+	 * @param	message
+	 * 			le nouveau message du ticket
+	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
