@@ -8,6 +8,7 @@
 - [x] En version mobile, passer les membres en liste avec panel réduit.
 - [ ] Intégration du travail d'Edouard.
   - [x] Changer la navbar, ne pas recharger toute la page au changement de discussion
+  - [x] Nouvelle discussion
   - [ ] Ajout d'un utilisateur à la discussion
     - [ ] Rechercher les membres d'après le champs à chaque lettre tappée
     - [ ] Retrouver l'id de l'utilisateur

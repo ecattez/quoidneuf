@@ -34,16 +34,6 @@ function callBackLogout(data) {
 }
 
 /**
-  * Affiche le formulaire de création de discussion
-  */
-function affichageNouvelleDiscussion() {
-  $("#dropdown_navbar_discussions").append("<p>Nouvelle discussion</p>");
-  var line = "<p><li><input id=\"new_discussion_name\" type=\"text\" placeholder=\"Nom de la discussion\"/></li></p>";
-  $("#dropdown_navbar_discussions").append(line);
-  $("#dropdown_navbar_discussions").append("<li role=\"separator\" class=\"divider\"></li>");
-}
-
-/**
   * Mise à jour de l'affichage avec les amis de l'utilisateur, méthode appelée par la requête Ajax
   *
   * @param {Object} data - L'objet renvoyée par la requête Ajax avec le tableau d'amis.
@@ -98,6 +88,7 @@ function callBackGetFriendRequests(data) {
 function callBackGetDiscussions(data) {
   $("#dropdown_navbar_discussions").empty();
   affichageNouvelleDiscussion();
+  $("#dropdown_navbar_discussions").append("<p>Discussion(s)</p>");
   var line = '';
   for(var discussion in data) {
     line = "<li>";
@@ -110,6 +101,44 @@ function callBackGetDiscussions(data) {
     line += "</li>";
     $("#dropdown_navbar_discussions").append(line);
     addDiscussionListener(data[discussion].id);
+  }
+}
+
+/**
+  * Affiche le formulaire de création de discussion
+  */
+function affichageNouvelleDiscussion() {
+  $("#dropdown_navbar_discussions").append("<p>Nouvelle discussion</p>");
+  var line = "<p><li><input id=\"new_discussion_name\" type=\"text\" placeholder=\"Nom de la discussion\"/></li></p>";
+  $("#dropdown_navbar_discussions").append(line);
+  $("#dropdown_navbar_discussions").append("<li role=\"separator\" class=\"divider\"></li>");
+
+  $("#new_discussion_name").on("enterKey", nouvelleDiscussion);
+
+  $("#new_discussion_name").keyup(function(e) {
+    if(e.keyCode == 13)
+    {
+      $(this).trigger("enterKey");
+    }
+  });
+}
+
+/**
+  * Envoie une requete de création de discussion
+  */
+function nouvelleDiscussion() {
+  if($("#new_discussion_name").val() != '') {
+    createDiscussion($("#new_discussion_name").val());
+    $("#new_discussion_name").val('');
+  }
+}
+
+function callBackCreateDiscussion(data) {
+  if(data.id) {
+    $("#dropdown_navbar_discussions").append("<li class=\"alert-success\"><p>Discussion créée</p></li>");
+  }
+  else {
+    $("#dropdown_navbar_discussions").append("<li class=\"alert-danger\"><p>"+data.message+"</p></li>");
   }
 }
 

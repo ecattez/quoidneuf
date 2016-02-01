@@ -115,6 +115,15 @@ function addMember(discussionId, userId) {
   ajaxRequest('PUT', '/quoidneuf/api/discussions?id='+discussionId+'&users='+userId, 'callBackAddMember');
 }
 
+/**
+  * Créer une nouvelle discussion
+  *
+  * @param {String} name - Le nom de la nouvelle discussion
+  */
+function createDiscussion(name) {
+  ajaxRequest('POST', '/quoidneuf/api/discussions', 'callBackCreateDiscussion', undefined, 'json', { name : name });
+}
+
 //-----------------------------------------------
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 

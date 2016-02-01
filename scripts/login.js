@@ -115,6 +115,7 @@ function checkResetParameters(login, email) {
   * @param {Object} data - L'objet renvoyé par la requête Ajax contenant des infos sur l'utilisateur ou un code d'erreur et un message
   */
 function callBackLogin(data) {
+  console.log(data);
   if(data.code == 201) {
     updateErrorMessage("login_error", true, data.message);
     window.location.href = 'all/profile.jsp';
