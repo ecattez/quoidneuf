@@ -48,7 +48,7 @@ public class FriendService extends JsonServlet {
 		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
 	}
 	
-	/** Récupérer la liste des amis ou les demandes d'ajouts */
+	/** Récupérer la liste des amis ou les demandes d'ajouts ou le lien d'amitié entre deux abonnés */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
@@ -58,18 +58,26 @@ public class FriendService extends JsonServlet {
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
-		else if (status == null) {
-			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "status manquant");
+		else if (profilId != null && !subscriberDao.exist(profilId)) {
+			sendTicket(HttpServletResponse.SC_NOT_FOUND, res, "utilisateur " + profilId + " introuvable");
 		}
 		else {
 			if (profilId == null) {
 				profilId = userId;
 			}
-			if (status) {				
+			if (status == null) {
+				if (profilId == userId) {
+					sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "l'utilisateur " + profilId + " ne peut pas être ami avec lui-même");
+				}
+				else {
+					sendJson(res, "{ \"status\" :" + friendDao.getStatus(userId, profilId) + "}");
+				}
+			}
+			else if (status) {
 				sendJson(res, friendDao.getFriendsOf(profilId));
 			}
 			else {
-				sendJson(res, friendDao.getRequestsOf(profilId));
+				sendJson(res, friendDao.getRequestsTo(profilId));
 			}
 		}
 	}
