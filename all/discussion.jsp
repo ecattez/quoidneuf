@@ -69,6 +69,8 @@
             <input type="text" class="form-control" placeholder="Ajouter utilisateur..." id="member_input">
           </div><!-- /input-group -->
         </div>
+
+        <button type="button" name="Quitter groupe" class="btn btn-danger" id="leave_discussion_button">Quitter discussion</button>
       </div>
       <!-- Fin Membres -->
     </div>
@@ -84,7 +86,7 @@
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../scripts/discussion.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
-  <script type="text/javascript">initNavbar(${user}, 'discussion');</script>
-  <script type="text/javascript">initDiscussionPage("${param.id}");</script>
+  <script type="text/javascript">initNavbar('${user}', 'discussion');</script>
+  <script type="text/javascript">initDiscussionPage('${user}', "${param.id}");</script>
 </body>
 </html>

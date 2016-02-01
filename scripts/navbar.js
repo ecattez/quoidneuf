@@ -28,9 +28,7 @@ function initNavbar(user, p) {
   * @param {Object} data - L'objet renvoyé par le serveur, vide si réussi
   */
 function callBackLogout(data) {
-  if(data == undefined) {
-    window.location.href = '../';
-  }
+  window.location.href = '../';
 }
 
 /**

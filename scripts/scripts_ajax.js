@@ -124,6 +124,15 @@ function createDiscussion(name) {
   ajaxRequest('POST', '/quoidneuf/api/discussions', 'callBackCreateDiscussion', undefined, 'json', { name : name });
 }
 
+/**
+  * Quitte une discussion
+  *
+  * @param {Number} id - L'id de la discussion à quitter
+  */
+function leaveDiscussion(id) {
+  ajaxRequest('DELETE', '/quoidneuf/api/discussions?id='+id, 'callBackLeaveDiscussion');
+}
+
 //-----------------------------------------------
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 

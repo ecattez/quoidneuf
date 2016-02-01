@@ -9,6 +9,9 @@ var profile;
   */
 function initProfilePage(uid, user) {
   id = uid;
+  if(uid == undefined || uid == '') {
+    window.location.href = '../';
+  }
   if(user != '' && user != undefined && user != uid) {
     // Si on ne précise pas d'utilisateur, on charge la page de l'utilisateur courant :
     uid = user;

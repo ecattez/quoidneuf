@@ -5,7 +5,10 @@ var interval;
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
   */
-function initDiscussionPage(dId) {
+function initDiscussionPage(uId, dId) {
+  if(uId == undefined || uId == '') {
+    window.location.href = '../';
+  }
   $("#li_membres").removeClass("hidden");
   nbMessages = 0;
   discussionId = dId;
@@ -33,6 +36,8 @@ function clearButtonListeners() {
   $("#member_input").off("enterKey");
 
   $("#member_input").off("keyup");
+
+  $("#leave_discussion_button").off("click");
 }
 
 /**
@@ -60,6 +65,8 @@ function addButtonListeners() {
       $(this).trigger("enterKey");
     }
   });
+
+  $("#leave_discussion_button").on("click", quitterDiscussion);
 }
 
 /**
@@ -167,7 +174,6 @@ function callBackWriteMessage(data) {
   * @param {Object} data - Vide si bien ajouté, message d'erreur sinon
   */
 function callBackAddMember(data) {
-  console.log(data);
   if(data == undefined) {
     getMembers(discussionId);
     updateErrorMessage('error_div', true, 'Membre bien ajouté !');
@@ -182,6 +188,26 @@ function callBackAddMember(data) {
   */
 function refreshMessages() {
   getMessages(discussionId);
+}
+
+/**
+  * Envoie une requête pour quitter le groupe
+  */
+function quitterDiscussion() {
+  leaveDiscussion(discussionId);
+}
+
+/**
+  *
+  */
+function callBackLeaveDiscussion(data) {
+  if(data == undefined) {
+    updateErrorMessage('error_div', true, "Utilisateur retiré de la conversation.");
+    window.location.href = 'profile.jsp';
+  }
+  else {
+    updateErrorMessage('error_div', false, data.responseJSON.message);
+  }
 }
 
 /**
