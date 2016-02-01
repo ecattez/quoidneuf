@@ -162,7 +162,7 @@ function getFriendStatus(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function valideFriendRequest(userId) {
-  ajaxRequest('PUT', '/quoidneuf/api/friends?friend='+userId, 'callValideFriendRequest');
+  ajaxRequest('PUT', '/quoidneuf/api/friends?friend='+userId, 'callBackValideFriendRequest');
 }
 
 /**

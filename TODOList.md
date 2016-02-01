@@ -15,8 +15,8 @@
 # Login
 - [x] Maquette
 - [x] Toute la page en statique
-- [ ] Intégration du travail d'Edouard.
-  - [ ] Meilleure vérification
+- [x] Intégration du travail d'Edouard.
+  - [x] Meilleure vérification
   - [x] Inscription
 
 # Profil

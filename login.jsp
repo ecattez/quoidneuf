@@ -67,7 +67,7 @@
           </form>
         </div>
 
-        <a data-toggle="modal" data-target="#modal_mdp_oublie" class="row">Mot de passe oublié ?</a>
+        <p class="row"><a data-toggle="modal" data-target="#modal_mdp_oublie">Mot de passe oublié ?</a></p>
 
         <div id="login_error" class="row alert alert-danger hidden" role="alert"></div>
       </div>

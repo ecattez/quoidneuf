@@ -34,6 +34,16 @@ function callBackLogout(data) {
 }
 
 /**
+  * Affiche le formulaire de création de discussion
+  */
+function affichageNouvelleDiscussion() {
+  $("#dropdown_navbar_discussions").append("<p>Nouvelle discussion</p>");
+  var line = "<p><li><input id=\"new_discussion_name\" type=\"text\" placeholder=\"Nom de la discussion\"/></li></p>";
+  $("#dropdown_navbar_discussions").append(line);
+  $("#dropdown_navbar_discussions").append("<li role=\"separator\" class=\"divider\"></li>");
+}
+
+/**
   * Mise à jour de l'affichage avec les amis de l'utilisateur, méthode appelée par la requête Ajax
   *
   * @param {Object} data - L'objet renvoyée par la requête Ajax avec le tableau d'amis.
@@ -87,6 +97,7 @@ function callBackGetFriendRequests(data) {
   */
 function callBackGetDiscussions(data) {
   $("#dropdown_navbar_discussions").empty();
+  affichageNouvelleDiscussion();
   var line = '';
   for(var discussion in data) {
     line = "<li>";

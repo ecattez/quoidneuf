@@ -72,7 +72,7 @@ function acceptFriendRequest() {
 /**
   * Vérification du message de retour de la valdiation de requête d'ami.
   */
-function callValideFriendRequest(data) {
+function callBackValideFriendRequest(data) {
   if(data) {
     updateErrorMessage("error_div", false, data.message);
   }
@@ -197,7 +197,7 @@ function modifyProfile() {
   }
   else {
     updateErrorMessage("error_div", true, "Modification en cours...");
-    modifySubscribersProfile('picturepath', $("#description").val(), $("#e_mail").val(), $("#phone").val());
+    modifySubscribersProfile($("#description").val(), $("#e_mail").val(), $("#phone").val());
   }
 }
 
