@@ -53,7 +53,7 @@ function getFriends(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getFriendsProfile(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendsProfile', undefined, 'json', { id : userId, status : false });
+  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendsProfile', undefined, 'json', { id : userId, status : true });
 }
 
 /**
@@ -137,6 +137,33 @@ function modifySubscribersProfile(picture, description, email, phone) {
   */
 function modifyPassword(password) {
   ajaxRequest('PUT', '/quoidneuf/api/authentication?password='+password, 'callBackmodifyPassword');
+}
+
+/**
+  * Retourne le status de l'amitié
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function getFriendStatus(userId) {
+  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackCheckFriendStatus', undefined, 'json', { id : userId });
+}
+
+/**
+  * Valide une demande d'amitié
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function valideFriendRequest(userId) {
+  ajaxRequest('PUT', '/quoidneuf/api/friends?friend='+userId, 'callValideFriendRequest');
+}
+
+/**
+  * Créer une demande d'amitié
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function addFriendRequest(userId) {
+  ajaxRequest('POST', '/quoidneuf/api/friends', 'callBackAddFriendRequest', undefined, 'json', { friend : userId });
 }
 
 //-----------------------------------------------

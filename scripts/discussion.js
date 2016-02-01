@@ -6,6 +6,7 @@ var interval;
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
   */
 function initDiscussionPage(dId) {
+  $("#li_membres").removeClass("hidden");
   nbMessages = 0;
   discussionId = dId;
   getMembers(discussionId);
@@ -79,12 +80,12 @@ function callBackGetMembers(data) {
   var line = '';
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">"+data.name+"</h2>");
   $("#discussion_membres").empty();
-  var membres = data.current_subscribers;
-  for(var membre in membres) {
-    //line = "<li><div class=\"row\"><div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-8 nom_membres\">"+membres[membre].firstName + " " + membres[membre].lastName + "</div><div class=\"col-lg-1 col-lg-offset-1 col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1\"><button type=\"button\" name=\"button_add_friend"++"\">+</button></div></div></li>";
+  var memb;
+  for(var membre in data.current_subscribers) {
+    memb = data.current_subscribers[membre];
     line = "<li><p class=\"row\">";
-    line += "<a href=\"profile.jsp?id="+membres[membre].id+"\">";
-    line += membres[membre].firstName + " " + membres[membre].lastName;
+    line += "<a href=\"profile.jsp?id="+ memb.id +"\">";
+    line += memb.firstName + " " + memb.lastName;
     line += "</a></p>";
     $("#discussion_membres").append(line);
   }
@@ -97,10 +98,12 @@ function callBackGetMessages(data) {
   var date = '';
   var user = '';
   var content = '';
+  var msg;
   for(var mess = nbMessages; mess < data.messages.length; mess++) {
-    date = formeDate(data.messages[mess].writtenDate);
-    user = data.messages[mess].subscriber.firstName + "." +data.messages[mess].subscriber.lastName.substring(0,1);
-    content = data.messages[mess].content;
+    msg = data.messages[mess];
+    date = formeDate(msg.writtenDate);
+    user = msg.owner.firstName + "." + msg.owner.lastName.substring(0,1);
+    content = msg.content;
     $("#messages").append(user + " \t[" + date + "] : \t" + content + "\n");
   }
   nbMessages = data.messages.length;

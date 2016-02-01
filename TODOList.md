@@ -26,8 +26,8 @@
   - [x] Changer la navbar, ne pas recharger toute la page au changement de discussion
   - [x] Charger profile de l'utilisateur courant avec bouton modifier et champs accessibles si pas d'id
   - [x] Charger profile de l'utilisateur dont l'id est passé en parametre avec champs innaccessibles etc sinon
+  - [x] Ajout d'un ami (avec une partie "Amis" et une autre "Demandes en attente")
   - [ ] Gestion de picture
-  - [ ] Ajout d'un ami (avec une partie "Amis" et une autre "Demandes en attente")
 
 # Toutes les pages
 - [x] Chargement des amis

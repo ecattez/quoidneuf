@@ -26,35 +26,7 @@
   <div class="container" id="corps">
 
     <!-- Header -->
-    <header class="row">
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="profile.jsp">QuoiDNeuf</a>
-          </div>
-
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li><a href="profile.jsp">Profil</a></li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="navbar_amis">Amis <span class="caret"></span></a>
-                <ul class="dropdown-menu" id="dropdown_navbar_amis"></ul>
-              </li>
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="navbar_discussions">Discussions <span class="caret"></span></a>
-                <ul class="dropdown-menu" id="dropdown_navbar_discussions"></ul>
-              </li>
-              <li><a data-toggle="collapse" data-target="#membres">Membres</a></li>
-              <li><a href="#" id="navbar_deconnexion">Déconnexion</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <jsp:include page="navbar.jsp" />
     <!-- Fin Header -->
 
     <!-- Contenu -->
@@ -103,16 +75,7 @@
     <!-- Fin contenu -->
 
     <!-- Footer -->
-    <footer class="row panel panel-default">
-      <div class="panel-body">
-        <div class="pull-left" id="credits">
-          Projet Web/BDD - WhatsApp-Like - Cattez Edouard - Ferro Thomas - Licence Pro DA2I - 2015/2016
-        </div>
-
-        <a href="https://www-iut.univ-lille1.fr/" class="pull-right"><img src="../img/iut.png" alt="Logo IUT" width="80" height="50"/></a>
-        <a href="https://github.com/ecattez/quoidneuf" class="pull-right"><img src="../img/github.png" alt="Logo GitHub" class="pull-right" width="50" height="50"/></a>
-      </div>
-    </footer>
+    <jsp:include page="footer.jsp" />
     <!-- Footer -->
   </div>
 

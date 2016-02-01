@@ -1,4 +1,5 @@
 var id;
+var profile;
 
 /**
   * Charge les élements de la page
@@ -16,6 +17,7 @@ function initProfilePage(uid, user) {
   else {
     loadButtonModify();
   }
+  profile = user;
   getSubscribersProfile(uid);
   getFriendsProfile(uid);
 }
@@ -26,36 +28,57 @@ function initProfilePage(uid, user) {
   * @param {Number} user - Id de l'utilisateur à vérifier
   */
 function checkFriendStatus(user) {
-  // console.log("A implementer");
-  //TODO : Vérifier si ami / en demande ou pas ami du tout pour charger les bons boutons
-  loadButtonAdd(user);
+  getFriendStatus(user);
 }
 
 /**
   * Charge le bouton d'ajout d'ami
   */
 function callBackCheckFriendStatus(data) {
-  if((data.status == 1) ||(data.status == 2)) {
-    // Demande en cours
-    //TODO : vérifie quel utilisateur à envoyé la demande, si c'est l'utilisateur courant on bloque le bouton avec "demande en attente...", sinon :
-    $("#button").empty();
-    $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" id=\"button_accept\">Accepter demande</button></p>");
-    $("#button_accept").on("click", acceptFriendRequest);
+  $("#button").empty();
+  if(data.status > 0) {
+    //Si pas amis :
+    if(data.status != id) {
+      $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" id=\"button_accept\">Accepter demande</button></p>");
+      $("#button_accept").on("click", acceptFriendRequest);
+    }
+    else {
+      $("#button").append("<p>Demande d'amitié en attente...</p>");
+    }
   }
-  else {
+  else if (data.status == -1) {
     // Pas amis et pas de demande en cours
-    $("#button").empty();
-    $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter aux amis\" id=\"button_send_friend_request\">Envoyer demande d'ami</button></p>");
-    $("#button_send_friend_request").on("click", acceptFriendRequest);
+    loadButtonAdd(id);
   }
 }
 
 /**
+  * Charge le bouton de demande d'ami
   *
+  * @param {Number} user - L'id de l'utilisateur à ajouter
+  */
+function loadButtonAdd(user) {
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
+  $("#add_friend_"+user).on("click", function() { addFriend(user) });
+}
+
+/**
+  * Au clique sur le bouton "Accepter demande", on envoie la requête
   */
 function acceptFriendRequest() {
-  //TODO : Envoyer requete validation demande d'ami
-  console.log("validation demande d'ami à implementer");
+  valideFriendRequest(profile);
+}
+
+/**
+  * Vérification du message de retour de la valdiation de requête d'ami.
+  */
+function callValideFriendRequest(data) {
+  if(data) {
+    updateErrorMessage("error_div", false, data.message);
+  }
+  else {
+    updateErrorMessage("error_div", true, "Validation de la demande d'ami.");
+  }
 }
 
 /**
@@ -73,17 +96,12 @@ function loadButtonModify() {
   * Envoyer la requête de modification de mot de passe
   */
 function sendModifyPassword() {
-  $("#modify_password_error").removeClass('hidden');
-  $("#modify_password_error").removeClass('alert-success');
-  $("#modify_password_error").removeClass('alert-danger');
   if(($("#modal_password1").val() != '') && ($("#modal_password1").val() == $("#modal_password2").val())) {
-    $("#modify_password_error").text("Modification en cours...");
-    $("#modify_password_error").addClass('alert-success');
+    updateErrorMessage("modify_password_error", true, "Modification en cours...");
     modifyPassword($("#modal_password1").val());
   }
   else {
-    $("#modify_password_error").text("Merci d'entrer deux fois votre mot de passe");
-    $("#modify_password_error").addClass('alert-danger');
+    updateErrorMessage("modify_password_error", false, "Merci d'entrer deux fois votre mot de passe");
   }
 }
 
@@ -92,32 +110,30 @@ function sendModifyPassword() {
   */
 function callBackmodifyPassword(data) {
   if(data == undefined) {
-    $("#modify_password_error").text("Mot de passe modifié.");
-    $("#modify_password_error").addClass('alert-success');
+    updateErrorMessage("modify_password_error", true, "Mot de passe modifié.");
   }
   else {
-    $("#modify_password_error").text("Erreur : " + data.code + " : " + data.message);
-    $("#modify_password_error").addClass('alert-danger');
+    updateErrorMessage("modify_password_error", false, "Erreur : " + data.code + " : " + data.message);
   }
 }
 
 /**
-  * Charge le bouton de demande d'ami
-  *
-  * @param {Number} user - L'id de l'utilisateur à ajouter
+  * Envoie une requête de demande d'ami
   */
-function loadButtonAdd(user) {
-
-  $("#button").empty();
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
-  $("#add_friend_"+user).on("click", function() { addFriend(user) });
+function addFriend() {
+  addFriendRequest(profile);
 }
 
 /**
-  *
+  * Vérifie le retour de la requête
   */
-function addFriend(user) {
-  console.log("addFriend à implementer");
+function callBackAddFriendRequest(data) {
+  if(data.code == 201) {
+    updateErrorMessage("error_div", true, data.message);
+  }
+  else {
+    updateErrorMessage("error_div", false, data.message);
+  }
 }
 
 /**
@@ -167,6 +183,7 @@ function callBackGetFriendsProfile(data) {
   * Ajoute le listener au lien
   */
 function ajoutEventListener(userId) {
+  // console.log(userId);
   $("#profile_"+userId).on("click", function() { initProfilePage(id, userId) });
 }
 
@@ -175,16 +192,11 @@ function ajoutEventListener(userId) {
   * Envoyer la requête de modification du profil
   */
 function modifyProfile() {
-  $("#error_div").removeClass("hidden");
-  $("#error_div").removeClass('alert-success');
-  $("#error_div").removeClass('alert-danger');
   if(($("#e_mail").val() == undefined) || ($("#e_mail").val() == '')) {
-    $("#error_div").addClass("alert-danger");
-    $("#error_div").text("Merci de renseigner les champs précédés d'une étoile");
+    updateErrorMessage("error_div", false, "Merci de renseigner les champs précédés d'une étoile");
   }
   else {
-    $("#error_div").addClass("alert-success");
-    $("#error_div").text("Modification en cours...");
+    updateErrorMessage("error_div", true, "Modification en cours...");
     modifySubscribersProfile('picturepath', $("#description").val(), $("#e_mail").val(), $("#phone").val());
   }
 }
@@ -196,11 +208,31 @@ function modifyProfile() {
   */
 function callBackModifySubscribersProfile(data) {
   if(data == undefined) {
-    $("#error_div").text("Profil modifié.");
-    $("#error_div").addClass('alert-success');
+    updateErrorMessage("error_div", true, "Profil modifié.");
   }
   else {
-    $("#error_div").text("Erreur : " + data.responseJSON.code + " : " + data.responseJSON.message);
-    $("#error_div").addClass('alert-danger');
+    updateErrorMessage("error_div", false, "Erreur : " + data.responseJSON.code + " : " + data.responseJSON.message);
   }
+}
+
+/**
+  * Met à jour une division d'erreur
+  *
+  * @param {String} div - La division à mettre à jour
+  * @param {Boolean} bool - <true> si message d'erreur, <false> si message de réussite
+  * @param {String} mess - Le message de la division
+  */
+function updateErrorMessage(div, bool, mess) {
+  $("#"+div).empty();
+  $("#"+div).removeClass("hidden");
+  $("#"+div).removeClass("alert-success");
+  $("#"+div).removeClass("alert-danger");
+
+  if(bool == true) {
+    $("#"+div).addClass("alert-success");
+  }
+  else {
+    $("#"+div).addClass("alert-danger");
+  }
+  $("#"+div).append("<p>"+mess+"</p>");
 }
