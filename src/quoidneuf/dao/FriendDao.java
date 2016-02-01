@@ -34,17 +34,8 @@ import quoidneuf.entity.Subscriber;
  */
 public class FriendDao extends Dao<Integer> {
 	
-	/* Note : le status d'amitié est un nombre régit par la règle suivant :
-	 * 0 : demande d'ajout dans le sens ->
-	 * 1 : demande d'jaout dans le sens <-
-	 * 2 : amis
-	 */
+	public static final int ARE_FRIENDS = 0;
 	
-	public static final int ADD_BY_LEFT = 0;
-	public static final int ADD_BY_RIGHT = 1;
-	public static final int ARE_FRIENDS = 2;
-	
-
 	@Override
 	public boolean exist(Integer id) {
 		try (Connection con = getConnection()) {
@@ -88,14 +79,15 @@ public class FriendDao extends Dao<Integer> {
 	}
 	
 	/* Met à jour un lien d'amitié */
-	private int updateStatus(int userId_1, int userId_2, int status) {
+	private int createFriendship(int userId_1, int userId_2, int status) {
 		int[] sort = sort(userId_1, userId_2);
 		try (Connection con = getConnection()) {
-			String query = "UPDATE friend_with SET status = ? WHERE friend_1 = ? AND friend_2 = ?";
+			String query = "UPDATE friend_with SET status = ? WHERE friend_1 = ? AND friend_2 = ? AND status = ?";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, status);
+			st.setInt(1, ARE_FRIENDS);
 			st.setInt(2, sort[0]);
 			st.setInt(3, sort[1]);
+			st.setInt(4, status);
 			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
@@ -118,6 +110,25 @@ public class FriendDao extends Dao<Integer> {
 		return -1;
 	}
 	
+	private List<Subscriber> getFriendsByStatus(int userId, int status) {
+		List<Subscriber> friends = new ArrayList<Subscriber>();
+		try (Connection con = getConnection()) {
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with, subscriber"
+					+ " WHERE ((friend_1 = ? AND friend_2 = subscriber_id) OR (friend_2 = ? AND friend_1 = subscriber_id)) AND status = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setInt(1, userId);
+			st.setInt(2, userId);
+			st.setInt(3, status);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
+			}
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		return friends;
+	}
+	
 	/**
 	 * Récupère la liste des utilisateurs qui doivent confirmer la demande d'ajout
 	 * de l'utilisateur passé en paramètre
@@ -127,16 +138,27 @@ public class FriendDao extends Dao<Integer> {
 	 * 
 	 * @return	la liste des futurs amis de l'utilisateur
 	 */
-	public List<Subscriber> getRequestsOf(int userId) {
+	public List<Subscriber> getRequestsFrom(int userId) {
+		return getFriendsByStatus(userId, userId);
+	}
+	
+	/**
+	 * Récupère la liste des utilisateurs qui doivent confirmer la demande d'ajout
+	 * de l'utilisateur passé en paramètre
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur principal
+	 * 
+	 * @return	la liste des futurs amis de l'utilisateur
+	 */
+	public List<Subscriber> getRequestsTo(int userId) {
 		List<Subscriber> friends = new ArrayList<Subscriber>();
 		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with INNER JOIN subscriber"
-					+ " ON (friend_1 = ? AND friend_2 = subscriber_id AND status = ?) OR (friend_2 = ? AND friend_1 = subscriber_id AND status = ?)";
+			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with, subscriber"
+					+ " WHERE ((friend_1 = ? AND friend_2 = subscriber_id) OR (friend_2 = ? AND friend_1 = subscriber_id)) AND status = subscriber_id";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
-			st.setInt(2, ADD_BY_LEFT);
-			st.setInt(3, userId);
-			st.setInt(4, ADD_BY_RIGHT);
+			st.setInt(2, userId);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
@@ -154,23 +176,7 @@ public class FriendDao extends Dao<Integer> {
 	 * 			l'identifiant de l'utilisateur
 	 */
 	public List<Subscriber> getFriendsOf(int userId) {
-		List<Subscriber> friends = new ArrayList<Subscriber>();
-		try (Connection con = getConnection()) {
-			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM friend_with INNER JOIN subscriber"
-					+ " ON (friend_1 = ? AND friend_2 = subscriber_id) OR (friend_2 = ? AND friend_1 = subscriber_id)"
-					+ " WHERE status = ?";
-			PreparedStatement st = con.prepareStatement(query);
-			st.setInt(1, userId);
-			st.setInt(2, userId);
-			st.setInt(3, ARE_FRIENDS);
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
-			}
-		} catch (SQLException | NamingException e) {
-			e.printStackTrace();
-		}
-		return friends;
+		return getFriendsByStatus(userId, ARE_FRIENDS);
 	}
 	
 	/**
@@ -235,8 +241,7 @@ public class FriendDao extends Dao<Integer> {
 	 * @return	<true> si la création s'est effectuée, <false> sinon
 	 */
 	public int requestForFriendship(int userId_1, int userId_2) {
-		int status = (userId_1 < userId_2 ? ADD_BY_LEFT : ADD_BY_RIGHT);
-		return insertFriends(userId_1, userId_2, status);
+		return insertFriends(userId_1, userId_2, userId_1);
 	}
 	
 	/**
@@ -250,7 +255,7 @@ public class FriendDao extends Dao<Integer> {
 	 * @return	<true> si la confirmation a lieu, <false> sinon
 	 */
 	public int answerToRequest(int userId_1, int userId_2) {
-		return updateStatus(userId_1, userId_2, ARE_FRIENDS);
+		return createFriendship(userId_1, userId_2, userId_2);
 	}
 	
 	/**
