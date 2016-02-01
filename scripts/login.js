@@ -3,18 +3,14 @@
   */
 function initLoginPage(uid) {
   if(uid != null) {
-    $("#login_error").text("Utilisateur déjà authentifié, redirection vers la page de profile...");
-    $("#login_error").removeClass('hidden');
-    $("#login_error").removeClass('alert-danger');
-    $("#login_error").addClass('alert-success');
+    updateErrorMessage("login_error", true, "Utilisateur déjà authentifié, redirection vers la page de profile...");
     window.location.href = 'all/profile.jsp';
   }
   $("#button_login").on("click", function() {
     var username = $('#connection_login').val();
     var password = $('#connection_password').val();
     if(!checkLoginParameters(username,password)) {
-      $("#login_error").text("Merci de renseigner un login et un mot de passe.");
-      $("#login_error").removeClass('hidden');
+      updateErrorMessage("login_error", false, "Merci de renseigner un login et un mot de passe.");
     }
     else {
       login(username, password);
@@ -34,23 +30,14 @@ function initLoginPage(uid) {
     var description = $('#inscription_description').val();
 
     if(!checkRegistrationParameters(username, password, passwordCheck, firstname, lastname, birthdate, mail)) {
-      $("#inscription_error").text("Merci de renseigner toutes les informations suivies d'une étoile.");
-      $("#inscription_error").removeClass('hidden');
-      $("#inscription_error").removeClass('alert-success');
-      $("#inscription_error").addClass('alert-danger');
+      updateErrorMessage("inscription_error", false, "Merci de renseigner toutes les informations suivies d'une étoile.");
     }
     else {
       if(password != passwordCheck) {
-        $("#inscription_error").text("Mot de passe incorrect");
-        $("#inscription_error").removeClass('hidden');
-        $("#inscription_error").removeClass('alert-success');
-        $("#inscription_error").addClass('alert-danger');
+        updateErrorMessage("inscription_error", false, "Mot de passe incorrect");
       }
       else {
-        $("#inscription_error").text("Vérification des données...");
-        $("#inscription_error").removeClass('hidden');
-        $("#inscription_error").removeClass('alert-danger');
-        $("#inscription_error").addClass('alert-success');
+        updateErrorMessage("inscription_error", true, "Vérification des données...");
         createUser(username, password, firstname, lastname, birthdate, picture, description, mail, phone);
       }
     }
@@ -61,14 +48,11 @@ function initLoginPage(uid) {
     var email = $("#modal_email").val();
 
     if(!checkResetParameters(login, email)) {
-      $("#reset_error").removeClass('hidden');
+      updateErrorMessage("reset_error", false, "Merci d'indiquer votre login et votre adresse E-Mail");
     }
     else {
-      $("#reset_error").text("Vérification de vos données...");
-      $("#reset_error").removeClass('hidden');
-      $("#reset_error").removeClass('alert-danger');
-      $("#reset_error").addClass('alert-success');
-      //TODO : Envoyer req reset mdp
+      updateErrorMessage("reset_error", true, "Vérification de vos données...");
+      passwordLost(login, email);
     }
   });
 }
@@ -78,16 +62,10 @@ function initLoginPage(uid) {
   */
 function callBackCreateUser(data) {
   if(data.code != 201) {
-    $("#inscription_error").text(data.responseJSON.message);
-    $("#inscription_error").removeClass('hidden');
-    $("#inscription_error").removeClass('alert-success');
-    $("#inscription_error").addClass('alert-danger');
+    updateErrorMessage("inscription_error", false, data.responseJSON.message);
   }
   else {
-    $("#inscription_error").text(data.message);
-    $("#inscription_error").removeClass('hidden');
-    $("#inscription_error").removeClass('alert-danger');
-    $("#inscription_error").addClass('alert-success');
+    updateErrorMessage("inscription_error", true, data.message);
   }
 }
 
@@ -117,7 +95,7 @@ function checkRegistrationParameters(username, password, passwordCheck, firstnam
     || (firstname == '') || (firstname == undefined)
     || (lastname == '') || (lastname == undefined)
     || (birthdate == '') || (birthdate == undefined)
-    || (mail == '') || (mail == undefined));
+    || (mail == '') || (mail == undefined) || !(verifierMail(mail)));
 }
 
 /**
@@ -128,7 +106,7 @@ function checkRegistrationParameters(username, password, passwordCheck, firstnam
   * @return {Boolean} <true> Si tous les champs sont valides, <false> sinon
   */
 function checkResetParameters(login, email) {
-  return !((login == '') || (login == undefined) || (email == '') || (email == undefined));
+  return !((login == '') || (login == undefined) || (email == '') || (email == undefined) || !(verifierMail(email)));
 }
 
 /**
@@ -137,14 +115,58 @@ function checkResetParameters(login, email) {
   * @param {Object} data - L'objet renvoyé par la requête Ajax contenant des infos sur l'utilisateur ou un code d'erreur et un message
   */
 function callBackLogin(data) {
-  $("#login_error").removeClass('hidden');
   if(data.code == 201) {
-    $("#login_error").text(data.message);
-    $("#login_error").removeClass('alert-danger');
-    $("#login_error").addClass('alert-success');
+    updateErrorMessage("login_error", true, data.message);
     window.location.href = 'all/profile.jsp';
   }
   else {
-    $("#login_error").text(data.responseJSON.message);
+    updateErrorMessage("login_error", false, data.responseJSON.message);
   }
+}
+
+/**
+  * Méthode apppelée par la requête Ajax, vérifie la modification de mot de passe
+  *
+  * @param {Object} data - L'objet renvoyé par la requête Ajax
+  */
+function callBackPasswordLost(data) {
+  if(data.code == 201) {
+    updateErrorMessage("reset_error", true, data.message);
+  }
+  else {
+    updateErrorMessage("reset_error", false, data.responseJSON.message);
+  }
+}
+
+/**
+  * Vérifie la validité de l'adresse mail
+  *
+  * @param {String} mail - L'adresse à vérifier
+  *
+  * @return {Boolean} <true> si l'adresse est valide, <false> sinon
+  */
+function verifierMail(mail) {
+  return mail.match("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") != null;
+}
+
+/**
+  * Met à jour une division d'erreur
+  *
+  * @param {String} div - La division à mettre à jour
+  * @param {Boolean} bool - <true> si message d'erreur, <false> si message de réussite
+  * @param {String} mess - Le message de la division
+  */
+function updateErrorMessage(div, bool, mess) {
+  $("#"+div).empty();
+  $("#"+div).removeClass("hidden");
+  $("#"+div).removeClass("alert-success");
+  $("#"+div).removeClass("alert-danger");
+
+  if(bool == true) {
+    $("#"+div).addClass("alert-success");
+  }
+  else {
+    $("#"+div).addClass("alert-danger");
+  }
+  $("#"+div).append("<p>"+mess+"</p>");
 }

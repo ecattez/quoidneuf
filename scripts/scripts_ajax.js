@@ -24,8 +24,17 @@ function logout() {
   *
   * @param Les informations du nouvel utilisateur
   */
-function createUser(username, password, firstname, lastname, birthday, picture, description, email, phone) {
-  ajaxRequest('POST', '/quoidneuf/api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, picture : picture, description : description, email : email, phone : phone });
+function createUser(username, password, firstname, lastname, birthday, description, email, phone) {
+  ajaxRequest('POST', '/quoidneuf/api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, description : description, email : email, phone : phone });
+}
+
+/**
+  * Mot de passe perdu
+  *
+  * @param Le mail et le login de l'utilisateur
+  */
+function passwordLost(username, email) {
+  ajaxRequest('POST', '/quoidneuf/api/recover', 'callBackPasswordLost', undefined, 'json', { username : username, email : email });
 }
 
 //-----------------------------------------------
@@ -121,13 +130,12 @@ function getSubscribersProfile(userId) {
 /**
   * Met à jour les informations de l'utilisateur courant
   *
-  * @param {String} picture - Le chemin vers la photo de profil.
   * @param {String} description - La description de l'utilisateur
   * @param {String} email - Le nouveau mail de l'utilisateur
   * @param {String} phone - Le téléphone de l'utilisateur
   */
-function modifySubscribersProfile(picture, description, email, phone) {
-  ajaxRequest('PUT', '/quoidneuf/api/profiles?picture='+picture+'&description='+description+'&email='+email+'&phone='+phone, 'callBackModifySubscribersProfile');
+function modifySubscribersProfile(description, email, phone) {
+  ajaxRequest('PUT', '/quoidneuf/api/profiles?description='+description+'&email='+email+'&phone='+phone, 'callBackModifySubscribersProfile');
 }
 
 /**

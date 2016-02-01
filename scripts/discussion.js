@@ -178,6 +178,13 @@ function callBackAddMember(data) {
 }
 
 /**
+  * Ajoute les nouveaux messages à la suite de la discussion
+  */
+function refreshMessages() {
+  getMessages(discussionId);
+}
+
+/**
   * Met à jour une division d'erreur
   *
   * @param {String} div - La division à mettre à jour
@@ -196,11 +203,4 @@ function updateErrorMessage(div, bool, mess) {
     $("#"+div).addClass("alert-danger");
   }
   $("#"+div).append("<p>"+mess+"</p>");
-}
-
-/**
-  * Ajoute les nouveaux messages à la suite de la discussion
-  */
-function refreshMessages() {
-  getMessages(discussionId);
 }
