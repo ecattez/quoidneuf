@@ -135,7 +135,7 @@ public class FriendDao extends Dao<Integer> {
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			st.setInt(2, ADD_BY_LEFT);
-			st.setInt(2, userId);
+			st.setInt(3, userId);
 			st.setInt(4, ADD_BY_RIGHT);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
@@ -162,7 +162,7 @@ public class FriendDao extends Dao<Integer> {
 			PreparedStatement st = con.prepareStatement(query);
 			st.setInt(1, userId);
 			st.setInt(2, userId);
-			st.setInt(2, ARE_FRIENDS);
+			st.setInt(3, ARE_FRIENDS);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				friends.add(new Subscriber(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birthday")));
