@@ -52,7 +52,8 @@ CREATE TABLE friend_with(
   status INTEGER NOT NULL,
   CONSTRAINT pk_friend_with PRIMARY KEY (friend_1, friend_2),
   CONSTRAINT fk_subscriber_1 FOREIGN KEY (friend_1) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
-  CONSTRAINT fk_subscriber_2 FOREIGN KEY (friend_2) REFERENCES subscriber (subscriber_id) ON UPDATE cascade
+  CONSTRAINT fk_subscriber_2 FOREIGN KEY (friend_2) REFERENCES subscriber (subscriber_id) ON UPDATE cascade,
+  CONSTRAINT fk_subscriber_3 FOREIGN KEY (status) REFERENCES subscriber (subscriber_id) ON UPDATE cascade
 );
 
 CREATE TABLE discussion(
