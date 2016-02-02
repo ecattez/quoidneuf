@@ -24,10 +24,14 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 /**
  * DAO des messages.
  */
 public class MessageDao extends Dao<String> {
+	
+	private static Logger logger = Logger.getLogger(MessageDao.class);
 
 	@Override
 	public boolean exist(String id) {
@@ -39,6 +43,7 @@ public class MessageDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error(id + " n'existe pas");
 		return false;
 	}
 	
@@ -66,6 +71,7 @@ public class MessageDao extends Dao<String> {
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de la ligne échouée");
 		return -1;
 	}
 	

@@ -18,20 +18,25 @@
  */
 package quoidneuf.dao;
 
+import static quoidneuf.entity.Credential.encode;
+import static quoidneuf.entity.Credential.randomPassword;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-import quoidneuf.entity.Credential;
+import org.apache.log4j.Logger;
 
-import static quoidneuf.entity.Credential.*;
+import quoidneuf.entity.Credential;
 
 /**
  * DAO de l'authentification.
  */
 public class CredentialDao extends Dao<String> {
+	
+	private static Logger logger = Logger.getLogger(CredentialDao.class);
 	
 	@Override
 	public boolean exist(String id) {
@@ -43,6 +48,7 @@ public class CredentialDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("l'accrédité " + id + " n'existe pas");
 		return false;
 	}
 	
@@ -83,6 +89,7 @@ public class CredentialDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de la ligne échouée");
 		return -1;
 	}
 	
@@ -106,6 +113,7 @@ public class CredentialDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("changement du mot de passe échoué");
 		return -1;
 		
 	}
@@ -131,6 +139,7 @@ public class CredentialDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("réinitialisation du mot de passe échouée");
 		return "";
 	}
 	
@@ -151,6 +160,7 @@ public class CredentialDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("suppression de la ligne échouée");
 		return -1;
 	}
 

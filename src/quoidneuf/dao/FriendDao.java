@@ -27,12 +27,16 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import quoidneuf.entity.Subscriber;
 
 /**
  * DAO autour des relations amicales.
  */
 public class FriendDao extends Dao<Integer> {
+	
+	private static Logger logger = Logger.getLogger(FriendDao.class);
 	
 	public static final int ARE_FRIENDS = 0;
 	
@@ -47,6 +51,7 @@ public class FriendDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error(id + " n'existe pas");
 		return false;
 	}
 	
@@ -75,6 +80,7 @@ public class FriendDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de la ligne échouée");
 		return -1;
 	}
 	
@@ -92,6 +98,7 @@ public class FriendDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("création de l'amitié échouée");
 		return -1;
 	}
 	
@@ -107,6 +114,7 @@ public class FriendDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("suppression de la ligne échouée");
 		return -1;
 	}
 	
@@ -203,6 +211,7 @@ public class FriendDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.warn("aucun status trouvé");
 		return -1;
 	}
 	
@@ -227,6 +236,7 @@ public class FriendDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.warn("aucune liaison trouvée");
 		return false;
 	}
 	

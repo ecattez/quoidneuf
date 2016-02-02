@@ -18,6 +18,8 @@
  */
 package quoidneuf.util;
 
+import java.nio.file.Paths;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -28,8 +30,8 @@ import javax.servlet.ServletContextListener;
  */
 public class AppServletListener implements ServletContextListener {
 	
-	public static final String SUBSCRIBER_PATH_KEY = "subscriberPath";
-	public static final String DISCUSSION_PATH_KEY = "discussionPath";
+	public static final String SUBSCRIBER_PATH_KEY = "subscribers";
+	public static final String DISCUSSION_PATH_KEY = "discussions";
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent e) {
@@ -40,8 +42,8 @@ public class AppServletListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent e) {
 		System.out.println("Démarrage de l'application");
 		ServletContext ctx = e.getServletContext();
-		ctx.setAttribute(SUBSCRIBER_PATH_KEY, ctx.getRealPath(ctx.getInitParameter("subscribers")));
-		ctx.setAttribute(DISCUSSION_PATH_KEY, ctx.getRealPath(ctx.getInitParameter("discussions")));
+		ctx.setAttribute(SUBSCRIBER_PATH_KEY, Paths.get(ctx.getContextPath(), ctx.getInitParameter(SUBSCRIBER_PATH_KEY)));
+		ctx.setAttribute(DISCUSSION_PATH_KEY, Paths.get(ctx.getContextPath(), ctx.getInitParameter(DISCUSSION_PATH_KEY)));
 	}
 
 }

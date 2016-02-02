@@ -27,6 +27,8 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
 
@@ -34,6 +36,8 @@ import quoidneuf.util.Matcher;
  * DAO des utilisateurs.
  */
 public class SubscriberDao extends Dao<Integer> {
+	
+	private static Logger logger = Logger.getLogger(SubscriberDao.class);
 
 	@Override
 	public boolean exist(Integer id) {
@@ -45,6 +49,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error(id + " n'existe pas");
 		return false;
 	}
 	
@@ -68,6 +73,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("le couple " + login + ", " + email + " n'existe pas");
 		return false;
 	}
 	
@@ -91,6 +97,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("l'abonné " + userId + " n'existe pas");
 		return null;
 	}
 	
@@ -114,6 +121,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("l'abonné " + login + " n'existe pas");
 		return null;
 	}
 	
@@ -168,6 +176,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("l'abonné " + login + " n'existe pas");
 		return -1;
 	}
 	
@@ -232,6 +241,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de la ligne échouée");
 		return -1;
 	}
 	
@@ -252,6 +262,7 @@ public class SubscriberDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("suppression de la ligne échouée");
 		return -1;
 	}
 
