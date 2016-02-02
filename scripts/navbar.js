@@ -98,7 +98,9 @@ function callBackGetDiscussions(data) {
     }
     line += "</li>";
     $("#dropdown_navbar_discussions").append(line);
-    addDiscussionListener(data[discussion].id);
+    if(page == 'discussion') {
+      addDiscussionListener(data[discussion].id);
+    }
   }
 }
 
@@ -131,13 +133,25 @@ function nouvelleDiscussion() {
   }
 }
 
+/**
+  * Vérifie le retour de la création d'une discussion
+  */
 function callBackCreateDiscussion(data) {
+  console.log(data);
   if(data.id) {
     $("#dropdown_navbar_discussions").append("<li class=\"alert-success\"><p>Discussion créée</p></li>");
+    writeFirstMessage(data.id);
   }
   else {
     $("#dropdown_navbar_discussions").append("<li class=\"alert-danger\"><p>"+data.message+"</p></li>");
   }
+}
+
+/**
+  * Vérifie le retour de l'écriture du premier message dans une nouvelle discussion
+  */
+function callBackWriteFirstMessage(data) {
+  console.log(data);
 }
 
 /**

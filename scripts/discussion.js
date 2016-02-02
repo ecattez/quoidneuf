@@ -1,6 +1,7 @@
 var discussionId;
 var nbMessages;
 var interval;
+var userId;
 
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
@@ -11,6 +12,7 @@ function initDiscussionPage(uId, dId) {
   }
   $("#li_membres").removeClass("hidden");
   nbMessages = 0;
+  userId = uId;
   discussionId = dId;
   getMembers(discussionId);
   getMessages(discussionId);
@@ -77,7 +79,7 @@ function changeDiscussion(dId) {
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">Discussion</h2>");
   $("#discussion_membres").empty();
   $("#messages").empty();
-  initDiscussionPage(dId);
+  initDiscussionPage(userId, dId);
 }
 
 /**

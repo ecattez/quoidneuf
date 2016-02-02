@@ -106,6 +106,15 @@ function writeMessage(discussionId, content) {
 }
 
 /**
+  * Ecrit le message de bienvenue dans une discussion (id utilisateur dans la session)
+  *
+  * @param {Number} discussionId - L'id de la discussion
+  */
+function writeFirstMessage(discussionId) {
+  ajaxRequest('POST', '/quoidneuf/api/messages', 'callBackWriteFirstMessage', undefined, 'json', { discussion : discussionId, content : "Nouvelle discussion créée" });
+}
+
+/**
   * Ajoute un membre à la discussion
   *
   * @param {Number} discussionId - L'id de la discussion
