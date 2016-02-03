@@ -19,7 +19,6 @@
 package quoidneuf.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +33,6 @@ import javax.servlet.http.HttpSession;
 
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.DiscussionDao;
-import quoidneuf.dao.SubscriberDao;
 import quoidneuf.entity.Discussion;
 import quoidneuf.entity.Subscriber;
 import quoidneuf.util.Matcher;
@@ -46,11 +44,9 @@ public class DiscussionService extends JsonServlet {
 	private static final long serialVersionUID = 5334642516196786048L;
 	
 	private DiscussionDao discussionDao;
-	private SubscriberDao subscriberDao;
 	
 	public DiscussionService() {
 		this.discussionDao = DaoProvider.getDao(DiscussionDao.class);
-		this.subscriberDao = DaoProvider.getDao(SubscriberDao.class);
 	}
 
 	/** Récupérer une discussion */
@@ -113,10 +109,13 @@ public class DiscussionService extends JsonServlet {
 		HttpSession session = req.getSession(true);
 		Integer userId = (Integer) session.getAttribute("user");
 		String discussionId = req.getParameter("id");
-		String[] strUserIds = req.getParameterValues("users");
+		Integer profilId = Matcher.convertInt(req.getParameter("user"));
 		
 		if (userId == null) {
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		else if (profilId == null) {
+			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'user' manquant ou non entier");
 		}
 		else if (discussionId == null) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'id' manquant");
@@ -127,15 +126,11 @@ public class DiscussionService extends JsonServlet {
 		else if (!discussionDao.userExistIn(discussionId, userId)) {
 			sendTicket(HttpServletResponse.SC_FORBIDDEN, res, "discussion interdite");
 		}
+		else if (discussionDao.userExistIn(discussionId, profilId)) {
+			sendTicket(HttpServletResponse.SC_CONFLICT, res, "utilisateur déjà présent dans la discussion");
+		}
 		else {
-			List<Integer> userIds = new ArrayList<>();
-			for (String user : strUserIds) {
-				if (Matcher.isDigits(user)) {
-					userIds.add(Integer.parseInt(user));
-				}
-			}
-			userIds = subscriberDao.correctIds(userIds);
-			if (discussionDao.insertUsersIn(discussionId, userIds) >= 0) {
+			if (discussionDao.insertUserIn(discussionId, profilId) > 0) {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
