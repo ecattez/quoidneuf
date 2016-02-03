@@ -22,13 +22,13 @@ function initDiscussionPage(uId, dId) {
   addButtonListeners();
 
   interval = setInterval(refreshMessages, 1000);
-  loadDynatable();
+  loadMembersDynatable();
 }
 
 /**
   *
   */
-function loadDynatable() {
+function loadMembersDynatable() {
   $('#search_result_table').dynatable({
     features: {
       paginate: false,
@@ -181,7 +181,6 @@ function chercherMembre() {
   if(member != '') {
     searchForMembre(member);
   }
-  $("#member_input").val("");
 }
 
 /**

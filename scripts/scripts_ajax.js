@@ -74,6 +74,24 @@ function getRequestedFriends(userId) {
   ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendRequests', undefined, 'json', { id : userId, status : false });
 }
 
+/**
+  * Cherche un membre
+  *
+  * @param {String} search - Le champs de recherche
+  */
+function searchForSubscriber(search) {
+  ajaxRequest('GET', '/quoidneuf/api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForSubscriber');
+}
+
+/**
+  * Créer une demande d'amitié
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function addFriendRequestFromNavbar(userId) {
+  ajaxRequest('POST', '/quoidneuf/api/friends', 'callBackAddFriendRequestFromNavbar', undefined, 'json', { friend : userId });
+}
+
 //-----------------------------------------------
 // Pour page discussion : Récupérer les membres et les messages, écrire un message
 

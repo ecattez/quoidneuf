@@ -131,6 +131,7 @@
   <script type="text/javascript" src="../scripts/profile.js"></script>
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
+  <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
   <script type="text/javascript">initNavbar('${user}', 'profile');</script>
   <script type="text/javascript">initProfilePage('${user}', "${param.id}");</script>
 </body>

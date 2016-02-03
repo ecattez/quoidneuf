@@ -140,15 +140,6 @@ function callBackAddFriendRequest(data) {
 }
 
 /**
-  * Charge le bouton d'acceptation de demande d'ami
-  *
-  * @param {Number} user - L'id de l'utilisateur à accepter
-  */
-function loadButtonAccept(user) {
-  console.log("A implementer");
-}
-
-/**
   * Met à jour l'affichage avec les données envoyées par le serveur
   *
   * @param {Object} data - Le profil de l'utilisateur

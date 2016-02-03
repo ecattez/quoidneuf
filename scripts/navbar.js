@@ -8,6 +8,15 @@ function initNavbar(user, p) {
   if(user == undefined) {
     window.location.href = '../';
   }
+
+  loadListeners(user);
+  loadNewFriendsDynatable();
+}
+
+/**
+  * Ajoute les EventListeners aux boutons
+  */
+function loadListeners(user) {
   $("#navbar_deconnexion").on("click", function() {
     logout();
   });
@@ -20,6 +29,87 @@ function initNavbar(user, p) {
   $("#navbar_discussions").on("click", function() {
     getDiscussions();
   });
+
+  $("#search_new_friend").on("click", chercherAmi);
+
+  $("#member_search_friend_input").on("enterKey", chercherAmi);
+
+  $("#member_search_friend_input").keyup(function(e) {
+    if(e.keyCode == 13)
+    {
+      $(this).trigger("enterKey");
+    }
+  });
+}
+
+/**
+  *
+  */
+function loadNewFriendsDynatable() {
+  $("#search_result_friend_table").dynatable({
+    features: {
+      paginate: false,
+      search: false,
+      recordCount: false,
+      perPageSelect: false
+    },
+    dataset: {
+      records: ''
+    }
+  });
+}
+
+/**
+  * Vérifie le champ et envoie la requête de recherche d'utilisateur
+  */
+function chercherAmi() {
+  var member = $("#member_search_friend_input").val();
+  if(member != '') {
+    searchForSubscriber(member);
+  }
+}
+
+/**
+  * Mise à jour de l'affichage avec les membres correspondants à la recherche
+  */
+function callBackSearchForSubscriber(data) {
+  if(data.status) {
+    updateErrorMessage('error_new_friend_div', false, data.statusText);
+  }
+  else {
+    updateErrorMessage('error_new_friend_div', true, 'Résultat de la recherche...');
+    affichageSubscribers(data);
+  }
+}
+
+/**
+  * Met à jour l'affichage de la fenêtre modale et y ajoute les membres corresponants à la recherche
+  */
+function affichageSubscribers(membres) {
+  for(var membre in membres) {
+    membres[membre].id = "<button onclick=\"ajoutAmi("+membres[membre].id+")\">Ajouter</button>";
+  }
+  $('#search_result_friend_table').data('dynatable').settings.dataset.originalRecords = membres;
+  $('#search_result_friend_table').data('dynatable').process();
+}
+
+/**
+  * Envoie la requête d'ajout aux amis
+  */
+function ajoutAmi(id) {
+  addFriendRequestFromNavbar(id);
+}
+
+/**
+  * Mise à jour de l'affichage d'après le retour du serveur
+  */
+function callBackAddFriendRequestFromNavbar(data) {
+  if(data.status) {
+    updateErrorMessage('error_new_friend_div', false, data.responseJSON.message);
+  }
+  else {
+    updateErrorMessage('error_new_friend_div', true, 'Requête envoyée !');
+  }
 }
 
 /**
@@ -38,6 +128,7 @@ function callBackLogout(data) {
   */
 function callBackGetFriends(data) {
   $("#dropdown_navbar_amis").empty();
+  $("#dropdown_navbar_amis").append("<li><p><button class=\"btn btn-success\" data-toggle=\"modal\" data-target=\"#modal_add_friend\">Ajouter ami</button></p></li>");
   $("#dropdown_navbar_amis").append("<li><p>Amis</p></li>");
   var line = '';
   for(var ami in data) {

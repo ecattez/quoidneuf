@@ -71,7 +71,7 @@
     </div>
     <!-- Fin contenu -->
 
-    <!-- Fenetre modale "Mot de passe oublié" -->
+    <!-- Fenetre modale "Ajout de membre" -->
 
     <div class="modal fade" tabindex="-1" role="dialog" id="modal_add_member">
       <div class="modal-dialog">
@@ -116,7 +116,7 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <!-- Fin fenetre modale "Mot de passe oublié" -->
+    <!-- Fin fenetre modale "Ajout de membre" -->
 
     <!-- Fenetre modale Confirmation quiter discussion -->
 
