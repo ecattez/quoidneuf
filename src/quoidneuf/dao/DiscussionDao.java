@@ -240,42 +240,5 @@ public class DiscussionDao extends Dao<String> {
 		logger.error("insertion de " + userId + " dans la discussion " + id + " échouée");
 		return -1;
 	}
-	
-	/**
-	 * Ajoute des utilisateurs à une discussion
-	 * 
-	 * @param	id
-	 * 			l'identifiant de la discussion
-	 * @param	usersIds
-	 * 			l'identifiant de chaque utilisateur à ajouter
-	 * 
-	 * @return	le nombre d'utilisateurs ajoutés à la discussion
-	 */
-	public int insertUsersIn(String id, List<Integer> usersIds) {
-		int i = 0;
-		try (Connection con = getConnection()) {
-			String query = "INSERT INTO belong_to VALUES (?,?)";
-			PreparedStatement st;
-			for (int userId : usersIds) {
-				if (userExistIn(id, userId)) {
-					logger.warn(userId + " existe déjà dans la discussion, insertion annulée");
-					continue;
-				}
-				st = con.prepareStatement(query);
-				try {
-					st.setInt(1, userId);
-					st.setString(2, id);
-					i += st.executeUpdate();
-				} catch (SQLException e) {
-					logger.error("insertion de " + userId + " dans la discussion " + id + " échouée");
-					e.printStackTrace();
-				}
-			}
-		} catch (NamingException | SQLException e) {
-			e.printStackTrace();
-		}
-		logger.info("insertion réussie");
-		return i;
-	}
 
 }
