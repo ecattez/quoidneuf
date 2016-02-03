@@ -135,7 +135,7 @@ public class DiscussionService extends JsonServlet {
 				}
 			}
 			userIds = subscriberDao.correctIds(userIds);
-			if (discussionDao.insertUsersIn(discussionId, userIds) > 0) {
+			if (discussionDao.insertUsersIn(discussionId, userIds) >= 0) {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);
 			}
 			else {
