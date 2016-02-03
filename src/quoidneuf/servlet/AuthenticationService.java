@@ -38,8 +38,6 @@ import quoidneuf.util.Matcher;
 @ServletSecurity(@HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL))
 public class AuthenticationService extends JsonServlet {
 	
-	/* https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html */
-	
 	private static final long serialVersionUID = 7229118350560492306L;
 	
 	private SubscriberDao subscriberDao;

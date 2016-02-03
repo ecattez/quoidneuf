@@ -27,6 +27,8 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import quoidneuf.entity.Discussion;
 import quoidneuf.entity.Message;
 import quoidneuf.entity.Subscriber;
@@ -35,6 +37,8 @@ import quoidneuf.entity.Subscriber;
  * DAO des discussions.
  */
 public class DiscussionDao extends Dao<String> {
+	
+	private static Logger logger = Logger.getLogger(DiscussionDao.class);
 
 	public DiscussionDao() {}
 	
@@ -48,6 +52,7 @@ public class DiscussionDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error(id + " n'existe pas");
 		return false;
 	}
 	
@@ -71,6 +76,7 @@ public class DiscussionDao extends Dao<String> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("l'utilisateur " + userId +  "n'existe pas dans la discussion " + id);
 		return false;
 	}
 
@@ -182,6 +188,7 @@ public class DiscussionDao extends Dao<String> {
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de la discussion " + id + " échouée");
 		return -1;
 	}
 	
@@ -205,6 +212,7 @@ public class DiscussionDao extends Dao<String> {
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
+		logger.error("suppression de " + userId + " dans la discussion " + id + " échouée");
 		return -1;
 	}
 	
@@ -229,6 +237,7 @@ public class DiscussionDao extends Dao<String> {
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de " + userId + " dans la discussion " + id + " échouée");
 		return -1;
 	}
 	
@@ -256,6 +265,7 @@ public class DiscussionDao extends Dao<String> {
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
+		logger.error("suppression de " + usersIds + " dans la discussion " + id + " échouée");
 		return i;
 	}
 

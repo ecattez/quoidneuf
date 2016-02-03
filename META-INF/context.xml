@@ -36,5 +36,11 @@
 		prefix="quoidneuf"
 		suffix=".txt"
 		pattern="common"/>
+	
+	<!-- Definition d'une valve d'acces, le port 8080 n'est plus accessible -->
+	<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+		addConnectorPort="true"
+		invalidAuthenticationWhenDeny="true"
+		allow=".*;8443"/>
 
 </Context>

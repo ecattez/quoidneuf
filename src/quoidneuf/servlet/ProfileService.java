@@ -91,7 +91,6 @@ public class ProfileService extends JsonServlet {
 			String firstname = req.getParameter("firstname");
 			String lastname = req.getParameter("lastname");
 			String birthday = req.getParameter("birthday");
-			String picture = req.getParameter("picture");
 			String description = req.getParameter("description");
 			String email = req.getParameter("email");
 			String phone = req.getParameter("phone");
@@ -128,7 +127,7 @@ public class ProfileService extends JsonServlet {
 			else if (subscriberDao.insert(login, firstname, lastname, birthday) == -1) {
 				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création du profil");
 			}
-			else if (subscriberMetaDao.insert(picture, description, email, phone) == -1) {
+			else if (subscriberMetaDao.insert(null, description, email, phone) == -1) {
 				sendTicket(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, res, "erreur lors de la création du profil");
 			}
 			else {
@@ -155,7 +154,6 @@ public class ProfileService extends JsonServlet {
 		Integer userId = (Integer) session.getAttribute("user");
 		
 		String password = req.getParameter("password");
-		String picture = req.getParameter("picture");
 		String description = req.getParameter("description");
 		String email = req.getParameter("email");
 		String phone = req.getParameter("phone");
@@ -188,7 +186,6 @@ public class ProfileService extends JsonServlet {
 					description = StringEscapeUtils.escapeHtml4(description);
 				}
 				SubscriberMeta meta = new SubscriberMeta();
-				meta.setPictureUri(picture);
 				meta.setDescription(description);
 				meta.setEmail(email);
 				meta.setPhone(phone);

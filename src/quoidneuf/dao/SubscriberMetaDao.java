@@ -25,12 +25,16 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import quoidneuf.entity.SubscriberMeta;
 
 /**
  * DAO des meta données des utilisateurs.
  */
 public class SubscriberMetaDao extends Dao<Integer> {
+	
+	private static Logger logger = Logger.getLogger(SubscriberMetaDao.class);
 
 	@Override
 	public boolean exist(Integer id) {
@@ -42,6 +46,7 @@ public class SubscriberMetaDao extends Dao<Integer> {
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error(id + " n'existe pas");
 		return false;
 	}
 	
@@ -61,17 +66,17 @@ public class SubscriberMetaDao extends Dao<Integer> {
 	 */
 	public int insert(String picture, String description, String email, String phone) {
 		try (Connection con = getConnection()) {
-			String query = "INSERT INTO subscriber_meta(subscriber_id, picture, description, email, phone)"
+			String query = "INSERT INTO subscriber_meta(subscriber_id, description, email, phone)"
 					+ " SELECT MAX(subscriber_id), ?, ?, ?, ? FROM subscriber";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setString(1, picture == null ? "" : picture);
-			st.setString(2, description == null ? "" : description);
-			st.setString(3, email);
-			st.setString(4, phone == null ? "" : phone);
+			st.setString(1, description == null ? "" : description);
+			st.setString(2, email);
+			st.setString(3, phone == null ? "" : phone);
 			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("insertion de la ligne échouée");
 		return -1;
 	}
 	
@@ -116,17 +121,41 @@ public class SubscriberMetaDao extends Dao<Integer> {
 	 */
 	public int updateFromSubscriber(int userId, SubscriberMeta meta) {		
 		try (Connection con = getConnection()) {
-			String query = "UPDATE subscriber_meta SET picture = ?, description = ?, email = ?, phone = ? WHERE subscriber_id = ?";
+			String query = "UPDATE subscriber_meta SET description = ?, email = ?, phone = ? WHERE subscriber_id = ?";
 			PreparedStatement st = con.prepareStatement(query);
-			st.setString(1, meta.getPictureUri());
-			st.setString(2, meta.getDescription());
-			st.setString(3, meta.getEmail());
-			st.setString(4, meta.getPhone());
+			st.setString(1, meta.getDescription());
+			st.setString(2, meta.getEmail());
+			st.setString(3, meta.getPhone());
 			st.setInt(5, userId);
 			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 		}
+		logger.error("mise à jour de la ligne échouée");
+		return -1;
+	}
+	
+	/**
+	 * Met à jour la photo de profil de l'utilisateur
+	 * 
+	 * @param	userId
+	 * 			l'identifiant de l'utilisateur
+	 * @param	picture
+	 * 			la photo de profil de l'utilisateur
+	 * 
+	 * @return	un entier positif en cas de succès, -1 sinon
+	 */
+	public int updateSubscriberPicture(int userId, String picture) {
+		try (Connection con = getConnection()) {
+			String query = "UPDATE subscriber_meta SET picture = ? WHERE subscriber_id = ?";
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, picture);
+			st.setInt(2, userId);
+			return st.executeUpdate();
+		} catch (SQLException | NamingException e) {
+			e.printStackTrace();
+		}
+		logger.error("mise à jour de la photo de profil échouée");
 		return -1;
 	}
 
