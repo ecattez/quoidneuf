@@ -174,7 +174,7 @@ function ajoutMembre(member) {
 }
 
 /**
-  *
+  * Vérifie le champ et envoie la requête de recherche d'utilisateur
   */
 function chercherMembre() {
   var member = $("#member_search_input").val();
@@ -203,10 +203,10 @@ function callBackWriteMessage(data) {
 function callBackAddMember(data) {
   if(data == undefined) {
     getMembers(discussionId);
-    updateErrorMessage('error_div', true, 'Membre bien ajouté !');
+    updateErrorMessage('error_search_div', true, 'Membre bien ajouté !');
   }
   else {
-    updateErrorMessage('error_div', false, data.responseJSON.message);
+    updateErrorMessage('error_search_div', false, data.responseJSON.message);
   }
 }
 
@@ -227,6 +227,9 @@ function callBackSearchForMember(data) {
   * Met à jour l'affichage de la fenêtre modale et y ajoute les membres corresponants à la recherche
   */
 function affichageMembres(membres) {
+  for(var membre in membres) {
+    membres[membre].id = "<button onclick=\"ajoutMembre("+membres[membre].id+")\">Ajouter</button>";
+  }
   $('#search_result_table').data('dynatable').settings.dataset.originalRecords = membres;
   $('#search_result_table').data('dynatable').process();
 }
