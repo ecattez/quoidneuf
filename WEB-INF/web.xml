@@ -8,11 +8,7 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-
-    <listener>
-  		<listener-class>quoidneuf.util.AppServletListener</listener-class>
-  	</listener>
-
+    
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
@@ -35,7 +31,7 @@
     	<param-name>discussions</param-name>
     	<param-value>discussions</param-value>
     </context-param>
-    
+
 	<filter>
 		<filter-name>CorsFilter</filter-name>
 		<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
