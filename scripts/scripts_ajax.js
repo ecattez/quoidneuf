@@ -121,7 +121,7 @@ function writeFirstMessage(discussionId) {
   * @param {Number} userId - L'id de l'utilisateur à ajouter à cette discussion
   */
 function addMember(discussionId, userId) {
-  ajaxRequest('PUT', '/quoidneuf/api/discussions?id='+discussionId+'&users='+userId, 'callBackAddMember');
+  ajaxRequest('PUT', '/quoidneuf/api/discussions?id='+discussionId+'&user='+userId, 'callBackAddMember');
 }
 
 /**

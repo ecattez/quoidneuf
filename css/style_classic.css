@@ -1,10 +1,11 @@
 body {
   padding-top: 10px;
   background-color: #921f62 !important;
+  background-image: url('../images/background_ulille.jpg');
 }
 
 #corps {
-  background-color: #921f62 !important;
+  /*background-color: #921f62 !important;*/
 }
 
 .contents {
@@ -71,4 +72,10 @@ ul {
 
 .nom_membres {
   padding-top: 2px;
+}
+
+#discussion_membres {
+  height: 130px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

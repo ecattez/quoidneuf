@@ -56,6 +56,25 @@ p {
   text-align: center;
 }
 
+.vcenter_div {
+  vertical-align: center;
+}
+
 .form-connection {
   text-align: left;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0%;
+}
+
+.nom_membres {
+  padding-top: 2px;
+}
+
+#discussion_membres {
+  height: 130px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
