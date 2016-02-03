@@ -15,6 +15,8 @@
   <!-- Bootstrap -->
   <link href="../css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- <link href="../css/jquery.dynatable.css" rel="stylesheet"> -->
+
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -38,7 +40,7 @@
         <!-- Liste des messages -->
         <div class="row">
           <!-- Label ne passe pas le validator -->
-          <!--<label for="messages" hidden="true">Messages</label> -->
+          <!-- <label for="messages" hidden="true">Messages</label> -->
           <textarea name="name" rows="8" cols="40" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="messages" readonly></textarea>
         </div>
         <!-- Fin liste des messages-->
@@ -60,21 +62,80 @@
       <div class="col-lg-2 col-md-2 contents img-rounded collapse col-md-offset-1 col-lg-offset-1" id="membres">
         <h2>Membres</h2>
         <ul id="discussion_membres"></ul>
-        <!-- Barre de recherche pour ajout à la discussion : -->
-        <div class="row">
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" id="add_member"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-            </span>
-            <input type="text" class="form-control" placeholder="Ajouter utilisateur..." id="member_input">
-          </div><!-- /input-group -->
-        </div>
 
-        <button type="button" name="Quitter groupe" class="btn btn-danger" id="leave_discussion_button">Quitter discussion</button>
+        <p><button type="button" name="Ajout membre" class="btn btn-success" data-toggle="modal" data-target="#modal_add_member">Ajout membre</button></p>
+
+        <p><button type="button" name="Quitter groupe" class="btn btn-danger" data-toggle="modal" data-target="#modal_leave_discussion">Quitter discussion</button></p>
       </div>
       <!-- Fin Membres -->
     </div>
     <!-- Fin contenu -->
+
+    <!-- Fenetre modale "Mot de passe oublié" -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal_add_member">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Ajout de membre</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="search_member"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </span>
+              <input type="text" class="form-control" placeholder="Chercher utilisateur..." id="member_search_input">
+            </div><!-- /input-group -->
+
+            <!-- Resultat recherche div-->
+            <div class="row" id="search_result">
+              <table class="dynatable table table-bordered" id="search_result_table">
+                <thead>
+                  <tr>
+                    <th data-dynatable-column="firstName" class="dynatable-head">Prénom</th>
+                    <th data-dynatable-column="lastName" class="dynatable-head">Nom</th>
+                    <th data-dynatable-column="birthday" class="dynatable-head">Date de naissance</th>
+                    <th data-dynatable-column="id" class="dynatable-head">Ajouter</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <!-- Fin Resultat Recherche Div-->
+
+            <!-- Error div-->
+            <div class="row alert hidden" role="alert" id="error_search_div"></div>
+            <!-- Fin Error Div-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer fenêtre</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Fin fenetre modale "Mot de passe oublié" -->
+
+    <!-- Fenetre modale Confirmation quiter discussion -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal_leave_discussion">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Quitter la discussion ?</h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-danger" id="leave_discussion_button">Quitter la discussion</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Fin fenetre modale Confirmation quiter discussion -->
 
     <!-- Footer -->
     <jsp:include page="footer.jsp" />
@@ -86,6 +147,7 @@
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../scripts/discussion.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
+  <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
   <script type="text/javascript">initNavbar('${user}', 'discussion');</script>
   <script type="text/javascript">initDiscussionPage('${user}', "${param.id}");</script>
 </body>

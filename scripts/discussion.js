@@ -2,6 +2,7 @@ var discussionId;
 var nbMessages;
 var interval;
 var userId;
+var dyna;
 
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
@@ -21,6 +22,24 @@ function initDiscussionPage(uId, dId) {
   addButtonListeners();
 
   interval = setInterval(refreshMessages, 1000);
+  loadDynatable();
+}
+
+/**
+  *
+  */
+function loadDynatable() {
+  $('#search_result_table').dynatable({
+    features: {
+      paginate: false,
+      search: false,
+      recordCount: false,
+      perPageSelect: false
+    },
+    dataset: {
+      records: ''
+    }
+  });
 }
 
 /**
@@ -57,11 +76,11 @@ function addButtonListeners() {
     }
   });
 
-  $("#add_member").on("click", ajoutMembre);
+  $("#search_member").on("click", chercherMembre);
 
-  $("#member_input").on("enterKey", ajoutMembre);
+  $("#member_search_input").on("enterKey", chercherMembre);
 
-  $("#member_input").keyup(function(e) {
+  $("#member_search_input").keyup(function(e) {
     if(e.keyCode == 13)
     {
       $(this).trigger("enterKey");
@@ -150,11 +169,17 @@ function ajoutMessage() {
 /**
   * Ajoute une message à la discussion
   */
-function ajoutMembre() {
-  var member = $("#member_input").val();
+function ajoutMembre(member) {
+  addMember(discussionId, member);
+}
+
+/**
+  *
+  */
+function chercherMembre() {
+  var member = $("#member_search_input").val();
   if(member != '') {
-    //TODO : Trouver l'id du membre
-    addMember(discussionId, member);
+    searchForMembre(member);
   }
   $("#member_input").val("");
 }
@@ -186,6 +211,27 @@ function callBackAddMember(data) {
 }
 
 /**
+  * Mise à jour de l'affichage avec les membres correspondants à la recherche
+  */
+function callBackSearchForMember(data) {
+  if(data.status) {
+    updateErrorMessage('error_search_div', false, data.statusText);
+  }
+  else {
+    updateErrorMessage('error_search_div', true, 'Résultat de la recherche...');
+    affichageMembres(data);
+  }
+}
+
+/**
+  * Met à jour l'affichage de la fenêtre modale et y ajoute les membres corresponants à la recherche
+  */
+function affichageMembres(membres) {
+  $('#search_result_table').data('dynatable').settings.dataset.originalRecords = membres;
+  $('#search_result_table').data('dynatable').process();
+}
+
+/**
   * Ajoute les nouveaux messages à la suite de la discussion
   */
 function refreshMessages() {
@@ -200,7 +246,7 @@ function quitterDiscussion() {
 }
 
 /**
-  *
+  * Met à jour l'affichage et redirige vers la page de profil si réussite
   */
 function callBackLeaveDiscussion(data) {
   if(data == undefined) {
@@ -223,6 +269,8 @@ function updateErrorMessage(div, bool, mess) {
   $("#"+div).removeClass("hidden");
   $("#"+div).removeClass("alert-success");
   $("#"+div).removeClass("alert-danger");
+
+  $("#"+div).empty();
 
   if(bool == true) {
     $("#"+div).addClass("alert-success");

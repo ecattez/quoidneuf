@@ -38,7 +38,7 @@ function initLoginPage(uid) {
       }
       else {
         updateErrorMessage("inscription_error", true, "Vérification des données...");
-        createUser(username, password, firstname, lastname, birthdate, picture, description, mail, phone);
+        createUser(username, password, firstname, lastname, birthdate, description, mail, phone);
       }
     }
   });

@@ -142,6 +142,15 @@ function leaveDiscussion(id) {
   ajaxRequest('DELETE', '/quoidneuf/api/discussions?id='+id, 'callBackLeaveDiscussion');
 }
 
+/**
+  * Cherche un membre
+  *
+  * @param {String} search - Le champs de recherche
+  */
+function searchForMembre(search) {
+  ajaxRequest('GET', '/quoidneuf/api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForMember');
+}
+
 //-----------------------------------------------
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 
