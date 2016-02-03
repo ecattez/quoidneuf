@@ -67,7 +67,7 @@ public class SubscriberMetaDao extends Dao<Integer> {
 	public int insert(String picture, String description, String email, String phone) {
 		try (Connection con = getConnection()) {
 			String query = "INSERT INTO subscriber_meta(subscriber_id, description, email, phone)"
-					+ " SELECT MAX(subscriber_id), ?, ?, ?, ? FROM subscriber";
+					+ " SELECT MAX(subscriber_id), ?, ?, ? FROM subscriber";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, description == null ? "" : description);
 			st.setString(2, email);
@@ -126,7 +126,7 @@ public class SubscriberMetaDao extends Dao<Integer> {
 			st.setString(1, meta.getDescription());
 			st.setString(2, meta.getEmail());
 			st.setString(3, meta.getPhone());
-			st.setInt(5, userId);
+			st.setInt(4, userId);
 			return st.executeUpdate();
 		} catch (SQLException | NamingException e) {
 			e.printStackTrace();

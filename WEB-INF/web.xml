@@ -9,10 +9,6 @@
         <session-timeout>30</session-timeout>
     </session-config>
     
-    <listener>
-  		<listener-class>quoidneuf.util.AppServletListener</listener-class>
-  	</listener>
-
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

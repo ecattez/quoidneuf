@@ -257,15 +257,24 @@ public class DiscussionDao extends Dao<String> {
 			String query = "INSERT INTO belong_to VALUES (?,?)";
 			PreparedStatement st;
 			for (int userId : usersIds) {
+				if (userExistIn(id, userId)) {
+					logger.warn(userId + " existe déjà dans la discussion, insertion annulée");
+					continue;
+				}
 				st = con.prepareStatement(query);
-				st.setInt(1, userId);
-				st.setString(2, id);
-				i += st.executeUpdate();
+				try {
+					st.setInt(1, userId);
+					st.setString(2, id);
+					i += st.executeUpdate();
+				} catch (SQLException e) {
+					logger.error("insertion de " + userId + " dans la discussion " + id + " échouée");
+					e.printStackTrace();
+				}
 			}
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		}
-		logger.error("suppression de " + usersIds + " dans la discussion " + id + " échouée");
+		logger.info("insertion réussie");
 		return i;
 	}
 
