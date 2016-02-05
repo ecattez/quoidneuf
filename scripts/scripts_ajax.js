@@ -228,6 +228,15 @@ function addFriendRequest(userId) {
   ajaxRequest('POST', '/quoidneuf/api/friends', 'callBackAddFriendRequest', undefined, 'json', { friend : userId });
 }
 
+/**
+  * Supprime un lien d'amitié
+  *
+  * @param {Number} userId - L'id de l'utilisateur
+  */
+function removeFriend(userId) {
+  ajaxRequest('DELETE', '/quoidneuf/api/friends?friend='+userId, 'callBackRemoveFriend', undefined, 'json', { friend : userId });
+}
+
 //-----------------------------------------------
 // Gabarits pour requêtes Ajax
 

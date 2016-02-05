@@ -49,6 +49,9 @@ function callBackCheckFriendStatus(data) {
       $("#button").append("<p>Demande d'amitié en attente...</p>");
     }
   }
+  else if (data.status == 0) {
+    loadButtonRemove(id);
+  }
   else if (data.status == -1) {
     // Pas amis et pas de demande en cours
     loadButtonAdd(id);
@@ -63,6 +66,36 @@ function callBackCheckFriendStatus(data) {
 function loadButtonAdd(user) {
   $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
   $("#add_friend_"+user).on("click", function() { addFriend(user) });
+}
+
+/**
+  * Charge le bouton de suppression d'ami
+  *
+  * @param {Number} user - L'id de l'utilisateur à supprimer
+  */
+function loadButtonRemove(user) {
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton retirer\" onclick=\"removeFriendRequest("+user+")\">Retirer l'ami de votre liste</button></p>");
+}
+
+/**
+  * Envoie une requête de suppression de l'ami
+  */
+function removeFriendRequest(user) {
+  if(user != undefined) {
+    removeFriend(user);
+  }
+  else {
+    updateErrorMessage('error_div', false, "Erreur à la suppression de l'ami.");
+  }
+}
+
+function callBackRemoveFriend(data) {
+  if(data) {
+    updateErrorMessage('error_div', false, data.statusText);
+  }
+  else {
+    updateErrorMessage('error_div', true, "Suppression effectuée");
+  }
 }
 
 /**
