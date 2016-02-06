@@ -48,11 +48,23 @@ TODO : Décrire ce qu'il faut télécharger, ce qu'il faut l'extraire et où et 
 
 ### Objectifs pour l'utilisateur
 
-TODO : Utilisation simple, sur toutes les plateforme blablabla
+Nous avons développé cette application en suivant trois grandes lignes directrices :
+- Offrir à l’utilisateur final un service de qualité, simple et efficace ;
+- Proposer une application Web validée par le W3C et suivant la mode actuelle, avec une utilisation nomade aisée ;
+- Obtenir une application basée sur un modèle robuste et réutilisable facilement pour des refontes voir des portages futurs.
+
+Vous découvrirez plus loin dans cette documentation comment ce dernier point se traduit dans le code, nous allons cependant commencer par un développement des deux premiers éléments.
 
 ### Guide d'utilisation
 
 TODO : Description avec screens : Comment ajouter / supprimer des amis / groupes, changer son profil etc..
+
+Ce guide d’utilisation se découpera en trois parties, une pour chaque page principale de l’application.
+
+#### Login et inscription
+#### Page de profil
+#### Discussions
+
 
 ---------------------
 
