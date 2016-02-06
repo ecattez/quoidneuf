@@ -169,6 +169,28 @@ function searchForMembre(search) {
   ajaxRequest('GET', '/quoidneuf/api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForMember');
 }
 
+/**
+  * Ajoute un fichier à la discussion
+  *
+  * @param {Object} file - Le fichier à uploader
+  */
+function uploadFileToDiscussion(file, dId) {
+  $.ajax({
+    type : 'POST',
+    contentType : 'multipart/form-data',
+    processData: false, // obligatoire pour de l'upload
+    url : '/quoidneuf/api/files',
+    dataType : 'json',
+    data : { dest : 'discussions', folder : dId, file : file },
+    success : function(data, textStatus, jqXHR) {
+      console.log("success");
+    },
+    error : function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR);
+    }
+  });
+}
+
 //-----------------------------------------------
 // Pour page de profil : Récupérer amis (dans la partie Navbar) et informations
 
@@ -234,7 +256,31 @@ function addFriendRequest(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function removeFriend(userId) {
-  ajaxRequest('DELETE', '/quoidneuf/api/friends?friend='+userId, 'callBackRemoveFriend', undefined, 'json', { friend : userId });
+  ajaxRequest('DELETE', '/quoidneuf/api/friends?friend='+userId, 'callBackRemoveFriend');
+}
+
+/**
+  * Change la photo de profil
+  *
+  * @param {Object} file - Le fichier à uploader
+  */
+function uploadFileToProfile(data, uId) {
+  console.log(data);
+  $.ajax({
+    type : 'POST',
+    contentType : false,
+    cache: false,
+    processData: false, // obligatoire pour de l'upload
+    url : '/quoidneuf/api/files',
+    dataType : 'json',
+    data : { data : data },
+    success : function(data, textStatus, jqXHR) {
+      console.log(data);
+    },
+    error : function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR);
+    }
+  });
 }
 
 //-----------------------------------------------

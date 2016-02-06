@@ -50,7 +50,7 @@
 
         <!-- Photo de profil -->
         <div class="row">
-          <img src="../img/github.png" alt="Photo de profil" class="photo"/>
+          <img src="../img/github.png" alt="Photo de profil" class="photo" id="picture"/>
         </div>
         <!-- Fin Photo de profil -->
 
@@ -109,7 +109,12 @@
               </div>
               <div class="modal-body">
                 <p>TODO</p>
-                <input class="row" id="file_loader" type="file" accept="image/*" name="Choix nouvelle photo"/>
+                <form class="" action="../api/files" method="post" id="form_change_picture" enctype="multipart/form-data">
+                  <input class="row" id="file_loader" type="file" accept="image/*" name="file"/>
+                  <input class="row" type="hidden" name="dest" value="subscribers"/>
+                  <input class="row" id="folder" type="hidden" name="folder" value="${user}"/>
+                  <input type="submit" class="btn btn-success">
+                </form>
                 <img class="photo" id="img_preview" src="" alt="Votre image"/>
                 <div id="modify_picture_error" class="alert hidden" role="alert"></div>
               </div>
@@ -163,5 +168,5 @@
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
   <script type="text/javascript">initNavbar('${user}', 'profile');</script>
-  <script type="text/javascript">initProfilePage('${user}', "${param.id}");</script>
+  <script type="text/javascript">initProfilePage('${user}', "${param.id}", "${pageContext.servletContext.contextPath}");</script>
 </body>

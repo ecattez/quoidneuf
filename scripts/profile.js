@@ -1,14 +1,17 @@
 var id;
 var profile;
+var context;
 
 /**
   * Charge les élements de la page
   *
   * @param {Number} uid - Id de l'utilisateur connecté.
   * @param {Number} user - Id de l'utilisateur de la page.
+  * @param {String} cont - Le nom du context courant
   */
-function initProfilePage(uid, user) {
+function initProfilePage(uid, user, cont) {
   id = uid;
+  context = cont;
   if(uid == undefined || uid == '') {
     window.location.href = '../';
   }
@@ -41,19 +44,19 @@ function callBackCheckFriendStatus(data) {
   $("#button").empty();
   if(data.status > 0) {
     //Si pas amis :
-    if(data.status != id) {
-      loadButtonAcceptFriend(data.status);
+    if(data.status != profile) {
+      $("#button").append("<p>Demande d'amitié en attente...</p>");
     }
     else {
-      $("#button").append("<p>Demande d'amitié en attente...</p>");
+      loadButtonAcceptFriend(data.status);
     }
   }
   else if (data.status == 0) {
-    loadButtonRemove(id);
+    loadButtonRemove(profile);
   }
   else if (data.status == -1) {
     // Pas amis et pas de demande en cours
-    loadButtonAdd(id);
+    loadButtonAdd(profile);
   }
 }
 
@@ -134,6 +137,18 @@ function loadButtonModify() {
   $("#button_modify_password").on("click", sendModifyPassword);
 
   $("#file_loader").change(function() { readURL(this); });
+
+  $("#form_change_picture").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'post',
+      url: '../api/files',
+      data: $('#form_change_picture').serialize(),
+      success: function () {
+        console.log("Oui ?");
+      }
+    });
+  });
 }
 
 /**
@@ -192,6 +207,7 @@ function callBackGetSubscribersProfile(data) {
   $("#e_mail").val(data.meta.email);
   $("#phone").val(data.meta.phone);
   $("#description").val(data.meta.description);
+  $("#picture")[0].src = context + "/" + data.meta.pictureUri;
 }
 
 /**
@@ -205,7 +221,7 @@ function callBackGetFriendsProfile(data) {
   for(var ami in data) {
     line = "<div class=\"row\">";
     line += "<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12\">";
-    line += "<a onclick=\"initProfilePage("+id+", "+data[ami].id+")\" id='profile_"+data[ami].id+"'>";
+    line += "<a onclick=\"initProfilePage("+id+", "+data[ami].id+", "+context+")\" id='profile_"+data[ami].id+"'>";
     line += data[ami].firstName + " " + data[ami].lastName;
     line += "</a>";
     line += "</div>";
@@ -225,13 +241,6 @@ function modifyProfile() {
     updateErrorMessage("error_div", true, "Modification en cours...");
     modifySubscribersProfile($("#description").val(), $("#e_mail").val(), $("#phone").val());
   }
-}
-
-/**
-  *
-  */
-function modifyProfilePicture() {
-  console.log("TODO");
 }
 
 /**
@@ -261,9 +270,17 @@ function readURL(input) {
   }
 }
 
+/**
+ *
+ */
 function changePicture() {
-  console.log($("#file_loader").prop('files')[0]);
-  updateErrorMessage("modify_picture_error", false, "Fonction non implémentée.");
+  var file = $("#file_loader").prop('files')[0];
+  var data = new FormData($('#form_change_picture'));
+  data.append('dest', 'subscribers');
+  data.append('folder', $('#folder')[0].value);
+  data.append('file', file);
+  console.log(data);
+  uploadFileToProfile(data);
 }
 
 /**

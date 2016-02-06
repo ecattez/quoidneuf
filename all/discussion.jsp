@@ -64,22 +64,25 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Modifier photo de profil</h4>
+              <h4 class="modal-title">Envoyer un document</h4>
             </div>
             <div class="modal-body">
               <p>TODO</p>
-              <input class="row" id="file_loader" type="file" accept="media/*" name="Choix fichier"/>
-              <img class="photo hidden" id="img_preview" src="" alt="Votre image"/>
+              <form class="" action="../api/files" method="post" id="form_change_picture" enctype="multipart/form-data">
+                <input class="row" id="file_loader" type="file" accept="image/*" name="file"/>
+                <input class="row" type="hidden" name="dest" value="discussions"/>
+                <input class="row" id="folder" type="hidden" name="folder" value="${param.id}"/>
+                <input type="submit" class="btn btn-success">
+              </form>
               <div id="send_file_error" class="alert hidden" role="alert"></div>
             </div>
             <div class="modal-footer">
-              <button id="button_valid_send_file" type="button" class="btn btn-success" name="Valider envoie fichier" onclick="envoieFichier()">Valider envoie document</button>
               <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
-      <!-- Fin fenêtre modale modification photo de profil -->
+      <!-- Fin fenêtre modale upload fichier -->
 
       <!-- Membres -->
       <div class="col-lg-2 col-md-2 contents img-rounded collapse col-md-offset-1 col-lg-offset-1" id="membres">
@@ -172,6 +175,6 @@
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
   <script type="text/javascript">initNavbar('${user}', 'discussion');</script>
-  <script type="text/javascript">initDiscussionPage('${user}', "${param.id}");</script>
+  <script type="text/javascript">initDiscussionPage('${user}', "${param.id}", "${pageContext.servletContext.contextPath}");</script>
 </body>
 </html>

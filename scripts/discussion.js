@@ -3,14 +3,17 @@ var nbMessages;
 var interval;
 var userId;
 var dyna;
+var context;
 
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
   */
-function initDiscussionPage(uId, dId) {
+function initDiscussionPage(uId, dId, cont) {
   if(uId == undefined || uId == '') {
     window.location.href = '../';
   }
+  context = cont;
+
   $("#li_membres").removeClass("hidden");
   nbMessages = 0;
   userId = uId;
@@ -24,6 +27,8 @@ function initDiscussionPage(uId, dId) {
   interval = setInterval(refreshMessages, 1000);
   loadMembersDynatable();
   $("#file_loader").change(function() { readURL(this); });
+
+  $("#folder").val(dId);
 }
 
 /**
@@ -99,7 +104,7 @@ function changeDiscussion(dId) {
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">Discussion</h2>");
   $("#discussion_membres").empty();
   $("#messages").empty();
-  initDiscussionPage(userId, dId);
+  initDiscussionPage(userId, dId, context);
 }
 
 /**
@@ -133,7 +138,7 @@ function callBackGetMessages(data) {
     msg = data.messages[mess];
     date = formeDate(msg.writtenDate);
     user = msg.owner.firstName + "." + msg.owner.lastName.substring(0,1);
-    content = msg.content;
+    content = buildContent(msg.content);
     if(msg.owner.id == userId) {
       line = "<div class=\"bubbledRight\">";
     }
@@ -146,6 +151,18 @@ function callBackGetMessages(data) {
     $("#messages").scrollTop(100000000000);
   }
   nbMessages = data.messages.length;
+}
+
+/**
+ * Vérifie si c'est une image et retourne le contenu dans sa forme désriée.
+ */
+function buildContent(content) {
+  if(content.split('/').length < 3) {
+    return content;
+  }
+  else {
+    return "<a href=\""+context + "/" +content+"\" alt=\"image uploadé par un utilisateur\" target=\"_blank\"><img class=\"message_picture\" alt=\"image uploadé par un utilisateur\" src=\""+context + "/" +content+"\" height=30% width=30% /></a>";
+  }
 }
 
 /**
@@ -293,7 +310,21 @@ function readURL(input) {
   */
 function envoieFichier() {
   console.log($("#file_loader").prop('files')[0]);
-  updateErrorMessage("send_file_error", false, "Fonction non implémentée.");
+  uploadFileToDiscussion($("#file_loader").prop('files')[0], discussionId);
+  // updateErrorMessage("send_file_error", false, "Fonction non implémentée.");
+}
+
+/**
+  * Vérifie le code de retour de l'envoie d'un fichier et met à jour l'affichage.
+  */
+function callBackUploadFileToDiscussion(data) {
+  console.log(data);
+  if(data.status == 201) {
+    updateErrorMessage('send_file_error', true, "Envoie réussi");
+  }
+  else {
+    updateErrorMessage('send_file_error', false, data.responseJSON.message);
+  }
 }
 
 /**
