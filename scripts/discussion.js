@@ -23,6 +23,7 @@ function initDiscussionPage(uId, dId) {
 
   interval = setInterval(refreshMessages, 1000);
   loadMembersDynatable();
+  $("#file_loader").change(function() { readURL(this); });
 }
 
 /**
@@ -127,12 +128,22 @@ function callBackGetMessages(data) {
   var user = '';
   var content = '';
   var msg;
+  var line;
   for(var mess = nbMessages; mess < data.messages.length; mess++) {
     msg = data.messages[mess];
     date = formeDate(msg.writtenDate);
     user = msg.owner.firstName + "." + msg.owner.lastName.substring(0,1);
     content = msg.content;
-    $("#messages").append(user + " \t[" + date + "] : \t" + content + "\n");
+    if(msg.owner.id == userId) {
+      line = "<div class=\"bubbledRight\">";
+    }
+    else {
+      line = "<div class=\"bubbledLeft\">" + user + " ";
+    }
+    line += "[" + date + "] :<br>" + content + "</div>";
+    $("#messages").append(line);
+    //TODO : Trouver pourquoi le $("#messages").scrollTop($('#messages').height()) ne fonctionne pas
+    $("#messages").scrollTop(100000000000);
   }
   nbMessages = data.messages.length;
 }
@@ -258,6 +269,31 @@ function callBackLeaveDiscussion(data) {
   else {
     updateErrorMessage('error_div', false, data.responseJSON.message);
   }
+}
+
+/**
+  * Vérifie l'element et affiche l'image.
+  */
+function readURL(input) {
+  $("#img_preview").removeClass("hidden");
+  if(input.files && input.files[0] && input.files[0].type.match("image")) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $("#img_preview").attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+  else {
+    $("#img_preview").addClass("hidden");
+  }
+}
+
+/**
+  *
+  */
+function envoieFichier() {
+  console.log($("#file_loader").prop('files')[0]);
+  updateErrorMessage("send_file_error", false, "Fonction non implémentée.");
 }
 
 /**

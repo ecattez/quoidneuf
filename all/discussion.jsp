@@ -38,16 +38,16 @@
         <h2 id="discussion_name">Discussion</h2>
 
         <!-- Liste des messages -->
-        <div class="row">
+        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 commentArea" id="messages">
           <!-- Label ne passe pas le validator -->
           <!-- <label for="messages" hidden="true">Messages</label> -->
-          <textarea name="name" rows="8" cols="40" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="messages" readonly></textarea>
         </div>
         <!-- Fin liste des messages-->
 
         <!-- Message à envoyer -->
         <div class="row">
-          <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11"><input type="text" class="form-control" placeholder="Message..." id="message_input"></div>
+          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10"><input type="text" class="form-control" placeholder="Message..." id="message_input"></div>
+          <button class="btn btn-default col-lg-1 col-md-1 col-sm-1 col-xs-1" type="button" data-toggle="modal" data-target="#modale_upload_file" id="send_file"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></button>
           <button class="btn btn-default col-lg-1 col-md-1 col-sm-1 col-xs-1" type="button" id="send_message"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
         </div>
         <!-- Fin message à envoyer -->
@@ -57,6 +57,29 @@
         <!-- Fin Error Div-->
       </div>
       <!-- Fin Discussion -->
+
+      <!-- Fenêtre modale upload fichier -->
+      <div class="row modal fade" id="modale_upload_file" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Modifier photo de profil</h4>
+            </div>
+            <div class="modal-body">
+              <p>TODO</p>
+              <input class="row" id="file_loader" type="file" accept="media/*" name="Choix fichier"/>
+              <img class="photo hidden" id="img_preview" src="" alt="Votre image"/>
+              <div id="send_file_error" class="alert hidden" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+              <button id="button_valid_send_file" type="button" class="btn btn-success" name="Valider envoie fichier" onclick="envoieFichier()">Valider envoie document</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      <!-- Fin fenêtre modale modification photo de profil -->
 
       <!-- Membres -->
       <div class="col-lg-2 col-md-2 contents img-rounded collapse col-md-offset-1 col-lg-offset-1" id="membres">

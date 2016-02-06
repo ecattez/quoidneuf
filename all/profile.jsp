@@ -50,7 +50,7 @@
 
         <!-- Photo de profil -->
         <div class="row">
-          <img src="../img/github.png" alt="Photo de profil" class="photo_profil"/>
+          <img src="../img/github.png" alt="Photo de profil" class="photo"/>
         </div>
         <!-- Fin Photo de profil -->
 
@@ -110,7 +110,7 @@
               <div class="modal-body">
                 <p>TODO</p>
                 <input class="row" id="file_loader" type="file" accept="image/*" name="Choix nouvelle photo"/>
-                <img class="photo_profil" id="img_preview" src="" alt="Votre image"/>
+                <img class="photo" id="img_preview" src="" alt="Votre image"/>
                 <div id="modify_picture_error" class="alert hidden" role="alert"></div>
               </div>
               <div class="modal-footer">
@@ -120,7 +120,7 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        <!-- Fin fenêtre modale modification mot de passe -->
+        <!-- Fin fenêtre modale modification photo de profil -->
 
         <!-- Fenêtre modale modification mot de passe -->
         <div class="row modal fade" id="modale_change_password" tabindex="-1" role="dialog">

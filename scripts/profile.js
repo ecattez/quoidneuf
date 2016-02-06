@@ -23,7 +23,6 @@ function initProfilePage(uid, user) {
   profile = user;
   getSubscribersProfile(uid);
   getFriendsProfile(uid);
-  $("#file_loader").change(function() { readURL(this); });
 }
 
 /**
@@ -133,6 +132,8 @@ function loadButtonModify() {
   $("#button").append("<p><button type=\"button\" class=\"btn btn-primary\" name=\"Bouton changer photo de profil\" id=\"button_open_modal_picture\" data-toggle=\"modal\" data-target=\"#modale_change_picture\">Changer de photo de profil</button></p>");
   $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton changer mot de passe\" id=\"button_open_modal_password\" data-toggle=\"modal\" data-target=\"#modale_change_password\">Changer de mot de passe</button></p>");
   $("#button_modify_password").on("click", sendModifyPassword);
+
+  $("#file_loader").change(function() { readURL(this); });
 }
 
 /**
@@ -262,6 +263,7 @@ function readURL(input) {
 
 function changePicture() {
   console.log($("#file_loader").prop('files')[0]);
+  updateErrorMessage("modify_picture_error", false, "Fonction non implémentée.");
 }
 
 /**

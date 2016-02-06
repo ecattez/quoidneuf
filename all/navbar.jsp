@@ -21,7 +21,7 @@
           <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="navbar_discussions">Discussions <span class="caret"></span></a>
             <ul class="dropdown-menu" id="dropdown_navbar_discussions"></ul>
           </li>
-          <li class="hidden" id="li_membres"><a data-toggle="collapse" data-target="#membres">Membres</a></li>
+          <li class="hidden" id="li_membres"><a href="#" data-toggle="collapse" data-target="#membres">Membres</a></li>
           <li><a href="#" id="navbar_deconnexion">Déconnexion</a></li>
         </ul>
       </div>
