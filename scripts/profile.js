@@ -23,6 +23,7 @@ function initProfilePage(uid, user) {
   profile = user;
   getSubscribersProfile(uid);
   getFriendsProfile(uid);
+  $("#file_loader").change(function() { readURL(this); });
 }
 
 /**
@@ -42,8 +43,7 @@ function callBackCheckFriendStatus(data) {
   if(data.status > 0) {
     //Si pas amis :
     if(data.status != id) {
-      $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" id=\"button_accept\">Accepter demande</button></p>");
-      $("#button_accept").on("click", acceptFriendRequest);
+      loadButtonAcceptFriend(data.status);
     }
     else {
       $("#button").append("<p>Demande d'amitié en attente...</p>");
@@ -59,13 +59,20 @@ function callBackCheckFriendStatus(data) {
 }
 
 /**
+  * Charge le bouton d'acceptation de la demande d'ami
+  *
+  */
+function loadButtonAcceptFriend(user) {
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" onclick=\"acceptFriendRequest()\" id=\"button_accept\">Accepter demande</button></p>");
+}
+
+/**
   * Charge le bouton de demande d'ami
   *
   * @param {Number} user - L'id de l'utilisateur à ajouter
   */
 function loadButtonAdd(user) {
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
-  $("#add_friend_"+user).on("click", function() { addFriend(user) });
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" onclick=\"addFriend("+user+")\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
 }
 
 /**
@@ -122,9 +129,9 @@ function callBackValideFriendRequest(data) {
   */
 function loadButtonModify() {
   $("#button").empty();
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-primary\" name=\"Bouton modifier\" id=\"button_modify\">Modifier</button></p>");
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton changer mot de passe\" id=\"button_open_modal\" data-toggle=\"modal\" data-target=\"#modale_change_password\">Changer de mot de passe</button></p>");
-  $("#button_modify").on("click", modifyProfile);
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-primary\" name=\"Bouton modifier profil\" onclick=\"modifyProfile()\" id=\"button_modify\">Modifier</button></p>");
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-primary\" name=\"Bouton changer photo de profil\" id=\"button_open_modal_picture\" data-toggle=\"modal\" data-target=\"#modale_change_picture\">Changer de photo de profil</button></p>");
+  $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton changer mot de passe\" id=\"button_open_modal_password\" data-toggle=\"modal\" data-target=\"#modale_change_password\">Changer de mot de passe</button></p>");
   $("#button_modify_password").on("click", sendModifyPassword);
 }
 
@@ -197,21 +204,12 @@ function callBackGetFriendsProfile(data) {
   for(var ami in data) {
     line = "<div class=\"row\">";
     line += "<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12\">";
-    line += "<a id='profile_"+data[ami].id+"'>";
+    line += "<a onclick=\"initProfilePage("+id+", "+data[ami].id+")\" id='profile_"+data[ami].id+"'>";
     line += data[ami].firstName + " " + data[ami].lastName;
     line += "</a>";
     line += "</div>";
     $("#amis").append(line);
-    ajoutEventListener(data[ami].id);
   }
-}
-
-/**
-  * Ajoute le listener au lien
-  */
-function ajoutEventListener(userId) {
-  // console.log(userId);
-  $("#profile_"+userId).on("click", function() { initProfilePage(id, userId) });
 }
 
 
@@ -229,6 +227,13 @@ function modifyProfile() {
 }
 
 /**
+  *
+  */
+function modifyProfilePicture() {
+  console.log("TODO");
+}
+
+/**
   * Méthode de retour de la mise à jour du profil
   *
   * @param {Object} data - Message de retour du serveur
@@ -240,6 +245,23 @@ function callBackModifySubscribersProfile(data) {
   else {
     updateErrorMessage("error_div", false, "Erreur : " + data.responseJSON.code + " : " + data.responseJSON.message);
   }
+}
+
+/**
+  * Vérifie l'element et affiche l'image.
+  */
+function readURL(input) {
+  if(input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $("#img_preview").attr('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function changePicture() {
+  console.log($("#file_loader").prop('files')[0]);
 }
 
 /**

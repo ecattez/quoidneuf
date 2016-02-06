@@ -79,3 +79,8 @@ ul {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+.photo_profil {
+  height: 20%;
+  width: 20%;
+}

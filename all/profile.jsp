@@ -47,6 +47,13 @@
       <!-- Profil -->
       <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 contents center_div img-rounded">
         <h2>Profil de <span id="nom_utilisateur"></span></h2>
+
+        <!-- Photo de profil -->
+        <div class="row">
+          <img src="../img/github.png" alt="Photo de profil" class="photo_profil"/>
+        </div>
+        <!-- Fin Photo de profil -->
+
         <!-- Informations -->
         <div class="row">
           <h3>Informations</h3>
@@ -91,6 +98,29 @@
         <!-- Message d'erreur -->
         <div id="error_div" class="row alert hidden" role="alert"></div>
         <!-- Fin message d'erreur -->
+
+        <!-- Fenêtre modale modification photo de profil -->
+        <div class="row modal fade" id="modale_change_picture" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modifier photo de profil</h4>
+              </div>
+              <div class="modal-body">
+                <p>TODO</p>
+                <input class="row" id="file_loader" type="file" accept="image/*" name="Choix nouvelle photo"/>
+                <img class="photo_profil" id="img_preview" src="" alt="Votre image"/>
+                <div id="modify_picture_error" class="alert hidden" role="alert"></div>
+              </div>
+              <div class="modal-footer">
+                <button id="button_valid_picture_modification" type="button" class="btn btn-success" name="Valider changement photo" onclick="changePicture()">Valider changement photo</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- Fin fenêtre modale modification mot de passe -->
 
         <!-- Fenêtre modale modification mot de passe -->
         <div class="row modal fade" id="modale_change_password" tabindex="-1" role="dialog">
