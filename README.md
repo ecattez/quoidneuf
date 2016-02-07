@@ -135,15 +135,23 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 
 ### Principe de réalisation
 
-TODO : Description des technos utilisées, où, quand et pourquoi.
+| Technologie | Raison de son utilisation | Dans quelle partie du projet |
+| :-: | :-: | :-: |
+| Java | / | Servlets |
+| De la place pour Edouard | / | / |
+| HTML/CSS | Standards du Web | Vues de l'application |
+| Bootstrap | Mise en page aisée pour desktop et mobile avec un design efficace | Vues de l'application |
+| Javascript (JQuery) | Solution simple, documentée et éprouvée pour rendre dynamique son application Web | Liaison modèle, requêtes Ajax, pages dynamiques | 
+| EL Expression | Simple d'utilisation, pratique pour récupérer des éléments de contextes différents | Liaison modèle, au chargement des pages de l'application | 
+| Dynatable (Plugin JQuery) | Tableau dynamiques simple et efficace  à l'utilisation | Ajout de membres / d'amis |
 
-### Difficultés techniques rencontréées et solutions apportées
+### Difficultés techniques rencontrées et solutions apportées
 
 TODO : cf le titre :) Peut-être sous forme d'un tableau "Problème/ Temps pour le régler / Commentaire"
 
 ### Conclusion
 
-TODO : Conclusion bateau sur le fait d'utiliser de nombreuses technos dans des domaines particuliers etc.
+On peut donc conclure que l'utilisation de plusieurs technologies Web a permis de faciliter le développement tout en rendant l'application complète et efficace. 
 
 ---------------------
 
