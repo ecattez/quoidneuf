@@ -113,9 +113,25 @@ L'application ne charge qu'une seule fois la page si vous changez de discussion.
 
 ## Description technique
 
-### Objectifs remplis et améliorations à apporter
+### Objectifs remplis
 
-TODO : Sous la forme d'une TODO list, avec peut-être une phrase à la fin avec plein de features possibles.
+| Objectif | Réalisé Par |
+| :-: | :---------: | :-----: |
+| Concevoir un MCD conforme aux besoin de l'application | Edouard et Thomas | 
+| Réalisation des scripts SQL pour la création des tables et des vues  |  Edouard et Thomas |
+| Réalisation du modèle en Java (décrit en détail dans la partie correspondante) | Edouard |
+| Réalisation des vues en HTML/CSS (avec Bootstrap) | Thomas | 
+| Ajout des fonctionnalités avancées dans le modèle (SSL, Pool de connexion, etc.. là aussi décrit en détail plus loin) | Edouard |
+| Liaison du modèle aux vues en Javascript (Ajax) | Thomas |
+
+### Améliorations à apporter
+
+Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
+- Test de monté en charge avec **Apache JMeter**.
+- Hébergement sur un serveur dédié et accessible en ligne.
+- Travailler sur l'accessibilité de l'application pour les personnes handicapés.
+- Modifier des éléments des vues HTML pour respecter les critères de qualité Web d'**Opquast**.
+- Proposer un script d'installation et de déploiement rapide de l'application directement sur un serveur **Tomcat**.
 
 ### Principe de réalisation
 
