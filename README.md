@@ -63,19 +63,23 @@ Mais avant cela, voici une petite présentation de la barre de navigation, prés
 
 Cette dernière comporte un lien pour aller sur son profil, un autre pour dérouler la liste de ses amis, des demandes d'amis en attente et une recherche d'utilisateur à ajouter (dans une fenêtre modale, avec un tableau dynamique).
 
+![Screen ajout ami](/screens/screen_nouvel_ami.png)
+
 Présente aussi dans la barre de navigation, une liste déroulante de discussion avec possibilité d'en créer une nouvelle et un lien pour se déconnecter de l'application.
 
 Voici enfin la présentation succincte des différentes pages de notre application.
 
 #### Login et inscription
 
-**Screens**
+![Screen login](/screens/screen_login.png)
 
 La partie authentification est composée de deux champs, un pour le login et l'autre pour le mot de passe, et d'un lien pour récupérer votre mot de passe. 
 
 L'application vérifie vos données d'authentification deux fois, une première directement chez le client, pour éviter d'engorger le réseau et de ralentir les utilisateurs disposants d'une connexion limitée, et une seconde sur le serveur pour éviter les attaques basiques et assurer un service sécurisé et fiable.
 
 Vous pouvez, de plus, utiliser le service de récupération de mot de passe en cliquant sur le lien correspondant sous la zone de login. Une fenêtre modale s'ouvrira et vous invitera à entrer votre login et votre adresse e-mail afin de vous y envoyer un nouveau mot de passe créé aléatoirement. Vous pourrez modifier ce mot de passe aléatoire une fois sur votre page de profil (décrite plus loin).
+
+![Screen récupération mot de passe](/screens/screen_reset_password.png)
 
 La partie inscription, quant à elle, contient les champs obligatoires (indiqués par un astérisque) et quelques champs optionnels. Une vérification de ces champs est effectuée avant l'envoi, pour les mêmes raisons que pour le login.
 
@@ -85,7 +89,7 @@ Notez que cette application utilise une connexion sécurisée et que vos donnée
 
 #### Page de profil
 
-**Screen**
+![Screen profil](/screens/screen_profil.png)
 
 La page de profil a des parties communes à tous les utilisateurs.
 Le champs **Amis** contenant, comme son nom l'indique, les amis validés de l'utilisateur en question et ses informations (nom, prénom, date de naissance, photo de profil etc..).
@@ -99,11 +103,13 @@ L'application charge toute la page une fois puis recharge les éléments dynamiq
 
 #### Discussions
 
-**Screen**
+![Screen discussion](/screens/screen_discussion.png)
 
 La page de discussion est somme toute assez épurée, une zone d'affichage des messages sous forme de bulles de texte, une zone de saisie de message avec possibilité d'envoyer un document grâce à un formulaire affiché dans une fenêtre modale et la zone des membres.
 
 Cette dernière n'est pas visible par défaut afin de ne pas polluer l'espace principal, surtout sur mobile. Vous pouvez la déplier en cliquant sur le bouton **Membres**. Cette zone présente tous les membres abonnés à la discussion et permet d'en ajouter à l'aide d'une zone de recherche alimentant un tableau, le tout affiché dans une fenêtre modale.
+
+![Screen ajout membre](/screens/screen_ajout_membre.png)
 
 Comme pour toutes les pages, les erreurs ou réussites d'actions sont indiqués dans des zones prévues à cette effet. 
 
