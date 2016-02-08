@@ -116,7 +116,7 @@ L'application ne charge qu'une seule fois la page si vous changez de discussion.
 ### Objectifs remplis
 
 | Objectif | Réalisé Par |
-| :-: | :---------: | :-----: |
+| :------: | :---------: |
 | Concevoir un MCD conforme aux besoin de l'application | Edouard et Thomas | 
 | Réalisation des scripts SQL pour la création des tables et des vues  |  Edouard et Thomas |
 | Réalisation du modèle en Java (décrit en détail dans la partie correspondante) | Edouard |
@@ -137,13 +137,33 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 
 | Technologie | Raison de son utilisation | Dans quelle partie du projet |
 | :-: | :-: | :-: |
-| Java | / | Servlets |
-| De la place pour Edouard | / | / |
+| J2EE | Servlets | Serveur |
+| Jackson | Liaison objets JAVA/JSON | Serveur -> Client |
+| FileUtils | Upload de fichiers | Client -> Serveur |
+| StringEscapeUtils | Transformation html/texte | Client -> Serveur |
 | HTML/CSS | Standards du Web | Vues de l'application |
 | Bootstrap | Mise en page aisée pour desktop et mobile avec un design efficace | Vues de l'application |
 | Javascript (JQuery) | Solution simple, documentée et éprouvée pour rendre dynamique son application Web | Liaison modèle, requêtes Ajax, pages dynamiques | 
 | EL Expression | Simple d'utilisation, pratique pour récupérer des éléments de contextes différents | Liaison modèle, au chargement des pages de l'application | 
 | Dynatable (Plugin JQuery) | Tableau dynamiques simple et efficace  à l'utilisation | Ajout de membres / d'amis |
+
+### Servlets et Pseudo REST
+
+| Méthode HTTP | URI | Description
+| :-: | :-: | :-: |
+| TODO | TODO | TODO |
+
+TODO
+
+### Data Access Objects
+
+**Screen MCD**
+
+TODO : explication des DAOs et du DaoProvider
+
+### L'objet Ticket
+
+TODO : décrire cet objet et son utilité
 
 ### Difficultés techniques rencontrées et solutions apportées
 
