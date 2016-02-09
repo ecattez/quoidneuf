@@ -64,7 +64,7 @@ QuoiDNeuf dispose d'une base solide de fonctionnalités :
 Dans un premier temps, décompressez l'archive du projet (format `tar.gz`). Vous obtenez l'arborescence suivante :
 
 | Fichier | Description |
-| :- | :- |
+| :------ | :---------- |
 | sql/ | scripts à exécuter dans le SGBD de votre choix |
 | lib/ | bibliothèques JAVA à placer dans le dossier **$TOMCAT/lib** |
 | quoidneuf.war | application à placer dans le dossier **$TOMCAT/webapps** |
