@@ -87,7 +87,7 @@ function callBackSearchForSubscriber(data) {
   */
 function affichageSubscribers(membres) {
   for(var membre in membres) {
-    membres[membre].id = "<a href='profile.jsp?id="+membres[membre].id+"' class=\"btn btn-primary\">Profil</button>";
+    membres[membre].id = "<a href='profile.jsp?id="+membres[membre].id+"' class=\"btn btn-primary\">Consulter</button>";
   }
   $('#search_result_friend_table').data('dynatable').settings.dataset.originalRecords = membres;
   $('#search_result_friend_table').data('dynatable').process();
