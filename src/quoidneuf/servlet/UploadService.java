@@ -78,7 +78,7 @@ public class UploadService extends JsonServlet {
 	
 	/** Upload un fichier sur le serveur */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (!ServletFileUpload.isMultipartContent(req)) {
+		if (!"false".equals(req.getContentType()) && !ServletFileUpload.isMultipartContent(req)) {
 			sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "content-type incorrect");
 		}
 		else {
