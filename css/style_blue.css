@@ -1,0 +1,80 @@
+body {
+  padding-top: 10px;
+  background-color: #4cc5c9 !important;
+}
+
+#corps {
+  background-color: #4cc5c9 !important;
+}
+
+.contents {
+  background-color: white !important;
+}
+
+.row {
+  padding : 1%;
+}
+
+#membres {
+  padding-right: 3%;
+}
+
+footer {
+  margin-left: -0.5% !important;
+  margin-right: -0.5% !important;
+}
+
+#credits {
+  white-space: pre-wrap;
+}
+
+/*
+[class*="col-"], footer {
+  background-color: lightblue;
+  border: 2px solid black;
+  border-radius: 6px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 12px;
+}*/
+/*
+.credits {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+} */
+
+h2 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.center_div {
+  text-align: center;
+}
+
+.vcenter_div {
+  vertical-align: center;
+}
+
+.form-connection {
+  text-align: left;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0%;
+}
+
+.nom_membres {
+  padding-top: 2px;
+}
+
+#discussion_membres {
+  height: 130px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
