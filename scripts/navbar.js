@@ -128,7 +128,6 @@ function callBackLogout(data) {
   */
 function callBackGetFriends(data) {
   $("#dropdown_navbar_amis").empty();
-  $("#dropdown_navbar_amis").append("<li><p><button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#modal_add_friend\">Chercher profil</button></p></li>");
   $("#dropdown_navbar_amis").append("<li><p>Amis</p></li>");
   var line = '';
   for(var ami in data) {

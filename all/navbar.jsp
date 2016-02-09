@@ -22,7 +22,8 @@
             <ul class="dropdown-menu" id="dropdown_navbar_discussions"></ul>
           </li>
           <li class="hidden" id="li_membres"><a href="#" data-toggle="collapse" data-target="#membres">Membres</a></li>
-          <li><a href="#" id="navbar_deconnexion">Déconnexion</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#modal_add_friend">Recherche profil</a></li>
+          <li><a href="#" class="btn navbar-right" id="navbar_deconnexion">Déconnexion</a></li>
         </ul>
       </div>
     </div>
