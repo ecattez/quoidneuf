@@ -40,17 +40,19 @@ Et de nombreuses autres, secondaires, à découvrir !
 
 ### Tutoriel de déploiement
 
-Pour déployer cette aplication sur votre serveur Tomcat, vérifiez que ce dernier n'est pas déjà lancé puis téléchargez l'achive `/tar/gz`, copiez le `.war` dans le dossier *webapps* à la racine de votre serveur. Copiez enfin les librairies que vous n'avez pas déjà dans votre dossier *lib*.
+Pour déployer cette aplication sur votre serveur Tomcat, vérifiez que ce dernier n'est pas déjà lancé puis téléchargez l'achive au format `tar.gz`, copiez le `.war` dans le dossier *webapps* à la racine de votre serveur. Copiez enfin les librairies que vous n'avez pas déjà dans votre dossier *lib*.
 
 Il vous faudra ensuite préparer votre base de données PostgreSQL. Ce tutoriel ne décrit pas l'installation de ce service mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/). 
 
-Dans le dossier *SQL* de l'archive, vous trouverez deux script SQL. 
+Dans le dossier *SQL* de l'archive, vous trouverez deux scripts SQL. 
 
 Le premier vous préparera les différentes tables. Notez que ce script écrasera vos tables si elles ont le même nom.
 
 Le second script est optionnel, il inscrit des données d'exemple dans la base afin de tester votre installation.
 
-Il vous faudra ensuite préparer votre serveur Tomcat pour l'utilisation du SSL, vous trouverez toutes les informations dans la [documentation officiel](https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html).
+Préparez enfin votre serveur Tomcat pour l'utilisation du SSL, vous trouverez toutes les informations dans la [documentation officiel](https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html).
+
+TODO: ligne SSL a décommenter dans tomcat + génération du keygen.
 
 Vous pouvez maintenant relancer votre serveur et accéder à votre application depuis l'adresse `https://<adresse_du_serveur>:8443/quoidneuf`.
 
@@ -171,13 +173,13 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 | :-: | :-: | :-: |
 | TODO | TODO | TODO |
 
-TODO
+TODO : expliquer le pseudo REST
 
 ### Data Access Objects
 
 **Screen MCD**
 
-TODO : explication des DAOs et du DaoProvider
+TODO : explication des DAOs, DaoProvider et du Pool de Connexion
 
 ### L'objet Ticket
 
