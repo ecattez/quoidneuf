@@ -44,7 +44,7 @@ Pour déployer cette aplication sur votre serveur Tomcat, vérifiez que ce derni
 
 Il vous faudra ensuite préparer votre base de données PostgreSQL. Ce tutoriel ne décrit pas l'installation de ce service mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/). 
 
-Dans le dossier *SQL* de l'archive, vous trouverez deux scripts SQL. 
+Dans le dossier *SQL* de l'archive, vous trouverez deux scripts SQL à executer avec la commande `psql -h <adresse> <base> -U <utilisateur> -f <fichier>`. 
 
 Le premier vous préparera les différentes tables. Notez que ce script écrasera vos tables si elles ont le même nom.
 
