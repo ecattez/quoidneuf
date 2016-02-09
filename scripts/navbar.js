@@ -134,7 +134,7 @@ function callBackGetFriends(data) {
   for(var ami in data) {
     line = "<li>"
     if(page == 'profile') {
-      line += "<a id=\"profile_" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a>";
+      line += "<a href='#' id=\"profile_" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a>";
     }
     else {
       line += "<a href=\"profile.jsp?id=" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a>";
@@ -158,7 +158,7 @@ function callBackGetFriendRequests(data) {
   for(var ami in data) {
     line = "<li>"
     if(page == 'profile') {
-      line += "<a id=\"profile_" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a>";
+      line += "<a href='#' id=\"profile_" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a>";
     }
     else {
       line += "<a href=\"profile.jsp?id=" + data[ami].id + "\">" + data[ami].firstName + " " + data[ami].lastName + "</a>";
@@ -182,7 +182,7 @@ function callBackGetDiscussions(data) {
   for(var discussion in data) {
     line = "<li>";
     if(page == 'discussion') {
-      line += "<a id=\"discussion_" + data[discussion].id + "\">" + data[discussion].name + "</a>";
+      line += "<a href='#' id=\"discussion_" + data[discussion].id + "\">" + data[discussion].name + "</a>";
     }
     else {
       line += "<a href=\"discussion.jsp?id=" + data[discussion].id + "\">" + data[discussion].name + "</a>";

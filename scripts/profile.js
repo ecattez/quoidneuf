@@ -221,7 +221,7 @@ function callBackGetFriendsProfile(data) {
   for(var ami in data) {
     line = "<div class=\"row\">";
     line += "<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12\">";
-    line += "<a onclick=\"initProfilePage("+id+", "+data[ami].id+", "+context+")\" id='profile_"+data[ami].id+"'>";
+    line += "<a href='#' onclick=\"initProfilePage("+id+", "+data[ami].id+", '"+context+"')\" id='profile_"+data[ami].id+"'>";
     line += data[ami].firstName + " " + data[ami].lastName;
     line += "</a>";
     line += "</div>";
