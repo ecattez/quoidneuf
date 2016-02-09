@@ -67,7 +67,6 @@
               <h4 class="modal-title">Envoyer un document</h4>
             </div>
             <div class="modal-body">
-              <p>TODO</p>
               <form class="" action="../api/files" method="post" id="form_change_picture" enctype="multipart/form-data">
                 <input class="row" id="file_loader" type="file" accept="image/*" name="file"/>
                 <input class="row" type="hidden" name="dest" value="discussions"/>

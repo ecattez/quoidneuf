@@ -87,7 +87,7 @@ function callBackSearchForSubscriber(data) {
   */
 function affichageSubscribers(membres) {
   for(var membre in membres) {
-    membres[membre].id = "<button onclick=\"ajoutAmi("+membres[membre].id+")\">Ajouter</button>";
+    membres[membre].id = "<a href='profile.jsp?id="+membres[membre].id+"' class=\"btn btn-primary\">Profil</button>";
   }
   $('#search_result_friend_table').data('dynatable').settings.dataset.originalRecords = membres;
   $('#search_result_friend_table').data('dynatable').process();
@@ -128,7 +128,7 @@ function callBackLogout(data) {
   */
 function callBackGetFriends(data) {
   $("#dropdown_navbar_amis").empty();
-  $("#dropdown_navbar_amis").append("<li><p><button class=\"btn btn-success\" data-toggle=\"modal\" data-target=\"#modal_add_friend\">Ajouter ami</button></p></li>");
+  $("#dropdown_navbar_amis").append("<li><p><button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#modal_add_friend\">Chercher profil</button></p></li>");
   $("#dropdown_navbar_amis").append("<li><p>Amis</p></li>");
   var line = '';
   for(var ami in data) {

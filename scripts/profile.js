@@ -137,18 +137,6 @@ function loadButtonModify() {
   $("#button_modify_password").on("click", sendModifyPassword);
 
   $("#file_loader").change(function() { readURL(this); });
-
-  $("#form_change_picture").on("submit", function(e) {
-    e.preventDefault();
-    $.ajax({
-      type: 'post',
-      url: '../api/files',
-      data: $('#form_change_picture').serialize(),
-      success: function () {
-        console.log("Oui ?");
-      }
-    });
-  });
 }
 
 /**

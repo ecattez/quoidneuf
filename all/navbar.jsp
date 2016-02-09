@@ -54,7 +54,7 @@
                 <th data-dynatable-column="firstName" class="dynatable-head">Prénom</th>
                 <th data-dynatable-column="lastName" class="dynatable-head">Nom</th>
                 <th data-dynatable-column="birthday" class="dynatable-head">Date de naissance</th>
-                <th data-dynatable-column="id" class="dynatable-head">Ajouter</th>
+                <th data-dynatable-column="id" class="dynatable-head">Profil</th>
               </tr>
             </thead>
             <tbody>
