@@ -222,55 +222,63 @@ Afin de découper au mieux l'application, les appels à la base de données ne s
 Pour ce projet, nous avons décidé de faire du 'Pseudo' [REST](https://fr.wikipedia.org/wiki/Representational_State_Transfer) en utilisant les méthodes **doGet**, **doPost**, **doPut** et **doDelete** des Servlets. Les Servlets sont alors des services découpés par thèmes (authentification, discussions, amis...) dont les comportements sont décrits ci-dessous :
 
 #### /api/authentication
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **POST** | username, password | Connexion d'un utilisateur |
 | **PUT** | password | Modifie le mot de passe d'un utilisateur |
 | **DELETE** | - | Déconnexion d'un utilisateur |
 
 #### /api/discussions
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **GET** | id | Récupère une discussion |
 | **POST** | - | Crée une discussion |
 | **PUT** | id, user | Ajoute un utilisateur dans une discussion |
 | **DELETE** | id | Retire un utilisateur d'une discussion |
 
 #### /api/messages
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **POST**| discussion, content | Ecrit un message dans une discussion |
 
 #### /api/friends
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **GET** | id, status | Récupère les (demandes d')amis d'un utilisateur |
 | **POST** | friend | Crée une demande d'ami à un utilisateur |
 | **PUT** | friend | Accepte la demande d'ami d'un utilisateur |
 | **DELETE** | friend | Supprime l'amitié ou la demande d'amitié d'un utilisateur |
 
 #### /api/profiles
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **GET** | id | Récupère le profil d'un utilisateur |
 | **POST** | username, password, firstname, lastname, birthday, description, email, phone | Crée un profil utilisateur |
 | **PUT** | password, description, email, phone | Modifie le profil utilisateur |
 | **DELETE** | - | Supprime le profil utilisateur |
 
 #### /api/recover
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **GET** | firstname, lastname, email | Récupère les utilisateurs répondant un des critères de recherche |
 | **POST** | username, email | Crée une récupération de mot de passe avec appel au service de mail |
 
 #### /api/mails
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **POST** | email, title, content | Crée et envoie un email |
 
 #### /api/files
-| Méthode HTTP | Paramètres | Description
-| :- | :- | :- |
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
 | **POST** | dest, folder, file | Télécharge un fichier sur le serveur (pour profil et discussion) |
 
 *Note: contrairement au service /recover qui appelle /mails, le service /files demande directement si c'est un téléchargement au niveau du profil utilisateur ou bien au niveau de la discussion. Il faudrait diviser le système à terme.*
