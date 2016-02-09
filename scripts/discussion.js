@@ -129,6 +129,9 @@ function callBackGetMembers(data) {
   * Charge les messages de la discussion courante
   */
 function callBackGetMessages(data) {
+  if(data.status) {
+    window.location.href = './profile.jsp';
+  }
   var date = '';
   var user = '';
   var content = '';
