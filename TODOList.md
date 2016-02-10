@@ -6,7 +6,7 @@
 - [x] Trouver solution pour aligner bouton au texte pour ajout utilisateur (alignés quand on enleve le css de test)
 - [x] Préparer espace pour les messages
 - [x] En version mobile, passer les membres en liste avec panel réduit.
-- [ ] Intégration du travail d'Edouard.
+- [x] Intégration du travail d'Edouard.
   - [x] Changer la navbar, ne pas recharger toute la page au changement de discussion
   - [x] Nouvelle discussion
   - [x] Quitter une discussion
