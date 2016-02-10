@@ -8,6 +8,10 @@ body {
   /*background-color: #921f62 !important;*/
 }
 
+.img_footer {
+	margin-left : 2%;
+}
+
 .contents {
   background-color: white !important;
 }

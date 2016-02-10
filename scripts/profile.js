@@ -218,6 +218,7 @@ function callBackGetSubscribersProfile(data) {
   $("#phone").val(data.meta.phone);
   $("#description").val(data.meta.description);
   $("#picture")[0].src = context + "/" + data.meta.pictureUri;
+  $("#img_preview").attr("src", $("#picture")[0].src);
 }
 
 /**
