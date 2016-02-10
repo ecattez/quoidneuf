@@ -217,7 +217,13 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 
 ### Data Access Objects
 
-**Screen MCD**
+#### MCD
+
+![Screen MCD](/screens/quoidneuf_mcd.png)
+
+#### MPD
+
+![Screen MPD](/screens/quoidneuf_mpd.png)
 
 Afin de découper au mieux l'application, les appels à la base de données ne sont pas directement exécutés par les servlets. En effet, ces services délèguent le travail aux autorités compétentes : les DAOs. Ces objets sont classés par thèmes (authentification, discussions, amis...) et n'existent chacun qu'une et une seule fois dans toute l'application. Les services appellent les DAOs par l'intermédiaire du DaoProvider qui conserve les instances uniques de ces objets.
 
