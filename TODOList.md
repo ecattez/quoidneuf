@@ -13,8 +13,8 @@
   - [x] Ajout d'un utilisateur à la discussion
     - [x] Rechercher les membres d'après le champs à chaque lettre tappée
     - [x] Retrouver l'id de l'utilisateur
-  - [ ] Nouvelle version discussion avec des divs bubble-left / bubble-right 
-  - [ ] Envoie image
+  - [x] Nouvelle version discussion avec des divs bubble-left / bubble-right 
+  - [x] Envoie image
 
 # Login
 - [x] Maquette
@@ -26,12 +26,12 @@
 # Profil
 - [x] Maquette
 - [x] Toute la page en statique
-- [ ] Intégration du travail d'Edouard.
+- [x] Intégration du travail d'Edouard.
   - [x] Changer la navbar, ne pas recharger toute la page au changement de discussion
   - [x] Charger profile de l'utilisateur courant avec bouton modifier et champs accessibles si pas d'id
   - [x] Charger profile de l'utilisateur dont l'id est passé en parametre avec champs innaccessibles etc sinon
   - [x] Ajout d'un ami (avec une partie "Amis" et une autre "Demandes en attente")
-  - [ ] Gestion de picture
+  - [x] Gestion de picture
 
 # Toutes les pages
 - [x] Chargement des amis
