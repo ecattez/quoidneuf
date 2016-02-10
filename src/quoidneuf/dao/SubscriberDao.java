@@ -141,7 +141,7 @@ public class SubscriberDao extends Dao<Integer> {
 		List<Subscriber> subscribers = new ArrayList<>();
 		try (Connection con = getConnection()) {
 			String query = "SELECT subscriber_id AS id, first_name, last_name, birthday FROM subscriber INNER JOIN subscriber_meta USING(subscriber_id)"
-					+ " WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?";
+					+ " WHERE UPPER(first_name) LIKE UPPER(?) OR UPPER(last_name) LIKE UPPER(?) OR UPPER(email) LIKE UPPER(?)";
 			PreparedStatement st = con.prepareStatement(query);
 			st.setString(1, "%" + firstname + "%");
 			st.setString(2, "%" + lastname + "%");
