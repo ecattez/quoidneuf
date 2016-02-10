@@ -67,16 +67,16 @@
               <h4 class="modal-title">Envoyer un document</h4>
             </div>
             <div class="modal-body">
-              <form class="" action="../api/files" method="post" id="form_change_picture" enctype="multipart/form-data">
+              <form class="" action="../api/files" method="post" id="form_upload_file" enctype="multipart/form-data">
                 <input class="row" id="file_loader" type="file" accept="image/*" name="file"/>
                 <input class="row" type="hidden" name="dest" value="discussions"/>
                 <input class="row" id="folder" type="hidden" name="folder" value="${param.id}"/>
-                <input type="submit" class="btn btn-success">
               </form>
               <div id="send_file_error" class="alert hidden" role="alert"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
+           		<button type="button" class="btn btn-success" onclick="submitFile()">Valider</button>
+           		<button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -168,6 +168,7 @@
   </div>
 
   <script type="text/javascript" src="../scripts/jquery.min.js"></script>
+  <script type="text/javascript" src="../scripts/jquery.form.min.js"></script>
   <script type="text/javascript" src="../scripts/scripts_ajax.js"></script>
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../scripts/discussion.js"></script>

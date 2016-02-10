@@ -5,6 +5,21 @@ var userId;
 var dyna;
 var context;
 
+$(document).ready(function() {
+	$("#form_upload_file").submit(function() {
+    $(this).ajaxSubmit();
+    location.reload();
+    return false;
+  });
+});
+
+/**
+  * Envoie un fichier dans la discussion courante
+  */
+function submitFile() {
+	$("#form_upload_file").submit();
+}
+
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
   */

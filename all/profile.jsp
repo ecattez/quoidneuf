@@ -112,12 +112,12 @@
                   <input class="row" id="file_loader" type="file" accept="image/*" name="file"/>
                   <input class="row" type="hidden" name="dest" value="subscribers"/>
                   <input class="row" id="folder" type="hidden" name="folder" value="${user}"/>
-                  <input type="submit" class="btn btn-success">
                 </form>
                 <img class="photo" id="img_preview" src="" alt="Votre image"/>
                 <div id="modify_picture_error" class="alert hidden" role="alert"></div>
               </div>
               <div class="modal-footer">
+              	<button type="button" class="btn btn-success" onclick="submitPicture()">Valider</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
               </div>
             </div><!-- /.modal-content -->
@@ -160,11 +160,14 @@
   </div>
 
   <script type="text/javascript" src="../scripts/jquery.min.js"></script>
+  <script type="text/javascript" src="../scripts/jquery.form.min.js"></script>
   <script type="text/javascript" src="../scripts/scripts_ajax.js"></script>
   <script type="text/javascript" src="../scripts/profile.js"></script>
   <script type="text/javascript" src="../scripts/navbar.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
-  <script type="text/javascript">initNavbar('${user}', 'profile');</script>
-  <script type="text/javascript">initProfilePage('${user}', "${param.id}", "${pageContext.servletContext.contextPath}");</script>
+  <script type="text/javascript">
+  	initNavbar('${user}', 'profile');
+  	initProfilePage('${user}', "${param.id}", "${pageContext.servletContext.contextPath}");
+  </script>
 </body>

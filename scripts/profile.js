@@ -2,6 +2,21 @@ var id;
 var profile;
 var context;
 
+$(document).ready(function() {
+	$("#form_change_picture").submit(function() {
+    $(this).ajaxSubmit();
+    location.reload();
+    return false;
+  });
+});
+
+/**
+  * Change la photo de profil de l'utilisateur courant
+  */
+function submitPicture() {
+	$("#form_change_picture").submit();
+}
+
 /**
   * Charge les élements de la page
   *
