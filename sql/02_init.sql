@@ -31,16 +31,16 @@ INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('jackson
 INSERT INTO subscriber (login, first_name, last_name, birthday) VALUES ('scorsesem', 'Martin', 'Scorsese', '28-10-1995');
 
 -- Subscriber_meta :
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (1, 'picturepath', 'Description test', '1@mail.com', '1111111111');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (2,'picturepath', 'Description test', '2@mail.com', '2222222222');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (3,'picturepath', 'Description test', '3@mail.com', '3333333333');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (4,'picturepath', 'Description test', '4@mail.com', '4444444444');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (5,'picturepath', 'Description test', '5@mail.com', '5555555555');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (6,'picturepath', 'Description test', '6@mail.com', '6666666666');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (7,'picturepath', 'Description test', '7@mail.com', '7777777777');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (8,'picturepath', 'Description test', '8@mail.com', '8888888888');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (9,'picturepath', 'Description test', '9@mail.com', '9999999999');
-INSERT INTO subscriber_meta (subscriber_id, picture, description, email, phone) VALUES (10,'picturepath', 'Description test', '10@mail.com', '1010101010');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (1, 'Description test', '1@mail.com', '1111111111');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (2,'Description test', '2@mail.com', '2222222222');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (3,'Description test', '3@mail.com', '3333333333');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (4,'Description test', '4@mail.com', '4444444444');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (5,'Description test', '5@mail.com', '5555555555');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (6,'Description test', '6@mail.com', '6666666666');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (7,'Description test', '7@mail.com', '7777777777');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (8,'Description test', '8@mail.com', '8888888888');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (9,'Description test', '9@mail.com', '9999999999');
+INSERT INTO subscriber_meta (subscriber_id, description, email, phone) VALUES (10,'Description test', '10@mail.com', '1010101010');
 
 -- Friend_with :
 INSERT INTO friend_with VALUES (1, 2, 1);
