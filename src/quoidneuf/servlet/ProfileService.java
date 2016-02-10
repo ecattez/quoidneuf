@@ -98,7 +98,7 @@ public class ProfileService extends JsonServlet {
 				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "mot de passe inexistant");
 			}
 			else if (!Matcher.isPassword(password)) {
-				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "longueur du mot de passe < à " + Credential.MIN_PASSWORD_LENGTH);
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "longueur du mot de passe < à " + Credential.MIN_PASSWORD_LENGTH + " caractères");
 			}
 			else if (Matcher.isEmpty(firstname)) {
 				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "prénom manquant");

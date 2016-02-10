@@ -231,6 +231,7 @@ function callBackCreateDiscussion(data) {
   if(data.id) {
     $("#dropdown_navbar_discussions").append("<li class=\"alert-success\"><p>Discussion créée</p></li>");
     writeFirstMessage(data.id);
+    window.location.href = 'discussion.jsp?id=' + data.id;
   }
   else {
     $("#dropdown_navbar_discussions").append("<li class=\"alert-danger\"><p>"+data.message+"</p></li>");

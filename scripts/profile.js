@@ -1,6 +1,5 @@
 var id;
 var profile;
-var context;
 
 $(document).ready(function() {
 	$("#form_change_picture").submit(function() {
@@ -22,11 +21,9 @@ function submitPicture() {
   *
   * @param {Number} uid - Id de l'utilisateur connecté.
   * @param {Number} user - Id de l'utilisateur de la page.
-  * @param {String} cont - Le nom du context courant
   */
-function initProfilePage(uid, user, cont) {
+function initProfilePage(uid, user) {
   id = uid;
-  context = cont;
   if(uid == undefined || uid == '') {
     window.location.href = '../';
   }
@@ -80,7 +77,11 @@ function callBackCheckFriendStatus(data) {
   *
   */
 function loadButtonAcceptFriend(user) {
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" onclick=\"acceptFriendRequest()\" id=\"button_accept\">Accepter demande</button></p>");
+	$("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton accepter\" onclick=\"acceptFriendRequest()\" id=\"friend_state_button\">Accepter demande</button></p>");
+	$("#friend_state_button").click(function() {
+		$(this).remove();
+		loadButtonRemove(user);
+	});
 }
 
 /**
@@ -89,7 +90,8 @@ function loadButtonAcceptFriend(user) {
   * @param {Number} user - L'id de l'utilisateur à ajouter
   */
 function loadButtonAdd(user) {
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" onclick=\"addFriend("+user+")\" id=\"add_friend_"+user+"\">Demande d'ami</button></p>");
+	$("#button").append("<p><button type=\"button\" class=\"btn btn-success\" name=\"Bouton ajouter\" onclick=\"addFriend("+user+")\" id=\"friend_state_button\">Demande d'ami</button></p>");
+	$("#friend_state_button").click(function() { $(this).remove() });
 }
 
 /**
@@ -98,7 +100,11 @@ function loadButtonAdd(user) {
   * @param {Number} user - L'id de l'utilisateur à supprimer
   */
 function loadButtonRemove(user) {
-  $("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton retirer\" onclick=\"removeFriendRequest("+user+")\">Retirer l'ami de votre liste</button></p>");
+	$("#button").append("<p><button type=\"button\" class=\"btn btn-danger\" name=\"Bouton retirer\" onclick=\"removeFriendRequest("+user+")\" id=\"friend_state_button\">Retirer l'ami de votre liste</button></p>");
+	$("#friend_state_button").click(function() {
+		$(this).remove();
+		loadButtonAdd(user);
+	});
 }
 
 /**
@@ -171,11 +177,12 @@ function sendModifyPassword() {
   * Met à jour l'affichae en fonction du résultat de la modification de mot de passe
   */
 function callBackmodifyPassword(data) {
+	console.log(data);
   if(data == undefined) {
     updateErrorMessage("modify_password_error", true, "Mot de passe modifié.");
   }
   else {
-    updateErrorMessage("modify_password_error", false, "Erreur : " + data.code + " : " + data.message);
+    updateErrorMessage("modify_password_error", false, "Erreur : " + data.responseJSON.message);
   }
 }
 
@@ -224,7 +231,7 @@ function callBackGetFriendsProfile(data) {
   for(var ami in data) {
     line = "<div class=\"row\">";
     line += "<div class=\"col-lg-12 col-md-12 col-sm-12 col-xs-12\">";
-    line += "<a href='#' onclick=\"initProfilePage("+id+", "+data[ami].id+", '"+context+"')\" id='profile_"+data[ami].id+"'>";
+    line += "<a href='#' onclick=\"initProfilePage("+id+", "+data[ami].id+")\" id='profile_"+data[ami].id+"'>";
     line += data[ami].firstName + " " + data[ami].lastName;
     line += "</a>";
     line += "</div>";

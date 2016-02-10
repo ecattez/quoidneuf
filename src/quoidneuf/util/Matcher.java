@@ -97,7 +97,7 @@ public final class Matcher {
 	 * @return	<true> si la chaîne de caractères est un mot de passe valide, <false> sinon
 	 */
 	public static boolean isPassword(String str) {
-		return str != null && str.length() > Credential.MIN_PASSWORD_LENGTH;
+		return str != null && str.length() >= Credential.MIN_PASSWORD_LENGTH;
 	}
 	
 	/**

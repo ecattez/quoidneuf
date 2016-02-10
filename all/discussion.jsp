@@ -174,7 +174,10 @@
   <script type="text/javascript" src="../scripts/discussion.js"></script>
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
-  <script type="text/javascript">initNavbar('${user}', 'discussion');</script>
-  <script type="text/javascript">initDiscussionPage('${user}', "${param.id}", "${pageContext.servletContext.contextPath}");</script>
+  <script type="text/javascript">
+  	var context = "${pageContext.servletContext.contextPath}";
+  	initNavbar('${user}', 'discussion');
+  	initDiscussionPage('${user}', "${param.id}");
+  </script>
 </body>
 </html>

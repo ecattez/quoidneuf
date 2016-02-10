@@ -67,7 +67,7 @@
           </form>
         </div>
 
-        <p class="row"><a data-toggle="modal" data-target="#modal_mdp_oublie">Mot de passe oublié ?</a></p>
+        <p class="row"><a href="#" data-toggle="modal" data-target="#modal_mdp_oublie">Mot de passe oublié ?</a></p>
 
         <div id="login_error" class="row alert alert-danger hidden" role="alert"></div>
       </div>
@@ -107,45 +107,45 @@
             <div class="row">
               <div class="form-group col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-3">
                 <label for="inscription_login">Login*</label><br/>
-                <input class="form-control" type="text" name="inscription_login" id="inscription_login" placeholder="Login" value="catteza" />
+                <input class="form-control" type="text" name="inscription_login" id="inscription_login" placeholder="Login" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-md-6">
                 <label for="inscription_password">Mot de passe*</label><br/>
-                <input class="form-control" type="password" name="inscription_password" id="inscription_password" placeholder="Mot de passe" value="cattezacatteza" />
+                <input class="form-control" type="password" name="inscription_password" id="inscription_password" placeholder="Mot de passe" />
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">
                 <label for="inscription_validation_password">Valider mot de passe*</label><br/>
-                <input class="form-control" type="password" name="inscription_validation_password" id="inscription_validation_password" placeholder="Valider mot de passe" value="cattezacatteza"/>
+                <input class="form-control" type="password" name="inscription_validation_password" id="inscription_validation_password" placeholder="Valider mot de passe" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-md-6">
                 <label for="inscription_last_name">Nom*</label><br/>
-                <input class="form-control" type="text" name="inscription_last_name" id="inscription_last_name" placeholder="Nom" value="Cattez"/>
+                <input class="form-control" type="text" name="inscription_last_name" id="inscription_last_name" placeholder="Nom" />
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">
                 <label for="inscription_first_name">Prénom*</label><br/>
-                <input class="form-control" type="text" name="inscription_first_name" id="inscription_first_name" placeholder="Prénom" value="Aurélie" />
+                <input class="form-control" type="text" name="inscription_first_name" id="inscription_first_name" placeholder="Prénom" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-lg-offset-0 col-md-4 col-md-offset-3">
                 <label for="inscription_birth_date">Date de naissance* <br/>(aaaa-mm-jj)</label><br/>
-                <input class="form-control" type="text" name="inscription_birth_date" id="inscription_birth_date" placeholder="aaaa-mm-jj" value="1995-05-26"/>
+                <input class="form-control" type="text" name="inscription_birth_date" id="inscription_birth_date" placeholder="aaaa-mm-jj" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-lg-4 col-md-6">
                 <label for="inscription_email">E-Mail*</label><br/>
-                <input class="form-control" type="text" name="inscription_email" id="inscription_email" placeholder="E-Mail" value="a.cattez@sfr.fr"/>
+                <input class="form-control" type="text" name="inscription_email" id="inscription_email" placeholder="E-Mail" />
               </div>
 
               <div class="form-group col-lg-4 col-lg-offset-2 col-md-6 col-md-offset-0">

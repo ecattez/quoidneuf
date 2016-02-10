@@ -32,6 +32,7 @@ import javax.servlet.http.HttpSession;
 import quoidneuf.dao.CredentialDao;
 import quoidneuf.dao.DaoProvider;
 import quoidneuf.dao.SubscriberDao;
+import quoidneuf.entity.Credential;
 import quoidneuf.util.Matcher;
 
 @WebServlet("/api/authentication")
@@ -90,6 +91,9 @@ public class AuthenticationService extends JsonServlet {
 			String password = req.getParameter("password");
 			if (Matcher.isEmpty(password)) {
 				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "paramètre 'password' manquant");
+			}
+			else if (!Matcher.isPassword(password)) {
+				sendTicket(HttpServletResponse.SC_BAD_REQUEST, res, "longueur du mot de passe < à " + Credential.MIN_PASSWORD_LENGTH + " caractères");
 			}
 			else if (authenticationDao.changePassword(req.getRemoteUser(), password) > 0) {
 				res.sendError(HttpServletResponse.SC_NO_CONTENT);

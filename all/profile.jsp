@@ -89,15 +89,15 @@
           </div>
         </div>
         <!-- Fin description -->
+        
+        <!-- Message d'erreur -->
+        <div id="error_div" class="row alert hidden" role="alert"></div>
+        <!-- Fin message d'erreur -->
 
         <!-- Bouton Modifier / Demande d'ami / Accepter demande -->
         <div class="row" id="button">
         </div>
         <!-- Fin bouton Modifier / Demande d'ami / Accepter demande -->
-
-        <!-- Message d'erreur -->
-        <div id="error_div" class="row alert hidden" role="alert"></div>
-        <!-- Fin message d'erreur -->
 
         <!-- Fenêtre modale modification photo de profil -->
         <div class="row modal fade" id="modale_change_picture" tabindex="-1" role="dialog">
@@ -167,7 +167,8 @@
   <script type="text/javascript" src="../js/bootstrap.js"></script>
   <script type="text/javascript" src="../js/jquery.dynatable.js"></script>
   <script type="text/javascript">
+  	var context = "${pageContext.servletContext.contextPath}";
   	initNavbar('${user}', 'profile');
-  	initProfilePage('${user}', "${param.id}", "${pageContext.servletContext.contextPath}");
+  	initProfilePage('${user}', "${param.id}");
   </script>
 </body>

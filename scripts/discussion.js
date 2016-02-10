@@ -3,7 +3,6 @@ var nbMessages;
 var interval;
 var userId;
 var dyna;
-var context;
 
 $(document).ready(function() {
 	$("#form_upload_file").submit(function() {
@@ -23,12 +22,11 @@ function submitFile() {
 /**
   * Ajoute les EventListeners aux boutons, charge le nom de la discussion et les messages
   */
-function initDiscussionPage(uId, dId, cont) {
+function initDiscussionPage(uId, dId) {
   if(uId == undefined || uId == '') {
     window.location.href = '../';
   }
-  context = cont;
-
+  
   $("#li_membres").removeClass("hidden");
   nbMessages = 0;
   userId = uId;
@@ -119,7 +117,7 @@ function changeDiscussion(dId) {
   $("#discussion_name").replaceWith("<h2 id=\"discussion_name\">Discussion</h2>");
   $("#discussion_membres").empty();
   $("#messages").empty();
-  initDiscussionPage(userId, dId, context);
+  initDiscussionPage(userId, dId);
 }
 
 /**
@@ -172,7 +170,7 @@ function callBackGetMessages(data) {
 }
 
 /**
- * Vérifie si c'est une image et retourne le contenu dans sa forme désriée.
+ * Vérifie si c'est une image et retourne le contenu dans sa forme désirée.
  */
 function buildContent(content) {
   if(content.split('/').length < 3) {

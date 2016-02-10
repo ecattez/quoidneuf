@@ -9,14 +9,7 @@
   * @param {String} password - Le mot de passe de l'utilisateur (crypté ?)
   */
 function login(user, pass) {
-  ajaxRequest('POST', '../api/authentication', 'callBackLogin', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
-}
-
-/**
-  * Déconnexion de l'utilisateur actuellement authentifié
-  */
-function logout() {
-  ajaxRequest('DELETE', '../api/authentication', 'callBackLogout');
+  ajaxRequest('POST', 'api/authentication', 'callBackLogin', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
 }
 
 /**
@@ -25,7 +18,7 @@ function logout() {
   * @param Les informations du nouvel utilisateur
   */
 function createUser(username, password, firstname, lastname, birthday, description, email, phone) {
-  ajaxRequest('POST', '../api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, description : description, email : email, phone : phone });
+  ajaxRequest('POST', 'api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, description : description, email : email, phone : phone });
 }
 
 /**
@@ -34,7 +27,14 @@ function createUser(username, password, firstname, lastname, birthday, descripti
   * @param Le mail et le login de l'utilisateur
   */
 function passwordLost(username, email) {
-  ajaxRequest('POST', '../api/recover', 'callBackPasswordLost', undefined, 'json', { username : username, email : email });
+  ajaxRequest('POST', 'api/recover', 'callBackPasswordLost', undefined, 'json', { username : username, email : email });
+}
+
+/**
+  * Déconnexion de l'utilisateur actuellement authentifié
+  */
+function logout() {
+  ajaxRequest('DELETE', '../api/authentication', 'callBackLogout');
 }
 
 //-----------------------------------------------

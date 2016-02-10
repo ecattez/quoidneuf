@@ -68,7 +68,7 @@ public class MailService extends JsonServlet {
 				Context envCtx = (Context) initCtx.lookup("java:comp/env");
 				javax.mail.Session sess = (javax.mail.Session) envCtx.lookup("mail/Session");
 				Message message = new MimeMessage(sess);
-				message.setFrom(new InternetAddress("edouard.cattez@sfr.fr"));
+				message.setFrom(new InternetAddress("edouard.cattez@etudiant.univ-lille1.fr"));
 				InternetAddress to[] = new InternetAddress[1];
 				to[0] = new InternetAddress(email);
 				message.setRecipients(Message.RecipientType.TO, to);

@@ -135,6 +135,7 @@ function callBackPasswordLost(data) {
     updateErrorMessage("reset_error", true, data.message);
   }
   else {
+  console.log(data);
     updateErrorMessage("reset_error", false, data.responseJSON.message);
   }
 }
