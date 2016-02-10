@@ -9,14 +9,14 @@
   * @param {String} password - Le mot de passe de l'utilisateur (crypté ?)
   */
 function login(user, pass) {
-  ajaxRequest('POST', '/quoidneuf/api/authentication', 'callBackLogin', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
+  ajaxRequest('POST', '../api/authentication', 'callBackLogin', 'application/x-www-form-urlencoded', 'json', { username : user, password : pass });
 }
 
 /**
   * Déconnexion de l'utilisateur actuellement authentifié
   */
 function logout() {
-  ajaxRequest('DELETE', '/quoidneuf/api/authentication', 'callBackLogout');
+  ajaxRequest('DELETE', '../api/authentication', 'callBackLogout');
 }
 
 /**
@@ -25,7 +25,7 @@ function logout() {
   * @param Les informations du nouvel utilisateur
   */
 function createUser(username, password, firstname, lastname, birthday, description, email, phone) {
-  ajaxRequest('POST', '/quoidneuf/api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, description : description, email : email, phone : phone });
+  ajaxRequest('POST', '../api/profiles', 'callBackCreateUser', undefined, 'json', { username : username, password : password, firstname : firstname, lastname : lastname, birthday : birthday, description : description, email : email, phone : phone });
 }
 
 /**
@@ -34,7 +34,7 @@ function createUser(username, password, firstname, lastname, birthday, descripti
   * @param Le mail et le login de l'utilisateur
   */
 function passwordLost(username, email) {
-  ajaxRequest('POST', '/quoidneuf/api/recover', 'callBackPasswordLost', undefined, 'json', { username : username, email : email });
+  ajaxRequest('POST', '../api/recover', 'callBackPasswordLost', undefined, 'json', { username : username, email : email });
 }
 
 //-----------------------------------------------
@@ -44,7 +44,7 @@ function passwordLost(username, email) {
   * Retourne toutes les discussions d'un utilisateur (id en session)
   */
 function getDiscussions() {
-  ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetDiscussions');
+  ajaxRequest('GET', '../api/discussions', 'callBackGetDiscussions');
 }
 
 /**
@@ -53,7 +53,7 @@ function getDiscussions() {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getFriends(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriends', undefined, 'json', { id : userId, status : true });
+  ajaxRequest('GET', '../api/friends', 'callBackGetFriends', undefined, 'json', { id : userId, status : true });
 }
 
 /**
@@ -62,7 +62,7 @@ function getFriends(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getFriendsProfile(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendsProfile', undefined, 'json', { id : userId, status : true });
+  ajaxRequest('GET', '../api/friends', 'callBackGetFriendsProfile', undefined, 'json', { id : userId, status : true });
 }
 
 /**
@@ -71,7 +71,7 @@ function getFriendsProfile(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getRequestedFriends(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackGetFriendRequests', undefined, 'json', { id : userId, status : false });
+  ajaxRequest('GET', '../api/friends', 'callBackGetFriendRequests', undefined, 'json', { id : userId, status : false });
 }
 
 /**
@@ -80,7 +80,7 @@ function getRequestedFriends(userId) {
   * @param {String} search - Le champs de recherche
   */
 function searchForSubscriber(search) {
-  ajaxRequest('GET', '/quoidneuf/api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForSubscriber');
+  ajaxRequest('GET', '../api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForSubscriber');
 }
 
 /**
@@ -89,7 +89,7 @@ function searchForSubscriber(search) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function addFriendRequestFromNavbar(userId) {
-  ajaxRequest('POST', '/quoidneuf/api/friends', 'callBackAddFriendRequestFromNavbar', undefined, 'json', { friend : userId });
+  ajaxRequest('POST', '../api/friends', 'callBackAddFriendRequestFromNavbar', undefined, 'json', { friend : userId });
 }
 
 //-----------------------------------------------
@@ -101,7 +101,7 @@ function addFriendRequestFromNavbar(userId) {
   * @param {Number} discussionId - L'id de la discussion
   */
 function getMembers(discussionId) {
-  ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetMembers', undefined, 'json', { id : discussionId });
+  ajaxRequest('GET', '../api/discussions', 'callBackGetMembers', undefined, 'json', { id : discussionId });
 }
 
 /**
@@ -110,7 +110,7 @@ function getMembers(discussionId) {
   * @param {Number} discussionId - L'id de la discussion
   */
 function getMessages(discussionId) {
-  ajaxRequest('GET', '/quoidneuf/api/discussions', 'callBackGetMessages', undefined, 'json', { id : discussionId });
+  ajaxRequest('GET', '../api/discussions', 'callBackGetMessages', undefined, 'json', { id : discussionId });
 }
 
 /**
@@ -120,7 +120,7 @@ function getMessages(discussionId) {
   * @param {String} content - Le contenu du Message
   */
 function writeMessage(discussionId, content) {
-  ajaxRequest('POST', '/quoidneuf/api/messages', 'callBackWriteMessage', undefined, 'json', { discussion : discussionId, content : content });
+  ajaxRequest('POST', '../api/messages', 'callBackWriteMessage', undefined, 'json', { discussion : discussionId, content : content });
 }
 
 /**
@@ -129,7 +129,7 @@ function writeMessage(discussionId, content) {
   * @param {Number} discussionId - L'id de la discussion
   */
 function writeFirstMessage(discussionId) {
-  ajaxRequest('POST', '/quoidneuf/api/messages', 'callBackWriteFirstMessage', undefined, 'json', { discussion : discussionId, content : "Nouvelle discussion créée" });
+  ajaxRequest('POST', '../api/messages', 'callBackWriteFirstMessage', undefined, 'json', { discussion : discussionId, content : "Nouvelle discussion créée" });
 }
 
 /**
@@ -139,7 +139,7 @@ function writeFirstMessage(discussionId) {
   * @param {Number} userId - L'id de l'utilisateur à ajouter à cette discussion
   */
 function addMember(discussionId, userId) {
-  ajaxRequest('PUT', '/quoidneuf/api/discussions?id='+discussionId+'&user='+userId, 'callBackAddMember');
+  ajaxRequest('PUT', '../api/discussions?id='+discussionId+'&user='+userId, 'callBackAddMember');
 }
 
 /**
@@ -148,7 +148,7 @@ function addMember(discussionId, userId) {
   * @param {String} name - Le nom de la nouvelle discussion
   */
 function createDiscussion(name) {
-  ajaxRequest('POST', '/quoidneuf/api/discussions', 'callBackCreateDiscussion', undefined, 'json', { name : name });
+  ajaxRequest('POST', '../api/discussions', 'callBackCreateDiscussion', undefined, 'json', { name : name });
 }
 
 /**
@@ -157,7 +157,7 @@ function createDiscussion(name) {
   * @param {Number} id - L'id de la discussion à quitter
   */
 function leaveDiscussion(id) {
-  ajaxRequest('DELETE', '/quoidneuf/api/discussions?id='+id, 'callBackLeaveDiscussion');
+  ajaxRequest('DELETE', '../api/discussions?id='+id, 'callBackLeaveDiscussion');
 }
 
 /**
@@ -166,7 +166,7 @@ function leaveDiscussion(id) {
   * @param {String} search - Le champs de recherche
   */
 function searchForMembre(search) {
-  ajaxRequest('GET', '/quoidneuf/api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForMember');
+  ajaxRequest('GET', '../api/recover?firstname='+search+'&lastname='+search+'&email='+search, 'callBackSearchForMember');
 }
 
 /**
@@ -179,7 +179,7 @@ function uploadFileToDiscussion(file, dId) {
     type : 'POST',
     contentType : 'multipart/form-data',
     processData: false, // obligatoire pour de l'upload
-    url : '/quoidneuf/api/files',
+    url : '../api/files',
     dataType : 'json',
     data : { dest : 'discussions', folder : dId, file : file },
     success : function(data, textStatus, jqXHR) {
@@ -200,7 +200,7 @@ function uploadFileToDiscussion(file, dId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getSubscribersProfile(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/profiles', 'callBackGetSubscribersProfile', undefined, 'json', { id : userId });
+  ajaxRequest('GET', '../api/profiles', 'callBackGetSubscribersProfile', undefined, 'json', { id : userId });
 }
 
 /**
@@ -211,7 +211,7 @@ function getSubscribersProfile(userId) {
   * @param {String} phone - Le téléphone de l'utilisateur
   */
 function modifySubscribersProfile(description, email, phone) {
-  ajaxRequest('PUT', '/quoidneuf/api/profiles?description='+description+'&email='+email+'&phone='+phone, 'callBackModifySubscribersProfile');
+  ajaxRequest('PUT', '../api/profiles?description='+description+'&email='+email+'&phone='+phone, 'callBackModifySubscribersProfile');
 }
 
 /**
@@ -220,7 +220,7 @@ function modifySubscribersProfile(description, email, phone) {
   * @param {String} password - Le nouveau mot de passe de l'utilisateur
   */
 function modifyPassword(password) {
-  ajaxRequest('PUT', '/quoidneuf/api/authentication?password='+password, 'callBackmodifyPassword');
+  ajaxRequest('PUT', '../api/authentication?password='+password, 'callBackmodifyPassword');
 }
 
 /**
@@ -229,7 +229,7 @@ function modifyPassword(password) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function getFriendStatus(userId) {
-  ajaxRequest('GET', '/quoidneuf/api/friends', 'callBackCheckFriendStatus', undefined, 'json', { id : userId });
+  ajaxRequest('GET', '../api/friends', 'callBackCheckFriendStatus', undefined, 'json', { id : userId });
 }
 
 /**
@@ -238,7 +238,7 @@ function getFriendStatus(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function valideFriendRequest(userId) {
-  ajaxRequest('PUT', '/quoidneuf/api/friends?friend='+userId, 'callBackValideFriendRequest');
+  ajaxRequest('PUT', '../api/friends?friend='+userId, 'callBackValideFriendRequest');
 }
 
 /**
@@ -247,7 +247,7 @@ function valideFriendRequest(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function addFriendRequest(userId) {
-  ajaxRequest('POST', '/quoidneuf/api/friends', 'callBackAddFriendRequest', undefined, 'json', { friend : userId });
+  ajaxRequest('POST', '../api/friends', 'callBackAddFriendRequest', undefined, 'json', { friend : userId });
 }
 
 /**
@@ -256,7 +256,7 @@ function addFriendRequest(userId) {
   * @param {Number} userId - L'id de l'utilisateur
   */
 function removeFriend(userId) {
-  ajaxRequest('DELETE', '/quoidneuf/api/friends?friend='+userId, 'callBackRemoveFriend');
+  ajaxRequest('DELETE', '../api/friends?friend='+userId, 'callBackRemoveFriend');
 }
 
 /**
@@ -271,7 +271,7 @@ function uploadFileToProfile(data, uId) {
     contentType : false,
     cache: false,
     processData: false, // obligatoire pour de l'upload
-    url : '/quoidneuf/api/files',
+    url : '../api/files',
     dataType : 'json',
     data : { data : data },
     success : function(data, textStatus, jqXHR) {
