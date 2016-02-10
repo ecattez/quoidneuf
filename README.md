@@ -10,12 +10,34 @@
  - En quelques mots...
  - Liste des fonctionnalités
  - Tutoriel de déploiement
+     - Note sur les scripts
+     - Exemple avec PostgreSQL
+     - SSL
+     - Pool de connexion
+     - Définition des mails
+     - Accès à l'application
 - Documentation utilisateur
  - Objectifs pour l'utilisateur
  - Guide d'utilisation
+     - Login et inscription
+     - Page de profil
+     - Discussions
 - Description technique
- - Objectifs remplis et améliorations à apporter
+ - Objectifs remplis
+ - Améliorations à apporter 
  - Principe de réalisation
+ - Data Access Objects
+ - Pseudo REST
+     - /api/authentication
+     - /api/discussions
+     - /api/messages
+     - /api/friends
+     - /api/profiles
+     - /api/recover
+     - /api/mails
+     - /api/files
+     - JSON
+     - Ticket
  - Difficultés techniques rencontréées et solutions apportées
  - Conclusion
 - Conclusion générale
@@ -31,30 +53,52 @@ QuoiDNeuf est une application Web de messagerie instantannée semblable à [What
 
 QuoiDNeuf dispose d'une base solide de fonctionnalités :
 
-- Messagerie en temps réel à deux comme en groupe
+- Messagerie en temps réel (2 à n utilisateurs)
 - Interface web simple, responsive et user-friendly, validée par le W3C
 - Profil personnalisable
+- Recherche et ajout d'amis
 - Envoi de photos
-
-Et de nombreuses autres, secondaires, à découvrir !
 
 ### Tutoriel de déploiement
 
-Pour déployer cette aplication sur votre serveur Tomcat, vérifiez que ce dernier n'est pas déjà lancé puis téléchargez l'achive au format `tar.gz`, copiez le `.war` dans le dossier *webapps* à la racine de votre serveur. Copiez enfin les librairies que vous n'avez pas déjà dans votre dossier *lib*.
+Dans un premier temps, décompressez l'archive du projet (format `tar.gz`). Vous obtenez l'arborescence suivante :
 
-Il vous faudra ensuite préparer votre base de données PostgreSQL. Ce tutoriel ne décrit pas l'installation de ce service mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/). 
+| Fichier | Description |
+| :------ | :---------- |
+| sql/ | scripts à exécuter dans le SGBD de votre choix |
+| lib/ | bibliothèques JAVA à placer dans le dossier **$TOMCAT/lib** |
+| quoidneuf.war | application à placer dans le dossier **$TOMCAT/webapps** |
 
-Dans le dossier *SQL* de l'archive, vous trouverez deux scripts SQL à executer avec la commande `psql -h <adresse> <base> -U <utilisateur> -f <fichier>`. 
+#### Note sur les scripts SQL
 
-Le premier vous préparera les différentes tables. Notez que ce script écrasera vos tables si elles ont le même nom.
+Le script **01_init** préparera les différentes tables (attention, ce script écrasera vos tables si elles ont le même nom). Le second script est optionnel car il inscrit des données d'exemple dans la base afin de tester votre installation.
 
-Le second script est optionnel, il inscrit des données d'exemple dans la base afin de tester votre installation.
+#### Exemple avec PostgreSQL
 
-Préparez enfin votre serveur Tomcat pour l'utilisation du SSL, vous trouverez toutes les informations dans la [documentation officiel](https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html).
+Ce tutoriel ne décrit pas l'installation de ce SGBD mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/). 
 
-TODO: ligne SSL a décommenter dans tomcat + génération du keygen.
+Exécutez avec la commande `psql -h <adresse> <base> -U <utilisateur> -f <fichier>` avec `<fichier>` le script a exécuter. 
+
+#### SSL
+
+Préparez votre serveur Tomcat pour l'utilisation du SSL, vous trouverez toutes les informations dans la [documentation officiel](https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html).
+
+- Décommentez le connecteur SSL dans le fichier **$TOMCAT/conf/server.xml**.
+- Générez enfin la sécurité du serveur avec la commande **$JAVA_HOME/bin/keytool -genkey -alias tomcat -keyalg RSA**. Vous spécifierez comme mot de passe **changeit**.
+
+#### Pool de connexion
+
+Une fois votre base de données configurée et votre serveur Tomcat démarré, déplacez-vous dans le dossier **webapps/quoidneuf/** et ouvrez le fichier **META-INF/context.xml**. Editez vos informations de connexion pour la base de données. Un redémarrage du contexte sera peut-être nécessaire pour prendre en compte les modifications.
+
+#### Définition des mails
+
+Tout comme pour le pool de connexion, déplacez-vous dans le dossier **webapps/quoidneuf/** et ouvrez le fichier **META-INF/context.xml**. Éditez vos informations d'identification pour le serveur de mail que vous utilisez puis redémarrez le contexte de l'application.
+
+#### Accès à l'application
 
 Vous pouvez maintenant relancer votre serveur et accéder à votre application depuis l'adresse `https://<adresse_du_serveur>:8443/quoidneuf`.
+
+Lors du premier accès, votre navigateur pourra vous mettre en garde d'un problème de certificat. Cette mise en garde se produit car nous n'utilisons pas de certificat validé par un tiers. Toutefois, vous pourrez accéder à l'application en indiquant à votre navigateur que celle-ci est digne de confiance.
 
 ---------------------
 
@@ -167,23 +211,88 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 | EL Expression | Simple d'utilisation, pratique pour récupérer des éléments de contextes différents | Liaison modèle, au chargement des pages de l'application | 
 | Dynatable (Plugin JQuery) | Tableau dynamiques simple et efficace  à l'utilisation | Ajout de membres / d'amis |
 
-### Servlets et Pseudo REST
-
-| Méthode HTTP | URI | Description
-| :-: | :-: | :-: |
-| TODO | TODO | TODO |
-
-TODO : expliquer le pseudo REST
-
 ### Data Access Objects
 
 **Screen MCD**
 
-TODO : explication des DAOs, DaoProvider et du Pool de Connexion
+Afin de découper au mieux l'application, les appels à la base de données ne sont pas directement exécutés par les servlets. En effet, ces services délèguent le travail aux autorités compétentes : les DAOs. Ces objets sont classés par thèmes (authentification, discussions, amis...) et n'existent chacun qu'une et une seule fois dans toute l'application. Les services appellent les DAOs par l'intermédiaire du DaoProvider qui conserve les instances uniques de ces objets.
 
-### L'objet Ticket
+### Pseudo REST
 
-TODO : décrire cet objet et son utilité
+Pour ce projet, nous avons décidé de faire du 'Pseudo' [REST](https://fr.wikipedia.org/wiki/Representational_State_Transfer) en utilisant les méthodes **doGet**, **doPost**, **doPut** et **doDelete** des Servlets. Les Servlets sont alors des services découpés par thèmes (authentification, discussions, amis...) dont les comportements sont décrits ci-dessous :
+
+#### /api/authentication
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **POST** | username, password | Connexion d'un utilisateur |
+| **PUT** | password | Modifie le mot de passe d'un utilisateur |
+| **DELETE** | - | Déconnexion d'un utilisateur |
+
+#### /api/discussions
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **GET** | id | Récupère une discussion |
+| **POST** | - | Crée une discussion |
+| **PUT** | id, user | Ajoute un utilisateur dans une discussion |
+| **DELETE** | id | Retire un utilisateur d'une discussion |
+
+#### /api/messages
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **POST**| discussion, content | Ecrit un message dans une discussion |
+
+#### /api/friends
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **GET** | id, status | Récupère les (demandes d')amis d'un utilisateur |
+| **POST** | friend | Crée une demande d'ami à un utilisateur |
+| **PUT** | friend | Accepte la demande d'ami d'un utilisateur |
+| **DELETE** | friend | Supprime l'amitié ou la demande d'amitié d'un utilisateur |
+
+#### /api/profiles
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **GET** | id | Récupère le profil d'un utilisateur |
+| **POST** | username, password, firstname, lastname, birthday, description, email, phone | Crée un profil utilisateur |
+| **PUT** | password, description, email, phone | Modifie le profil utilisateur |
+| **DELETE** | - | Supprime le profil utilisateur |
+
+#### /api/recover
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **GET** | firstname, lastname, email | Récupère les utilisateurs répondant un des critères de recherche |
+| **POST** | username, email | Crée une récupération de mot de passe avec appel au service de mail |
+
+#### /api/mails
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **POST** | email, title, content | Crée et envoie un email |
+
+#### /api/files
+
+| Méthode HTTP | Paramètres | Description |
+| :----------- | :--------- | :---------- |
+| **POST** | dest, folder, file | Télécharge un fichier sur le serveur (pour profil et discussion) |
+
+*Note: contrairement au service /recover qui appelle /mails, le service /files demande directement si c'est un téléchargement au niveau du profil utilisateur ou bien au niveau de la discussion. Il faudrait diviser le système à terme.*
+
+#### JSON
+
+Tous les services renvoient des contenus au format JSON apportant un descriptif supplémentaire dans les réponses HTTP renvoyées aux clients. Cette façon de procéder permet de manipuler des objets coté client (JavaScript) et de privilégier l'Ajax pour la fluidité de l'application.
+
+#### Ticket
+
+Le Ticket est un objet particulièrement envoyé au client. Sa fonction est d'indiquer ce qui se produit en cas de succès ou d'échec des requêtes formulées par le client. C'est un objet très simple en soit mais d'une redoutable efficacité. Il est composé :
+
+- d'un code de retour (code HTTP)
+- d'un message adéquat à la situation
 
 ### Difficultés techniques rencontrées et solutions apportées
 
