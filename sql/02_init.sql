@@ -1,11 +1,6 @@
 -- CATTEZ Edouard - FERRO Thomas
 -- Insert into tables
 
--- Role :
-INSERT INTO role VALUES ('user');
-INSERT INTO role VALUES ('super-user');
-INSERT INTO role VALUES ('admin');
-
 -- Credential :
 INSERT INTO credential VALUES ('ferrot', 'e6c7781b1965a5788d333e9000fb2e1e', 'admin');
 INSERT INTO credential VALUES ('catteze', 'c1e54c408022a92025fbe8db4a186945', 'admin');
