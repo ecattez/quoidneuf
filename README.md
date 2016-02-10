@@ -203,13 +203,17 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 | :-: | :-: | :-: |
 | J2EE | Servlets | Serveur |
 | Jackson | Liaison objets JAVA/JSON | Serveur -> Client |
-| FileUtils | Upload de fichiers | Client -> Serveur |
-| StringEscapeUtils | Transformation html/texte | Client -> Serveur |
+| CommonsIO/FileUtils | Upload de fichiers | Client -> Serveur |
+| CommonsLang/StringEscapeUtils | Transformation html/texte | Client -> Serveur |
+| Logger | Trace des événements | Serveur |
+| Valve | Journal des logs + accès restreint à l'application | Serveur |
+| JavaMail | Messagerie via JAVA | Serveur -> Client |
 | HTML/CSS | Standards du Web | Vues de l'application |
 | Bootstrap | Mise en page aisée pour desktop et mobile avec un design efficace | Vues de l'application |
 | Javascript (JQuery) | Solution simple, documentée et éprouvée pour rendre dynamique son application Web | Liaison modèle, requêtes Ajax, pages dynamiques | 
 | EL Expression | Simple d'utilisation, pratique pour récupérer des éléments de contextes différents | Liaison modèle, au chargement des pages de l'application | 
 | Dynatable (Plugin JQuery) | Tableau dynamiques simple et efficace  à l'utilisation | Ajout de membres / d'amis |
+| jQueryForm (Plugin JQuery) | Upload de fichier par requête Ajax simplifié | Changement photo de profil + upload image dans une discussion  |
 
 ### Data Access Objects
 
@@ -297,6 +301,7 @@ Le Ticket est un objet particulièrement envoyé au client. Sa fonction est d'in
 ### Difficultés techniques rencontrées et solutions apportées
 
 TODO : cf le titre :) Peut-être sous forme d'un tableau "Problème/ Temps pour le régler / Commentaire"
+TODO : Upload de fichier par requête Ajax incompatible avec notre modèle, solution : plugin.
 
 ### Conclusion
 
@@ -306,4 +311,8 @@ On peut donc conclure que l'utilisation de plusieurs technologies Web a permis d
 
 ## Conclusion générale
 
-TODO : Comparer les objectifs avec le résultat final + conclusion habituelle
+En définitive, ce projet nous a permis de mettre en place de nombreuses technologies Web. 
+
+De plus, la conception d'une application de cette ampleur est essentielle pour intégrer toutes les notions vues en cours tout en découvrant de nouvelles techniques à la mode ou bien ancrées dans le temps.
+
+En ce qui concerne l'application, une grande partie des objectifs a été réalisée dans le respect du cahier des charges et des bonnes pratiques de développement.
