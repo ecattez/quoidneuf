@@ -27,6 +27,8 @@
  - Améliorations à apporter 
  - Principe de réalisation
  - Data Access Objects
+    - MCD
+    - MPD
  - Pseudo REST
      - /api/authentication
      - /api/discussions
@@ -121,7 +123,7 @@ Mais avant cela, voici une petite présentation de la barre de navigation, prés
 
 Cette dernière comporte un lien pour aller sur son profil, un autre pour dérouler la liste de ses amis, des demandes d'amis en attente et une recherche d'utilisateur à ajouter (dans une fenêtre modale, avec un tableau dynamique).
 
-![Screen ajout ami](/screens/screen_nouvel_ami.png)
+![Screen ajout ami](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_nouvel_ami.png)
 
 Présente aussi dans la barre de navigation, une liste déroulante de discussion avec possibilité d'en créer une nouvelle et un lien pour se déconnecter de l'application.
 
@@ -129,7 +131,7 @@ Voici enfin la présentation succincte des différentes pages de notre applicati
 
 #### Login et inscription
 
-![Screen login](/screens/screen_login.png)
+![Screen login](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_login.png)
 
 La partie authentification est composée de deux champs, un pour le login et l'autre pour le mot de passe, et d'un lien pour récupérer votre mot de passe. 
 
@@ -137,7 +139,7 @@ L'application vérifie vos données d'authentification deux fois, une première 
 
 Vous pouvez, de plus, utiliser le service de récupération de mot de passe en cliquant sur le lien correspondant sous la zone de login. Une fenêtre modale s'ouvrira et vous invitera à entrer votre login et votre adresse e-mail afin de vous y envoyer un nouveau mot de passe créé aléatoirement. Vous pourrez modifier ce mot de passe aléatoire une fois sur votre page de profil (décrite plus loin).
 
-![Screen récupération mot de passe](/screens/screen_reset_password.png)
+![Screen récupération mot de passe](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_reset_password.png)
 
 La partie inscription, quant à elle, contient les champs obligatoires (indiqués par un astérisque) et quelques champs optionnels. Une vérification de ces champs est effectuée avant l'envoi, pour les mêmes raisons que pour le login.
 
@@ -147,7 +149,7 @@ Notez que cette application utilise une connexion sécurisée et que vos donnée
 
 #### Page de profil
 
-![Screen profil](/screens/screen_profil.png)
+![Screen profil](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_profil.png)
 
 La page de profil a des parties communes à tous les utilisateurs.
 Le champs **Amis** contenant, comme son nom l'indique, les amis validés de l'utilisateur en question et ses informations (nom, prénom, date de naissance, photo de profil etc..).
@@ -161,13 +163,13 @@ L'application charge toute la page une fois puis recharge les éléments dynamiq
 
 #### Discussions
 
-![Screen discussion](/screens/screen_discussion.png)
+![Screen discussion](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_discussion.png)
 
 La page de discussion est somme toute assez épurée, une zone d'affichage des messages sous forme de bulles de texte, une zone de saisie de message avec possibilité d'envoyer un document grâce à un formulaire affiché dans une fenêtre modale et la zone des membres.
 
 Cette dernière n'est pas visible par défaut afin de ne pas polluer l'espace principal, surtout sur mobile. Vous pouvez la déplier en cliquant sur le bouton **Membres**. Cette zone présente tous les membres abonnés à la discussion et permet d'en ajouter à l'aide d'une zone de recherche alimentant un tableau, le tout affiché dans une fenêtre modale.
 
-![Screen ajout membre](/screens/screen_ajout_membre.png)
+![Screen ajout membre](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_ajout_membre.png)
 
 Comme pour toutes les pages, les erreurs ou réussites d'actions sont indiqués dans des zones prévues à cette effet. 
 
@@ -219,11 +221,11 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 
 #### MCD
 
-![Screen MCD](/screens/quoidneuf_mcd.png)
+![Screen MCD](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/quoidneuf_mcd.png)
 
 #### MPD
 
-![Screen MPD](/screens/quoidneuf_mpd.png)
+![Screen MPD](https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/quoidneuf_mpd.png)
 
 Afin de découper au mieux l'application, les appels à la base de données ne sont pas directement exécutés par les servlets. En effet, ces services délèguent le travail aux autorités compétentes : les DAOs. Ces objets sont classés par thèmes (authentification, discussions, amis...) et n'existent chacun qu'une et une seule fois dans toute l'application. Les services appellent les DAOs par l'intermédiaire du DaoProvider qui conserve les instances uniques de ces objets.
 
