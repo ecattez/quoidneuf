@@ -63,7 +63,7 @@ QuoiDNeuf dispose d'une base solide de fonctionnalités :
 
 Dans un premier temps, décompressez l'archive du projet (format `tar.gz`). Vous obtenez l'arborescence suivante :
 
-| Fichier | Description |
+| **Fichier** | **Description** |
 | :------ | :---------- |
 | sql/ | scripts à exécuter dans le SGBD de votre choix |
 | lib/ | bibliothèques JAVA à placer dans le dossier **$TOMCAT/lib** |
@@ -71,13 +71,13 @@ Dans un premier temps, décompressez l'archive du projet (format `tar.gz`). Vous
 
 #### Note sur les scripts SQL
 
-Le script **01_init** préparera les différentes tables (attention, ce script écrasera vos tables si elles ont le même nom). Le second script est optionnel car il inscrit des données d'exemple dans la base afin de tester votre installation.
+Le script **01_init.sql** préparera les différentes tables (attention, ce script écrasera vos tables si elles ont le même nom). Le second script **02_init.sql** est optionnel car il inscrit des données d'exemple dans la base afin de tester votre installation.
 
 #### Exemple avec PostgreSQL
 
 Ce tutoriel ne décrit pas l'installation de ce SGBD mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/). 
 
-Exécutez avec la commande `psql -h <adresse> <base> -U <utilisateur> -f <fichier>` avec `<fichier>` le script a exécuter. 
+Exécutez avec la commande `psql -h <adresse> <base> -U <utilisateur> -f <fichier>` avec `<fichier>` le script à exécuter. 
 
 #### SSL
 
@@ -179,7 +179,7 @@ L'application ne charge qu'une seule fois la page si vous changez de discussion.
 
 ### Objectifs remplis
 
-| Objectif | Réalisé Par |
+| **Objectif** | **Réalisé Par** |
 | :------: | :---------: |
 | Concevoir un MCD conforme aux besoin de l'application | Edouard et Thomas | 
 | Réalisation des scripts SQL pour la création des tables et des vues  |  Edouard et Thomas |
@@ -199,7 +199,7 @@ Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :
 
 ### Principe de réalisation
 
-| Technologie | Raison de son utilisation | Dans quelle partie du projet |
+| **Technologie** | **Raison de son utilisation** | **Dans quelle partie du projet** |
 | :-: | :-: | :-: |
 | J2EE | Servlets | Serveur |
 | Jackson | Liaison objets JAVA/JSON | Serveur -> Client |
@@ -306,12 +306,15 @@ Le Ticket est un objet particulièrement envoyé au client. Sa fonction est d'in
 
 ### Difficultés techniques rencontrées et solutions apportées
 
-TODO : cf le titre :) Peut-être sous forme d'un tableau "Problème/ Temps pour le régler / Commentaire"
-TODO : Upload de fichier par requête Ajax incompatible avec notre modèle, solution : plugin.
+| **Problème** | **Temps de résolution (en heures)** | **Commentaire** |
+| :----------- | :---------------------- | :-------------- |
+| Upload AJAX | 4h | jQuery ne permet pas nativement d'envoyer correctement des formulaires à enctype multipart-formdata. Il a fallu mettre en place une extension spécifique pour résoudre ce problème (jQuery Form Plugin) |
+| Upload Service | 4h | Problème algorithmique pour la copie d'images à la fois pour les photos de profils et les discussions |
+| Responsive Design | 12h d'apprentissage + 12h de mise en place | Utilisation de Bootstrap coté front dans tout le projet |
 
 ### Conclusion
 
-On peut donc conclure que l'utilisation de plusieurs technologies Web a permis de faciliter le développement tout en rendant l'application complète et efficace. 
+A première vue, ce projet peut paraître simple à réaliser. Toutefois, plusieurs problématiques apparaissent dès lors que l'on visualise le projet dans sa globalité. La mise en place de plusieurs technologies, aussi bien côté client que côté serveur, a permis de résoudre facilement ces problématiques et de rendre le développement facile et efficace. L'application est alors à l'effigie de son développement.
 
 ---------------------
 
@@ -319,6 +322,6 @@ On peut donc conclure que l'utilisation de plusieurs technologies Web a permis d
 
 En définitive, ce projet nous a permis de mettre en place de nombreuses technologies Web. 
 
-De plus, la conception d'une application de cette ampleur est essentielle pour intégrer toutes les notions vues en cours tout en découvrant de nouvelles techniques à la mode ou bien ancrées dans le temps.
+De plus, la conception d'une application de cette ampleur est essentielle pour intégrer toutes les notions vues en cours tout en découvrant de nouvelles techniques à la mode ou bien ancrées dans le temps. Ainsi, une grande partie des objectifs a été réalisée dans le respect du cahier des charges et des bonnes pratiques de développement.
 
-En ce qui concerne l'application, une grande partie des objectifs a été réalisée dans le respect du cahier des charges et des bonnes pratiques de développement.
+Enfin, le travail d'équipe fut parfait car dès lors que le modèle et des normes furent mis en place, le front-end (vues côté client) et le back-end (servlets côté serveur) ont pu être développés indépendamment l'un de l'autre ! Nous n'avons jamais empiété ne serait-ce qu'une seule fois sur le travail de l'un et de l'autre.
