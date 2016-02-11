@@ -70,6 +70,8 @@ Dans un premier temps, décompressez l'archive du projet (format `tar.gz`). Vous
 | compte-rendu/ | le compte-rendu au format HTML |
 | sql/ | scripts à exécuter dans le SGBD de votre choix |
 | lib/ | bibliothèques JAVA à placer dans le dossier **$TOMCAT/lib** |
+| src/ | les sources du projets |
+| javadoc/ | la javadoc liée aux sources |
 | quoidneuf.war | application à placer dans le dossier **$TOMCAT/webapps** |
 
 #### Note sur les scripts SQL
