@@ -49,7 +49,7 @@
 
 ### En quelques mots...
 
-QuoiDNeuf est une application Web de messagerie instantannée semblable à [WhatsApp](www.whatsapp.com).
+QuoiDNeuf est une application Web de messagerie instantannée semblable à [WhatsApp](http://www.whatsapp.com).
 
 ### Liste des fonctionnalités
 
@@ -78,7 +78,7 @@ Le script **01_init.sql** préparera les différentes tables (attention, ce scri
 
 #### Exemple avec PostgreSQL
 
-Ce tutoriel ne décrit pas l'installation de ce SGBD mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/). 
+Ce tutoriel ne décrit pas l'installation de ce SGBD mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur [le site officiel](http://www.postgresql.org/).
 
 Exécutez avec la commande `psql -h <adresse> <base> -U <utilisateur> -f <fichier>` avec `<fichier>` le script à exécuter. 
 
