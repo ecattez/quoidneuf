@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Quoidneuf by ecattez</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Quoidneuf</h1>
+        <h2>WhatsApp-like - Projet d&#39;Administration de Base de Données (Licence DA2I)</h2>
+        <a href="https://github.com/ecattez/quoidneuf" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="quoidneuf" class="anchor" href="#quoidneuf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>QuoiDNeuf</h1>
+
+<h2>
+<a id="whatsapp-like---projet-dadministration-de-base-de-données-licence-da2i" class="anchor" href="#whatsapp-like---projet-dadministration-de-base-de-donn%C3%A9es-licence-da2i" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>WhatsApp-like - Projet d'Administration de Base de Données (Licence DA2I)</h2>
+
+<h3>
+<a id="edouard-cattez---thomas-ferro" class="anchor" href="#edouard-cattez---thomas-ferro" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Edouard Cattez - Thomas Ferro</h3>
+
+<hr>
+
+<h2>
+<a id="sommaire" class="anchor" href="#sommaire" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sommaire</h2>
+
+<ul>
+<li>Introduction
+
+<ul>
+<li>En quelques mots...</li>
+<li>Liste des fonctionnalités</li>
+<li>Tutoriel de déploiement
+
+<ul>
+<li>Note sur les scripts</li>
+<li>Exemple avec PostgreSQL</li>
+<li>SSL</li>
+<li>Pool de connexion</li>
+<li>Définition des mails</li>
+<li>Accès à l'application</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Documentation utilisateur
+
+<ul>
+<li>Objectifs pour l'utilisateur</li>
+<li>Guide d'utilisation
+
+<ul>
+<li>Login et inscription</li>
+<li>Page de profil</li>
+<li>Discussions</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Description technique
+
+<ul>
+<li>Objectifs remplis</li>
+<li>Améliorations à apporter </li>
+<li>Principe de réalisation</li>
+<li>Data Access Objects
+
+<ul>
+<li>MCD</li>
+<li>MPD</li>
+</ul>
+</li>
+<li>Pseudo REST
+
+<ul>
+<li>/api/authentication</li>
+<li>/api/discussions</li>
+<li>/api/messages</li>
+<li>/api/friends</li>
+<li>/api/profiles</li>
+<li>/api/recover</li>
+<li>/api/mails</li>
+<li>/api/files</li>
+<li>JSON</li>
+<li>Ticket</li>
+</ul>
+</li>
+<li>Difficultés techniques rencontréées et solutions apportées</li>
+<li>Conclusion</li>
+</ul>
+</li>
+<li>Conclusion générale</li>
+</ul>
+
+<hr>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
+
+<h3>
+<a id="en-quelques-mots" class="anchor" href="#en-quelques-mots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>En quelques mots...</h3>
+
+<p>QuoiDNeuf est une application Web de messagerie instantannée semblable à <a href="www.whatsapp.com">WhatsApp</a>.</p>
+
+<h3>
+<a id="liste-des-fonctionnalités" class="anchor" href="#liste-des-fonctionnalit%C3%A9s" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Liste des fonctionnalités</h3>
+
+<p>QuoiDNeuf dispose d'une base solide de fonctionnalités :</p>
+
+<ul>
+<li>Messagerie en temps réel (2 à n utilisateurs)</li>
+<li>Interface web simple, responsive et user-friendly, validée par le W3C</li>
+<li>Profil personnalisable</li>
+<li>Recherche et ajout d'amis</li>
+<li>Envoi de photos</li>
+</ul>
+
+<h3>
+<a id="tutoriel-de-déploiement" class="anchor" href="#tutoriel-de-d%C3%A9ploiement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutoriel de déploiement</h3>
+
+<p>Dans un premier temps, décompressez l'archive du projet (format <code>tar.gz</code>). Vous obtenez l'arborescence suivante :</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Fichier</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">sql/</td>
+<td align="left">scripts à exécuter dans le SGBD de votre choix</td>
+</tr>
+<tr>
+<td align="left">lib/</td>
+<td align="left">bibliothèques JAVA à placer dans le dossier <strong>$TOMCAT/lib</strong>
+</td>
+</tr>
+<tr>
+<td align="left">quoidneuf.war</td>
+<td align="left">application à placer dans le dossier <strong>$TOMCAT/webapps</strong>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="note-sur-les-scripts-sql" class="anchor" href="#note-sur-les-scripts-sql" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Note sur les scripts SQL</h4>
+
+<p>Le script <strong>01_init.sql</strong> préparera les différentes tables (attention, ce script écrasera vos tables si elles ont le même nom). Le second script <strong>02_init.sql</strong> est optionnel car il inscrit des données d'exemple dans la base afin de tester votre installation.</p>
+
+<h4>
+<a id="exemple-avec-postgresql" class="anchor" href="#exemple-avec-postgresql" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exemple avec PostgreSQL</h4>
+
+<p>Ce tutoriel ne décrit pas l'installation de ce SGBD mais simplement la mise en place des tables nécessaires à l'application. Pour plus d'informations sur PostgreSQL, rendez-vous sur <a href="http://www.postgresql.org/">le site officiel</a>. </p>
+
+<p>Exécutez avec la commande <code>psql -h &lt;adresse&gt; &lt;base&gt; -U &lt;utilisateur&gt; -f &lt;fichier&gt;</code> avec <code>&lt;fichier&gt;</code> le script à exécuter. </p>
+
+<h4>
+<a id="ssl" class="anchor" href="#ssl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SSL</h4>
+
+<p>Préparez votre serveur Tomcat pour l'utilisation du SSL, vous trouverez toutes les informations dans la <a href="https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html">documentation officiel</a>.</p>
+
+<ul>
+<li>Décommentez le connecteur SSL dans le fichier <strong>$TOMCAT/conf/server.xml</strong>.</li>
+<li>Générez enfin la sécurité du serveur avec la commande <strong>$JAVA_HOME/bin/keytool -genkey -alias tomcat -keyalg RSA</strong>. Vous spécifierez comme mot de passe <strong>changeit</strong>.</li>
+</ul>
+
+<h4>
+<a id="pool-de-connexion" class="anchor" href="#pool-de-connexion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pool de connexion</h4>
+
+<p>Une fois votre base de données configurée et votre serveur Tomcat démarré, déplacez-vous dans le dossier <strong>webapps/quoidneuf/</strong> et ouvrez le fichier <strong>META-INF/context.xml</strong>. Editez vos informations de connexion pour la base de données. Un redémarrage du contexte sera peut-être nécessaire pour prendre en compte les modifications.</p>
+
+<h4>
+<a id="définition-des-mails" class="anchor" href="#d%C3%A9finition-des-mails" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Définition des mails</h4>
+
+<p>Tout comme pour le pool de connexion, déplacez-vous dans le dossier <strong>webapps/quoidneuf/</strong> et ouvrez le fichier <strong>META-INF/context.xml</strong>. Éditez vos informations d'identification pour le serveur de mail que vous utilisez puis redémarrez le contexte de l'application.</p>
+
+<h4>
+<a id="accès-à-lapplication" class="anchor" href="#acc%C3%A8s-%C3%A0-lapplication" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Accès à l'application</h4>
+
+<p>Vous pouvez maintenant relancer votre serveur et accéder à votre application depuis l'adresse <code>https://&lt;adresse_du_serveur&gt;:8443/quoidneuf</code>.</p>
+
+<p>Lors du premier accès, votre navigateur pourra vous mettre en garde d'un problème de certificat. Cette mise en garde se produit car nous n'utilisons pas de certificat validé par un tiers. Toutefois, vous pourrez accéder à l'application en indiquant à votre navigateur que celle-ci est digne de confiance.</p>
+
+<hr>
+
+<h2>
+<a id="documentation-utilisateur" class="anchor" href="#documentation-utilisateur" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation utilisateur</h2>
+
+<h3>
+<a id="objectifs-pour-lutilisateur" class="anchor" href="#objectifs-pour-lutilisateur" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objectifs pour l'utilisateur</h3>
+
+<p>Nous avons développé cette application en suivant trois grandes lignes directrices :</p>
+
+<ul>
+<li>Offrir à l’utilisateur final un service de qualité, simple et efficace ;</li>
+<li>Proposer une application Web validée par le W3C et suivant la mode actuelle, avec une utilisation nomade aisée ;</li>
+<li>Obtenir une application basée sur un modèle robuste et réutilisable facilement pour des refontes voir des portages futurs.</li>
+</ul>
+
+<p>Vous découvrirez plus loin dans cette documentation comment ce dernier point se traduit dans le code, nous allons cependant commencer par un développement des deux premiers éléments.</p>
+
+<h3>
+<a id="guide-dutilisation" class="anchor" href="#guide-dutilisation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Guide d'utilisation</h3>
+
+<p>Ce guide d’utilisation se découpera en trois parties, une pour chaque page principale de l’application.</p>
+
+<p>Mais avant cela, voici une petite présentation de la barre de navigation, présente sur toutes les pages à l'exception de la page d'authentification.</p>
+
+<p>Cette dernière comporte un lien pour aller sur son profil, un autre pour dérouler la liste de ses amis, des demandes d'amis en attente et une recherche d'utilisateur à ajouter (dans une fenêtre modale, avec un tableau dynamique).</p>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_nouvel_ami.png" alt="Screen ajout ami"></p>
+
+<p>Présente aussi dans la barre de navigation, une liste déroulante de discussion avec possibilité d'en créer une nouvelle et un lien pour se déconnecter de l'application.</p>
+
+<p>Voici enfin la présentation succincte des différentes pages de notre application.</p>
+
+<h4>
+<a id="login-et-inscription" class="anchor" href="#login-et-inscription" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Login et inscription</h4>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_login.png" alt="Screen login"></p>
+
+<p>La partie authentification est composée de deux champs, un pour le login et l'autre pour le mot de passe, et d'un lien pour récupérer votre mot de passe. </p>
+
+<p>L'application vérifie vos données d'authentification deux fois, une première directement chez le client, pour éviter d'engorger le réseau et de ralentir les utilisateurs disposants d'une connexion limitée, et une seconde sur le serveur pour éviter les attaques basiques et assurer un service sécurisé et fiable.</p>
+
+<p>Vous pouvez, de plus, utiliser le service de récupération de mot de passe en cliquant sur le lien correspondant sous la zone de login. Une fenêtre modale s'ouvrira et vous invitera à entrer votre login et votre adresse e-mail afin de vous y envoyer un nouveau mot de passe créé aléatoirement. Vous pourrez modifier ce mot de passe aléatoire une fois sur votre page de profil (décrite plus loin).</p>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_reset_password.png" alt="Screen récupération mot de passe"></p>
+
+<p>La partie inscription, quant à elle, contient les champs obligatoires (indiqués par un astérisque) et quelques champs optionnels. Une vérification de ces champs est effectuée avant l'envoi, pour les mêmes raisons que pour le login.</p>
+
+<p>La réussite ou non des actions d'authentification, de récupération de mot de passe et de création de compte est directement visible sur la page à l'aide de messages chargés dynamiquement. </p>
+
+<p>Notez que cette application utilise une connexion sécurisée et que vos données seront donc à l'abris des sniffer de réseaux.</p>
+
+<h4>
+<a id="page-de-profil" class="anchor" href="#page-de-profil" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Page de profil</h4>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_profil.png" alt="Screen profil"></p>
+
+<p>La page de profil a des parties communes à tous les utilisateurs.
+Le champs <strong>Amis</strong> contenant, comme son nom l'indique, les amis validés de l'utilisateur en question et ses informations (nom, prénom, date de naissance, photo de profil etc..).</p>
+
+<p>Certains éléments de la page ne sont chargés que dans des cas précis. </p>
+
+<ul>
+<li>Si la page de profil et celle de l'utilisateur connecté, ce dernier aura la possibilité de modifier les informations de son compte, changer sa photo de profil ou son mot de passe à l'aide de fenêtres modales).</li>
+<li>Si c'est la page d'un ami de l'utilisateur courant, ce dernier aura la possibilité de le retirer de sa liste.</li>
+<li>Enfin, si aucun lien ne lie les deux utilisateurs, une demande d'ami pourra être envoyée.</li>
+</ul>
+
+<p>L'application charge toute la page une fois puis recharge les éléments dynamiquement afin d'offrir une navigation fluide et alléger la charge réseau.</p>
+
+<h4>
+<a id="discussions" class="anchor" href="#discussions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Discussions</h4>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_discussion.png" alt="Screen discussion"></p>
+
+<p>La page de discussion est somme toute assez épurée, une zone d'affichage des messages sous forme de bulles de texte, une zone de saisie de message avec possibilité d'envoyer un document grâce à un formulaire affiché dans une fenêtre modale et la zone des membres.</p>
+
+<p>Cette dernière n'est pas visible par défaut afin de ne pas polluer l'espace principal, surtout sur mobile. Vous pouvez la déplier en cliquant sur le bouton <strong>Membres</strong>. Cette zone présente tous les membres abonnés à la discussion et permet d'en ajouter à l'aide d'une zone de recherche alimentant un tableau, le tout affiché dans une fenêtre modale.</p>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/screen_ajout_membre.png" alt="Screen ajout membre"></p>
+
+<p>Comme pour toutes les pages, les erreurs ou réussites d'actions sont indiqués dans des zones prévues à cette effet. </p>
+
+<p>L'application ne charge qu'une seule fois la page si vous changez de discussion.</p>
+
+<hr>
+
+<h2>
+<a id="description-technique" class="anchor" href="#description-technique" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description technique</h2>
+
+<h3>
+<a id="objectifs-remplis" class="anchor" href="#objectifs-remplis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objectifs remplis</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Objectif</strong></th>
+<th align="center"><strong>Réalisé Par</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Concevoir un MCD conforme aux besoin de l'application</td>
+<td align="center">Edouard et Thomas</td>
+</tr>
+<tr>
+<td align="center">Réalisation des scripts SQL pour la création des tables et des vues</td>
+<td align="center">Edouard et Thomas</td>
+</tr>
+<tr>
+<td align="center">Réalisation du modèle en Java (décrit en détail dans la partie correspondante)</td>
+<td align="center">Edouard</td>
+</tr>
+<tr>
+<td align="center">Réalisation des vues en HTML/CSS (avec Bootstrap)</td>
+<td align="center">Thomas</td>
+</tr>
+<tr>
+<td align="center">Ajout des fonctionnalités avancées dans le modèle (SSL, Pool de connexion, etc.. là aussi décrit en détail plus loin)</td>
+<td align="center">Edouard</td>
+</tr>
+<tr>
+<td align="center">Liaison du modèle aux vues en Javascript (Ajax)</td>
+<td align="center">Thomas</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="améliorations-à-apporter" class="anchor" href="#am%C3%A9liorations-%C3%A0-apporter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Améliorations à apporter</h3>
+
+<p>Voici quelques exemples d'éléments à ajouter à notre projet dans le futur :</p>
+
+<ul>
+<li>Test de monté en charge avec <strong>Apache JMeter</strong>.</li>
+<li>Hébergement sur un serveur dédié et accessible en ligne.</li>
+<li>Travailler sur l'accessibilité de l'application pour les personnes handicapés.</li>
+<li>Modifier des éléments des vues HTML pour respecter les critères de qualité Web d'<strong>Opquast</strong>.</li>
+<li>Proposer un script d'installation et de déploiement rapide de l'application directement sur un serveur <strong>Tomcat</strong>.</li>
+</ul>
+
+<h3>
+<a id="principe-de-réalisation" class="anchor" href="#principe-de-r%C3%A9alisation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Principe de réalisation</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Technologie</strong></th>
+<th align="center"><strong>Raison de son utilisation</strong></th>
+<th align="center"><strong>Dans quelle partie du projet</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">J2EE</td>
+<td align="center">Servlets</td>
+<td align="center">Serveur</td>
+</tr>
+<tr>
+<td align="center">Jackson</td>
+<td align="center">Liaison objets JAVA/JSON</td>
+<td align="center">Serveur -&gt; Client</td>
+</tr>
+<tr>
+<td align="center">CommonsIO/FileUtils</td>
+<td align="center">Upload de fichiers</td>
+<td align="center">Client -&gt; Serveur</td>
+</tr>
+<tr>
+<td align="center">CommonsLang/StringEscapeUtils</td>
+<td align="center">Transformation html/texte</td>
+<td align="center">Client -&gt; Serveur</td>
+</tr>
+<tr>
+<td align="center">Logger</td>
+<td align="center">Trace des événements</td>
+<td align="center">Serveur</td>
+</tr>
+<tr>
+<td align="center">Valve</td>
+<td align="center">Journal des logs + accès restreint à l'application</td>
+<td align="center">Serveur</td>
+</tr>
+<tr>
+<td align="center">JavaMail</td>
+<td align="center">Messagerie via JAVA</td>
+<td align="center">Serveur -&gt; Client</td>
+</tr>
+<tr>
+<td align="center">HTML/CSS</td>
+<td align="center">Standards du Web</td>
+<td align="center">Vues de l'application</td>
+</tr>
+<tr>
+<td align="center">Bootstrap</td>
+<td align="center">Mise en page aisée pour desktop et mobile avec un design efficace</td>
+<td align="center">Vues de l'application</td>
+</tr>
+<tr>
+<td align="center">Javascript (JQuery)</td>
+<td align="center">Solution simple, documentée et éprouvée pour rendre dynamique son application Web</td>
+<td align="center">Liaison modèle, requêtes Ajax, pages dynamiques</td>
+</tr>
+<tr>
+<td align="center">EL Expression</td>
+<td align="center">Simple d'utilisation, pratique pour récupérer des éléments de contextes différents</td>
+<td align="center">Liaison modèle, au chargement des pages de l'application</td>
+</tr>
+<tr>
+<td align="center">Dynatable (Plugin JQuery)</td>
+<td align="center">Tableau dynamiques simple et efficace  à l'utilisation</td>
+<td align="center">Ajout de membres / d'amis</td>
+</tr>
+<tr>
+<td align="center">jQueryForm (Plugin JQuery)</td>
+<td align="center">Upload de fichier par requête Ajax simplifié</td>
+<td align="center">Changement photo de profil + upload image dans une discussion</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="data-access-objects" class="anchor" href="#data-access-objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data Access Objects</h3>
+
+<h4>
+<a id="mcd" class="anchor" href="#mcd" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MCD</h4>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/quoidneuf_mcd.png" alt="Screen MCD"></p>
+
+<h4>
+<a id="mpd" class="anchor" href="#mpd" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MPD</h4>
+
+<p><img src="https://raw.githubusercontent.com/ecattez/quoidneuf/master/screens/quoidneuf_mpd.png" alt="Screen MPD"></p>
+
+<p>Afin de découper au mieux l'application, les appels à la base de données ne sont pas directement exécutés par les servlets. En effet, ces services délèguent le travail aux autorités compétentes : les DAOs. Ces objets sont classés par thèmes (authentification, discussions, amis...) et n'existent chacun qu'une et une seule fois dans toute l'application. Les services appellent les DAOs par l'intermédiaire du DaoProvider qui conserve les instances uniques de ces objets.</p>
+
+<h3>
+<a id="pseudo-rest" class="anchor" href="#pseudo-rest" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pseudo REST</h3>
+
+<p>Pour ce projet, nous avons décidé de faire du 'Pseudo' <a href="https://fr.wikipedia.org/wiki/Representational_State_Transfer">REST</a> en utilisant les méthodes <strong>doGet</strong>, <strong>doPost</strong>, <strong>doPut</strong> et <strong>doDelete</strong> des Servlets. Les Servlets sont alors des services découpés par thèmes (authentification, discussions, amis...) dont les comportements sont décrits ci-dessous :</p>
+
+<h4>
+<a id="apiauthentication" class="anchor" href="#apiauthentication" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/authentication</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">username, password</td>
+<td align="left">Connexion d'un utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>PUT</strong></td>
+<td align="left">password</td>
+<td align="left">Modifie le mot de passe d'un utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>DELETE</strong></td>
+<td align="left">-</td>
+<td align="left">Déconnexion d'un utilisateur</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apidiscussions" class="anchor" href="#apidiscussions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/discussions</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>GET</strong></td>
+<td align="left">id</td>
+<td align="left">Récupère une discussion</td>
+</tr>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">-</td>
+<td align="left">Crée une discussion</td>
+</tr>
+<tr>
+<td align="left"><strong>PUT</strong></td>
+<td align="left">id, user</td>
+<td align="left">Ajoute un utilisateur dans une discussion</td>
+</tr>
+<tr>
+<td align="left"><strong>DELETE</strong></td>
+<td align="left">id</td>
+<td align="left">Retire un utilisateur d'une discussion</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apimessages" class="anchor" href="#apimessages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/messages</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">discussion, content</td>
+<td align="left">Ecrit un message dans une discussion</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apifriends" class="anchor" href="#apifriends" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/friends</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>GET</strong></td>
+<td align="left">id, status</td>
+<td align="left">Récupère les (demandes d')amis d'un utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">friend</td>
+<td align="left">Crée une demande d'ami à un utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>PUT</strong></td>
+<td align="left">friend</td>
+<td align="left">Accepte la demande d'ami d'un utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>DELETE</strong></td>
+<td align="left">friend</td>
+<td align="left">Supprime l'amitié ou la demande d'amitié d'un utilisateur</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apiprofiles" class="anchor" href="#apiprofiles" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/profiles</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>GET</strong></td>
+<td align="left">id</td>
+<td align="left">Récupère le profil d'un utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">username, password, firstname, lastname, birthday, description, email, phone</td>
+<td align="left">Crée un profil utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>PUT</strong></td>
+<td align="left">password, description, email, phone</td>
+<td align="left">Modifie le profil utilisateur</td>
+</tr>
+<tr>
+<td align="left"><strong>DELETE</strong></td>
+<td align="left">-</td>
+<td align="left">Supprime le profil utilisateur</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apirecover" class="anchor" href="#apirecover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/recover</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>GET</strong></td>
+<td align="left">firstname, lastname, email</td>
+<td align="left">Récupère les utilisateurs répondant un des critères de recherche</td>
+</tr>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">username, email</td>
+<td align="left">Crée une récupération de mot de passe avec appel au service de mail</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apimails" class="anchor" href="#apimails" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/mails</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">email, title, content</td>
+<td align="left">Crée et envoie un email</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="apifiles" class="anchor" href="#apifiles" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/api/files</h4>
+
+<table>
+<thead>
+<tr>
+<th align="left">Méthode HTTP</th>
+<th align="left">Paramètres</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>POST</strong></td>
+<td align="left">dest, folder, file</td>
+<td align="left">Télécharge un fichier sur le serveur (pour profil et discussion)</td>
+</tr>
+</tbody>
+</table>
+
+<p><em>Note: contrairement au service /recover qui appelle /mails, le service /files demande directement si c'est un téléchargement au niveau du profil utilisateur ou bien au niveau de la discussion. Il faudrait diviser le système à terme.</em></p>
+
+<h4>
+<a id="json" class="anchor" href="#json" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JSON</h4>
+
+<p>Tous les services renvoient des contenus au format JSON apportant un descriptif supplémentaire dans les réponses HTTP renvoyées aux clients. Cette façon de procéder permet de manipuler des objets coté client (JavaScript) et de privilégier l'Ajax pour la fluidité de l'application.</p>
+
+<h4>
+<a id="ticket" class="anchor" href="#ticket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ticket</h4>
+
+<p>Le Ticket est un objet particulièrement envoyé au client. Sa fonction est d'indiquer ce qui se produit en cas de succès ou d'échec des requêtes formulées par le client. C'est un objet très simple en soit mais d'une redoutable efficacité. Il est composé :</p>
+
+<ul>
+<li>d'un code de retour (code HTTP)</li>
+<li>d'un message adéquat à la situation</li>
+</ul>
+
+<h3>
+<a id="difficultés-techniques-rencontrées-et-solutions-apportées" class="anchor" href="#difficult%C3%A9s-techniques-rencontr%C3%A9es-et-solutions-apport%C3%A9es" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Difficultés techniques rencontrées et solutions apportées</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Problème</strong></th>
+<th align="left"><strong>Temps de résolution (en heures)</strong></th>
+<th align="left"><strong>Commentaire</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Upload AJAX</td>
+<td align="left">4h</td>
+<td align="left">jQuery ne permet pas nativement d'envoyer correctement des formulaires à enctype multipart-formdata. Il a fallu mettre en place une extension spécifique pour résoudre ce problème (jQuery Form Plugin)</td>
+</tr>
+<tr>
+<td align="left">Upload Service</td>
+<td align="left">4h</td>
+<td align="left">Problème algorithmique pour la copie d'images à la fois pour les photos de profils et les discussions</td>
+</tr>
+<tr>
+<td align="left">Responsive Design</td>
+<td align="left">12h d'apprentissage + 12h de mise en place</td>
+<td align="left">Utilisation de Bootstrap coté front dans tout le projet</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="conclusion" class="anchor" href="#conclusion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion</h3>
+
+<p>A première vue, ce projet peut paraître simple à réaliser. Toutefois, plusieurs problématiques apparaissent dès lors que l'on visualise le projet dans sa globalité. La mise en place de plusieurs technologies, aussi bien côté client que côté serveur, a permis de résoudre facilement ces problématiques et de rendre le développement facile et efficace. L'application est alors à l'effigie de son développement.</p>
+
+<hr>
+
+<h2>
+<a id="conclusion-générale" class="anchor" href="#conclusion-g%C3%A9n%C3%A9rale" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusion générale</h2>
+
+<p>En définitive, ce projet nous a permis de mettre en place de nombreuses technologies Web. </p>
+
+<p>De plus, la conception d'une application de cette ampleur est essentielle pour intégrer toutes les notions vues en cours tout en découvrant de nouvelles techniques à la mode ou bien ancrées dans le temps. Ainsi, une grande partie des objectifs a été réalisée dans le respect du cahier des charges et des bonnes pratiques de développement.</p>
+
+<p>Enfin, le travail d'équipe fut parfait car dès lors que le modèle et des normes furent mis en place, le front-end (vues côté client) et le back-end (servlets côté serveur) ont pu être développés indépendamment l'un de l'autre ! Nous n'avons jamais empiété ne serait-ce qu'une seule fois sur le travail de l'un et de l'autre.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/ecattez/quoidneuf/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/ecattez/quoidneuf/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/ecattez/quoidneuf"></a> is maintained by <a href="https://github.com/ecattez">ecattez</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
