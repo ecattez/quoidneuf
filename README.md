@@ -10,7 +10,7 @@
  - En quelques mots...
  - Liste des fonctionnalités
  - Tutoriel de déploiement
-     - Note sur les scripts
+     - Note sur les scripts SQL
      - Exemple avec PostgreSQL
      - SSL
      - Pool de connexion
